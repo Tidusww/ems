@@ -3,7 +3,7 @@
 <%@ include file="common.jsp" %>
 <html>
 <head>
-    <title>卓越管理后台</title>
+    <title>励源人力资源管理系统</title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
@@ -28,20 +28,6 @@
     <%--<link type="text/css" rel="stylesheet" href="${ctx}/lib/bootstrap/3.3.7/css/bootstrap.css"/>--%>
     <%--<script type="text/javascript" src="${ctx}/lib/bootstrap/3.3.7/js/bootstrap.js"></script>--%>
 
-    <%--DEV--%>
-    <%--&lt;%&ndash;React&ndash;%&gt;--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/react/15.6.1/react.min.js"></script>--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/react/15.6.1/react-dom.min.js"></script>--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/babel/6.22.1/babel.min.js"></script>--%>
-    <%--&lt;%&ndash;ReactRouter&ndash;%&gt;--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/react-router/4.0.0/react-router.min.js"></script>--%>
-    <%--&lt;%&ndash;Antd&ndash;%&gt;--%>
-    <%--<link type="text/css" rel="stylesheet" href="${ctx}/lib/antd/2.12.8/antd.css"/>--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/Moment/2.18.1/moment-with-locales.js"></script>--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/antd/2.12.8/antd.js"></script>--%>
-    <%--&lt;%&ndash;css&ndash;%&gt;--%>
-    <%--<link type="text/css" rel="stylesheet" href="${ctx}/static/src/css/core.css"/>--%>
-    <%--<link type="text/css" rel="stylesheet" href="${ctx}/static/src/css/index.css"/>--%>
 
     <%--PRODUCT--%>
     <%--common--%>
@@ -55,23 +41,6 @@
 
 <div id="root" style="height:100%"></div>
 
-<%--一定要放到最后加载--%>
-<%--DEV--%>
-<%--<script type="text/babel" src="${ctx}/static/src/core/Const.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/core/Common.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/core/ConditionContainer.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/core/EditableCell.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/core/PicturesWall.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/index.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/courseManage/ClassManage.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/baseInfoManage/CityManage.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/baseInfoManage/DepartmentManage.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/baseInfoManage/SemesterManage.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/advertiseManage/AdUpload.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/advertiseManage/AdForm.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/advertiseManage/AdEdit.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/advertiseManage/AdManage.jsx"></script>--%>
-<%--<script type="text/babel" src="${ctx}/static/src/courseManage/CourseManage.jsx"></script>--%>
 
 <%--PRODUCT--%>
 <script type="text/javascript" src="${ctx}/static/dist/common.js"></script>

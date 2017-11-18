@@ -10,64 +10,12 @@ import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 //页面
-import {ClassManage} from './courseManage/ClassManage.jsx'
-import {CityManage} from './baseInfoManage/CityManage.jsx'
-import {DepartmentManage} from './baseInfoManage/DepartmentManage.jsx'
-import {SemesterManage} from './baseInfoManage/SemesterManage.jsx'
-import {AdManage} from './advertiseManage/AdManage.jsx'
-import {CourseManage} from './courseManage/CourseManage.jsx'
-import {AdminUserManage} from './adminManage/AdminUserManage.jsx'
-import {RoleManage} from './adminManage/RoleManage.jsx'
-import {KeywordManage} from './other/KeywordManage.jsx'
-import {DataSync} from './other/DataSync.jsx'
-import {GradationManage} from './gradeManage/GradationManage.jsx'
-import {OrderManage} from './orderManage/OrderManage.jsx'
-import {OrderAnalysis} from './orderManage/OrderAnalysis.jsx'
 
 //Common
 const {SubMenu} = Menu;
 const {Header, Content, Footer, Sider} = Layout;
 
 //菜单组件
-const GradationManageComponent = ({match}) => (
-    <GradationManage/>
-);
-const ClassManageComponent = ({match}) => (
-    <ClassManage/>
-);
-const CityManageComponent = ({match}) => (
-    <CityManage/>
-);
-const DepartmentManageComponent = ({match}) => (
-    <DepartmentManage/>
-);
-const SemesterManageComponent = ({match}) => (
-    <SemesterManage/>
-);
-const AdManageComponent = ({match}) => (
-    <AdManage/>
-);
-const CourseManageComponent = ({match}) => (
-    <CourseManage/>
-);
-const AdminUserManageComponent = ({match}) => (
-    <AdminUserManage/>
-);
-const RoleManageComponent = ({match}) => (
-    <RoleManage/>
-);
-const KeywordComponent = ({match}) => (
-    <KeywordManage/>
-);
-const DataSyncComponent = ({match}) => (
-    <DataSync/>
-);
-const OrderComponent = ({match}) => (
-    <OrderManage/>
-);
-const OrderAnalysisComponent = ({match}) => (
-    <OrderAnalysis/>
-);
 
 
 
@@ -80,19 +28,7 @@ class App extends React.Component {
         menus: [],
         routeAndComponent: {},
         componentMap: {
-            CityManageComponent: CityManageComponent,
-            DepartmentManageComponent: DepartmentManageComponent,
-            ClassManageComponent: ClassManageComponent,
-            SemesterManageComponent: SemesterManageComponent,
-            AdManageComponent: AdManageComponent,
-            CourseManageComponent: CourseManageComponent,
-            AdminUserManageComponent: AdminUserManageComponent,
-            RoleManageComponent: RoleManageComponent,
-            KeywordComponent: KeywordComponent,
-            DataSyncComponent: DataSyncComponent,
-            GradationManageComponent:GradationManageComponent,
-            OrderComponent:OrderComponent,
-            OrderAnalysisComponent:OrderAnalysisComponent
+
         }
     };
     handleRequestMenuList = (result) => {
@@ -184,23 +120,7 @@ class App extends React.Component {
                                 )
 
                             }
-                            {/*<SubMenu key="1" title={<span><Icon type="info-circle-o" /><span>课程信息管理</span></span>}>*/}
-                            {/*<Menu.Item key="classManage"><Link to={`${_ctx_}/classManage`} style={{display:'inline'}}>班级管理</Link></Menu.Item>*/}
-                            {/*<Menu.Item key="courseManage"><Link to={`${_ctx_}/courseManage`} style={{display:'inline'}}>课程管理</Link></Menu.Item>*/}
-                            {/*</SubMenu>*/}
-                            {/*<SubMenu key="2" title={<span><Icon type="info-circle-o" /><span>基础信息管理</span></span>}>*/}
-                            {/*<Menu.Item key="cityManage"><Link to={`${_ctx_}/cityManage`} style={{display:'inline'}}>城市管理</Link></Menu.Item>*/}
-                            {/*<Menu.Item key="departmentManage"><Link to={`${_ctx_}/departmentManage`} style={{display:'inline'}}>校区管理</Link></Menu.Item>*/}
-                            {/*<Menu.Item key="semesterManage"><Link to={`${_ctx_}/semesterManage`} style={{display:'inline'}}>学期管理</Link></Menu.Item>*/}
-                            {/*</SubMenu>*/}
-                            {/*<SubMenu key="3" title={<span><Icon type="info-circle-o" /><span>广告管理</span></span>}>*/}
-                            {/*<Menu.Item key="adManage"><Link to={`${_ctx_}/adManage`} style={{display:'inline'}}>广告管理</Link></Menu.Item>*/}
-                            {/*</SubMenu>*/}
-                            {/*<SubMenu key="4" title={<span><Icon type="info-setting-o" /><span>测试</span></span>}>*/}
-                            {/*<Menu.Item key="demo"><Link to={`${_ctx_}/demo`} style={{display:'inline'}}>Demo</Link></Menu.Item>*/}
-                            {/*</SubMenu>*/}
                         </Menu>
-
                     </Spin>
                 </Sider>
                 <Layout>
@@ -213,7 +133,7 @@ class App extends React.Component {
                             />
                         </div>
                         <div className="app-brand">
-                            卓越网报后台管理系统
+                            励源人力资源管理系统
                         </div>
                         <div className="app-tools-right">
                             <Dropdown overlay={userMenu} placement="bottomRight">
@@ -233,16 +153,10 @@ class App extends React.Component {
                                                       component={this.state.componentMap[this.state.routeAndComponent[path]]}></Route>
                                     })
                                 ) : (null)}
-                            {/*<Route exact path={`${_ctx_}/classManage`} component={ClassManageComponent}></Route>*/}
-                            {/*<Route exact path={`${_ctx_}/cityManage`} component={CityManageComponent}></Route>*/}
-                            {/*<Route exact path={`${_ctx_}/departmentManage`} component={DepartmentManageComponent}></Route>*/}
-                            {/*<Route exact path={`${_ctx_}/semesterManage`} component={SemesterManageComponent}></Route>*/}
-                            {/*<Route exact path={`${_ctx_}/adManage`} component={AdManageComponent}></Route>*/}
-                            {/*<Route exact path={`${_ctx_}/courseManage`} component={CourseManageComponent}></Route>*/}
                         </Switch>
                     </Content>
                     <Footer className="app-footer">
-                        Copyright © 卓越教育版权所有 1997-2017. All rights reserved.
+                        Copyright © 励源人力资源版权所有 2017-2017. All rights reserved.
                     </Footer>
                 </Layout>
             </Layout>
