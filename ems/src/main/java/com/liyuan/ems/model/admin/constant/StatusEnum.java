@@ -7,15 +7,13 @@ import org.codehaus.jackson.annotate.JsonValue;
 public enum StatusEnum implements BaseKeyValueEnum {
     /**
      * 状态：
-     * wx:微信
-     * alipay:支付宝
-     * ye:余额支付
-     * yewx:余额微信
-     * yealipay:余额支付宝
+     * 0: 未知
+     * 1: 有效
+     * 2: 无效
      */
-    UNKNOWN(0, "位置"),
-    ACTIVED(1, "PC端"),
-    DISABLED(2, "APP端");
+    UNKNOWN(0, "未知"),
+    ACTIVED(1, "有效"),
+    DISABLED(2, "无效");
 
     private Integer key;
     private String value;

@@ -100,13 +100,17 @@ class App extends React.Component {
                         >
                             {this.state.menus.length > 0 ?
                                 (this.state.menus.map(item => {
-                                    return (<SubMenu key={item.order} title={<span><Icon
-                                        type="info-circle-o"/><span>{item.title}</span></span>}>
+                                    return (
+                                        <SubMenu key={item.order} 
+                                                 title={<span><Icon type="info-circle-o"/><span>{item.menuName}</span></span>}>
                                             {item.subMenus.length > 0 ? (
                                                 item.subMenus.map(subItem => {
-                                                    return (<Menu.Item key={subItem.routeName}><Link
-                                                        to={`${_ctx_}` + subItem.routeName}
-                                                        style={{display: 'inline'}}>{subItem.title}</Link></Menu.Item>)
+                                                    return (
+                                                        <Menu.Item key={subItem.id}>
+                                                            <Link to={`${_ctx_}` + subItem.routeUrl}
+                                                                  style={{display: 'inline'}}>{subItem.menuName}</Link>
+                                                        </Menu.Item>
+                                                    )
                                                 })
                                             ) : (null)}
                                         </SubMenu>

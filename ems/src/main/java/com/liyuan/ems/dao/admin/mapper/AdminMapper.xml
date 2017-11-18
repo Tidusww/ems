@@ -14,7 +14,7 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="role_name" property="roleName" jdbcType="VARCHAR" />
         <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
-        <result column="status" property="state" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
     </resultMap>
 
     <resultMap id="BasePermissionMap" type="com.liyuan.ems.model.admin.Permission">
@@ -22,17 +22,7 @@
         <result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
         <result column="permission_desc" property="permissionDesc" jdbcType="VARCHAR" />
         <result column="permission_url" property="permissionUrl" jdbcType="VARCHAR" />
-        <result column="status" property="state" jdbcType="INTEGER" />
-    </resultMap>
-
-    <resultMap id="BaseMenuMap" type="com.liyuan.ems.model.admin.Menu">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
-        <result column="menu_desc" property="menuDesc" jdbcType="VARCHAR" />
-        <result column="parent_menu_id" property="parentMenuId" jdbcType="INTEGER" />
-        <result column="route_url" property="routeUrl" jdbcType="VARCHAR" />
-        <result column="component_name" property="componentName" jdbcType="VARCHAR" />
-        <result column="status" property="state" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="getAllPermissions" resultMap="BasePermissionMap">

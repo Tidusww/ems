@@ -13,5 +13,5 @@ public class BaseInformationController extends AbstractBaseController {
 
     private Logger logger = LoggerFactory.getLogger(BaseInformationController.class);
 
-    
+
 }

@@ -6,6 +6,7 @@ import javax.validation.*;
 import com.liyuan.ems.common.utils.AjaxResult;
 import com.liyuan.ems.core.exception.EMSBaseException;
 import com.liyuan.ems.core.springmvc.controller.AbstractBaseController;
+import com.liyuan.ems.model.admin.Menu;
 import com.liyuan.ems.model.admin.User;
 import com.liyuan.ems.service.AdminService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
+ * 登陆\权限\菜单相关的Controller
  * Created by tidus on 2017/10/31.
  */
 @Controller
@@ -94,5 +99,23 @@ public class AdminController extends AbstractBaseController {
         }
 
         return AjaxResult.success("登陆成功");
+    }
+
+
+
+    @RequestMapping(value = "/menu/getUserMenus")
+    @ResponseBody
+    private AjaxResult getUserMenus() {
+
+        Subject currentUser = SecurityUtils.getSubject();
+        String username = String.valueOf(currentUser.getPrincipal());
+
+        List<Menu> menus = adminService.getAllMenusByUsername(username);
+
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("menus", menus);
+        data.put("routeAndComponent", adminService.mapMenuPathAndComponent(menus));
+
+        return AjaxResult.success(data);
     }
 }
