@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <description>apache shiro配置</description>
+
+    <!-- 自定义权限配置 -->
+    <bean id="permissionLoader" class="com.liyuan.ems.core.shiro.PermissionLoader">
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 资源相关 -->
+                /static/** = anon
+                /lib/** = anon
+                <!-- 登录相关 -->
+                /login = anon
+                /doLogin = anon
+                /logout = anon
+                <!-- 其他 -->
+                /** = session,authc
+            </value>
+        </property>
+    </bean>
+
+    <!-- shiroFilter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--<property name="loginUrl" value="/login"/>-->
+        <!--<property name="successUrl" value="/index"/>-->
+        <property name="unauthorizedUrl" value="/index?error=unauthorized"/>
+        <property name="filterChainDefinitionMap" ref="permissionLoader"/>
+        <property name="filters">
+            <util:map>
+                <entry key="session" value-ref="sessionExpiredFilter"></entry>
+            </util:map>
+        </property>
+    </bean>
+    <!-- securityManager -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRealm"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+    <!-- Realm实现 -->
+    <bean id="userRealm" class="com.liyuan.ems.core.shiro.UserRealm">
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+    </bean>
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/>
+    </bean>
+
+    <bean id="sessionExpiredFilter" class="com.liyuan.ems.core.shiro.filter.SessionExpiredFilter"/>
+
+</beans>
