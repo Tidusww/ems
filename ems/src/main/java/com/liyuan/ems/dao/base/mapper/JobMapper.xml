@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyuan.ems.dao.base.JobMapper" >
+
+    <resultMap id="BaseJobMap" type="com.liyuan.ems.model.base.Job">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="job_name" property="jobName" jdbcType="VARCHAR" />
+        <result column="is_spec" property="isSpec" jdbcType="INTEGER" />
+        <result column="salary" property="salary" jdbcType="DECIMAL" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getJobById" resultMap="BaseJobMap">
+        SELECT j.* FROM job j WHERE j.id = #{id, jdbcType=INTEGER}
+    </select>
+</mapper>

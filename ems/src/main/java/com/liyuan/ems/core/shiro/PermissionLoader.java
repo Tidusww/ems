@@ -1,7 +1,7 @@
 package com.liyuan.ems.core.shiro;
 
 import com.liyuan.ems.model.admin.Permission;
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 import com.liyuan.ems.service.AdminService;
 import org.apache.shiro.config.Ini;
 import org.springframework.beans.factory.FactoryBean;

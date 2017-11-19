@@ -9,14 +9,17 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
-//页面
-
 //Common
 const {SubMenu} = Menu;
 const {Header, Content, Footer, Sider} = Layout;
 
-//菜单组件
+//页面
+import {GroupManage} from './baseInfoManage/groupManage/GroupManage.jsx'
 
+//菜单组件
+const GroupManageComponent = ({match}) => (
+    <GroupManage />
+);
 
 
 class App extends React.Component {
@@ -28,7 +31,7 @@ class App extends React.Component {
         menus: [],
         routeAndComponent: {},
         componentMap: {
-
+            GroupManageComponent: GroupManageComponent
         }
     };
     handleRequestMenuList = (result) => {
@@ -57,6 +60,7 @@ class App extends React.Component {
         this.setState({collapsed: !this.state.collapsed});
     };
     onMenuClick = (item) => {
+        debugger;
         this.setState({currentUrl: item.key});
     };
 
@@ -101,8 +105,11 @@ class App extends React.Component {
                             {this.state.menus.length > 0 ?
                                 (this.state.menus.map(item => {
                                     return (
-                                        <SubMenu key={item.order} 
-                                                 title={<span><Icon type="info-circle-o"/><span>{item.menuName}</span></span>}>
+                                        <SubMenu key={item.order}
+                                                 title={<span>
+                                                         <Icon type="info-circle-o"/>
+                                                         <span>{item.menuName}</span>
+                                                        </span>}>
                                             {item.subMenus.length > 0 ? (
                                                 item.subMenus.map(subItem => {
                                                     return (
@@ -150,14 +157,13 @@ class App extends React.Component {
 
                     </Header>
                     <Content style={{margin: 8, padding: 16, background: '#fff', minHeight: 400}}>
-                        <Switch>
-                            {this.state.routeAndComponent ?
-                                (Object.keys(this.state.routeAndComponent).map(path => {
-                                        return <Route key={path} exact path={`${_ctx_}` + path}
-                                                      component={this.state.componentMap[this.state.routeAndComponent[path]]}></Route>
-                                    })
-                                ) : (null)}
-                        </Switch>
+
+                        {this.state.routeAndComponent ?
+                            (Object.keys(this.state.routeAndComponent).map(path => {
+                                    return <Route key={path} exact path={`${_ctx_}` + path}
+                                                  component={this.state.componentMap[this.state.routeAndComponent[path]]}></Route>
+                                })
+                            ) : (null)}
                     </Content>
                     <Footer className="app-footer">
                         Copyright © 励源人力资源版权所有 2017-2017. All rights reserved.

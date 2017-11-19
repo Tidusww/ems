@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  */
 public class MultipleRoutingDataSource extends AbstractRoutingDataSource {
 
+    public static final String DATA_SOURCE_NOT_CONTROL = "DATA_SOURCE_NOT_CONTROL";//不控制
     public static final String DATA_SOURCE_EMS = "DATA_SOURCE_EMS";
 
     private static final ThreadLocal<String> dataSourceTypes = new InheritableThreadLocal<String>(){

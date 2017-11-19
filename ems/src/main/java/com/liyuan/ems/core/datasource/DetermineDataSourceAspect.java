@@ -6,6 +6,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
 
+import static com.liyuan.ems.core.datasource.MultipleRoutingDataSource.DATA_SOURCE_NOT_CONTROL;
+
 
 /**
  * Created by tidus on 2017/9/4.
@@ -17,6 +19,11 @@ public class DetermineDataSourceAspect {
     public void before(JoinPoint joinPoint) {
         this.originDataSource = "";
         String dataSource = this.dataSourceAnnotationValue(joinPoint);
+
+        if(DATA_SOURCE_NOT_CONTROL.equals(dataSource)){
+            return;
+        }
+
         if (!StringUtils.isEmpty(dataSource)) {
             this.originDataSource = MultipleRoutingDataSource.getCurrentDataSourceKey();
             MultipleRoutingDataSource.setDataSourceKey(dataSource);

@@ -71,6 +71,20 @@
           p:dataSource-ref="multipleDataSource"
           p:configLocation="classpath:mybatis-config.xml"
           p:mapperLocations="classpath:com/liyuan/ems/dao/admin/mapper/*.xml">
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql;pageNum=current;pageSize=pageSize;
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
      </bean>
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"

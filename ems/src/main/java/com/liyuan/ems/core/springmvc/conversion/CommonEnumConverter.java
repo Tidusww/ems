@@ -3,6 +3,10 @@ package com.liyuan.ems.core.springmvc.conversion;
 import org.springframework.core.convert.converter.Converter;
 
 /**
+ * 默认的EnumConverter
+ */
+
+/**
  * Created by tidus on 2017/11/3.
  */
 public class CommonEnumConverter<T extends Enum> implements Converter<String, T> {

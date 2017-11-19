@@ -7,7 +7,7 @@ import com.liyuan.ems.model.admin.Menu;
 import com.liyuan.ems.model.admin.Permission;
 import com.liyuan.ems.model.admin.Role;
 import com.liyuan.ems.model.admin.User;
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 
 import java.util.List;
 import java.util.Map;

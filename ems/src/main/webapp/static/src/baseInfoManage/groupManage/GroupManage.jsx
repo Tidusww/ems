@@ -1,10 +1,9 @@
 // product begin
 import React from 'react';
 import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
-import { ConditionContainer } from '../core/ConditionContainer.jsx';
-import { Constants } from '../core/Const.jsx';
-import { CommonHelper } from '../core/Common.jsx';
-import { OrderDetail } from './OrderDetail.jsx';
+import { ConditionContainer } from '../../core/ConditionContainer.jsx';
+import { Constants } from '../../core/Const.jsx';
+import { CommonHelper } from '../../core/Common.jsx';
 // product end
 
 class GroupManage extends React.Component {
@@ -29,9 +28,9 @@ class GroupManage extends React.Component {
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
             //Table相关配置
-            conditionConfigCode: "ORDER_MANAGE",
-            queryUrl: `${_ctx_}/order/getOrders`,
-            keyId: "orderId",
+            conditionConfigCode: "GROUP_MANAGE",
+            queryUrl: `${_ctx_}/base/getGroups`,
+            keyId: "id",
             selectionType: "radio",
 
         };
@@ -39,41 +38,11 @@ class GroupManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '订单号', dataIndex: 'orderNum', key: 'orderNum', width: 250,
-                render:(data, record, index) => {
-                    return <a onClick={()=>this.showOrderDetail(record)}>{data}</a>;
-                }
+            {title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
             },
-            {title: '下单时间', dataIndex: 'createDate', key: 'createDate', width: 140
+            {title: '班组组长', dataIndex: 'employeeName', key: 'employeeName', width: 100
             },
-            {
-                title: '订单状态', dataIndex: 'status', key: 'status', width: 100
-            },
-            {title: '支付方式', dataIndex: 'payType', key: 'payType', width: 100
-            },
-            {title: '城市名', dataIndex: 'cityName', key: 'cityName', width: 75
-            },
-            {title: '年份', dataIndex: 'yearName', key: 'yearName', width: 75
-            },
-            {title: '季节', dataIndex: 'seasonName', key: 'seasonName', width: 75
-            },
-            {title: '校区', dataIndex: 'deptName', key: 'deptName', width: 200
-            },
-            {title: '科目数', dataIndex: 'subjectsNum', key: 'subjectsNum', width: 75
-            },
-            {title: '姓名', dataIndex: 'stuMemberName', key: 'stuMemberName', width: 80
-            },
-            {title: '电话', dataIndex: 'phone', key: 'phone', width: 120
-            },
-            {title: '学生编号', dataIndex: 'stuNum', key: 'stuNum', width: 100
-            },
-            {title: '报读金额', dataIndex: 'discountPrice', key: 'discountPrice', width: 75
-            },
-            {title: '优惠金额', dataIndex: 'couponAmount', key: 'couponAmount', width: 75
-            },
-            {title: '订单总额', dataIndex: 'orderAmount', key: 'orderAmount', width: 75
-            },
-            {title: '下单客户端', dataIndex: 'createOrderClient', key: 'createOrderClient', width: 100
+            {title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
             },
 
         ];
@@ -102,7 +71,6 @@ class GroupManage extends React.Component {
 
     };
 
-
     /**
      *  condition container事件
      */
@@ -110,14 +78,10 @@ class GroupManage extends React.Component {
         this.doSearch();
     }
     handleItemChange = (conditionKey, value) => {
-
         this.state.dataParam[conditionKey] = value;
     };
     handleItemPressEnter = (conditionKey) => {
-        const enterKey = ["orderNum", "memberName", "phone", "memberId"];
-        if ( enterKey.contains(conditionKey) ) {
-            this.doSearch();
-        }
+        this.doSearch();
     };
     handleButtonClick = (conditionKey) => {
         switch (conditionKey) {
@@ -147,9 +111,6 @@ class GroupManage extends React.Component {
     };
 
     /**
-     *  操作按钮
-     */
-    /**
      *  查询
      */
     doSearch = ()=> {
@@ -169,7 +130,7 @@ class GroupManage extends React.Component {
                     _this.setState({dataSource: data.dataSource, total: data.total});
                 } else {
                     console.log("请求出错");
-                    message.error(_this.configuration.OPERATION_FAILED_MSG, 3);
+                    message.error(result.msg, 3);
                 }
             },
             error: function (result) {
@@ -181,6 +142,9 @@ class GroupManage extends React.Component {
     };
 
 
+    /**
+     *  操作按钮
+     */
 
     /**
      * helper method
@@ -227,18 +191,6 @@ class GroupManage extends React.Component {
                     columns={this.columns}
                     pagination={pagination}
                 />
-                <Modal
-                    width={this.configuration.updateModalWidth}
-                    maskClosable={this.configuration.maskClosable}
-                    closable={this.configuration.closable}
-                    title={`订单: ${this.state.orderDetailTile}`}
-                    visible={this.state.isOrderDetailVisible}
-                    footer={modalFooter}
-                >
-                    <OrderDetail
-                        orderNum={this.state.orderDetailOrderNum}
-                    />
-                </Modal>
             </div>
         );
     }

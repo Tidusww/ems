@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-public interface MenuDAO {
+public interface MenuMapper {
 
     /**
      * 根据用户名查询父菜单下的子菜单

@@ -1,11 +1,10 @@
 package com.liyuan.ems.core.shiro;
 
 import com.liyuan.ems.common.utils.MD5Util;
-import com.liyuan.ems.common.utils.PasswordHash;
 import com.liyuan.ems.model.admin.Permission;
 import com.liyuan.ems.model.admin.Role;
 import com.liyuan.ems.model.admin.User;
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 import com.liyuan.ems.service.AdminService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -17,8 +16,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**

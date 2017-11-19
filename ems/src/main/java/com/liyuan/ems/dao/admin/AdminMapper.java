@@ -4,14 +4,14 @@ import org.apache.ibatis.annotations.Param;
 import com.liyuan.ems.model.admin.Permission;
 import com.liyuan.ems.model.admin.Role;
 import com.liyuan.ems.model.admin.User;
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 
 import java.util.List;
 
 /**
  * Created by tidus on 2017/11/8.
  */
-public interface AdminDAO {
+public interface AdminMapper {
 
     /**
      * 获取所有Permission配置, 用于动态加载shiro权限

@@ -1,6 +1,6 @@
 package com.liyuan.ems.model.admin;
 
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 import java.util.List;
 
 public class Role {

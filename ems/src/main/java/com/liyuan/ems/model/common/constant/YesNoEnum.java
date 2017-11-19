@@ -1,24 +1,22 @@
-package com.liyuan.ems.model.admin.constant;
+package com.liyuan.ems.model.common.constant;
 
 
 import com.liyuan.ems.core.mybatis.BaseKeyValueEnum;
 import org.codehaus.jackson.annotate.JsonValue;
 
-public enum StatusEnum implements BaseKeyValueEnum {
+public enum YesNoEnum implements BaseKeyValueEnum {
     /**
      * 状态：
-     * 0: 未知
-     * 1: 有效
-     * 2: 无效
+     * 0: 否
+     * 1: 是
      */
-    UNKNOWN(0, "未知"),
-    ACTIVED(1, "有效"),
-    DISABLED(2, "无效");
+    NO(0, "否"),
+    YES(1, "是");
 
     private Integer key;
     private String value;
 
-    StatusEnum(Integer key, String value) {
+    YesNoEnum(Integer key, String value) {
         this.key = key;
         this.value = value;
     }

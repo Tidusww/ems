@@ -20,8 +20,25 @@
 
     <!-- 自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter
           这两个beans在pring MVC中为@Controllers分发请求所必须的 -->
-    <mvc:annotation-driven>
+    <mvc:annotation-driven conversion-service="EnumConversionService">
+        <!-- 拓展参数解析，解决前端组件化传递的参数和需要的对象名不一致的一些问题 -->
+        <!-- example 例如前端传递的参数名为gId 可以讲改参数映射到gradationId上，可以根据具体的业务字段去定义 -->
+        <mvc:argument-resolvers>
+            <bean class="com.liyuan.ems.core.springmvc.databinder.RenamingProcessor">
+                <constructor-arg name="annotationNotRequired" value="true"/>
+            </bean>
+        </mvc:argument-resolvers>
     </mvc:annotation-driven>
+
+    <!-- 处理前端传入的String, 转换为对应的Enum -->
+    <bean id="EnumConversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.liyuan.ems.core.springmvc.conversion.CommonEnumConverterFactory" />
+            </set>
+        </property>
+    </bean>
 
     <!-- 使用default-servelt处理静态资源请求 -->
     <mvc:default-servlet-handler/>

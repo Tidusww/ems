@@ -1,12 +1,12 @@
 package com.liyuan.ems.service.impl;
 
-import com.liyuan.ems.dao.admin.AdminDAO;
-import com.liyuan.ems.dao.admin.MenuDAO;
+import com.liyuan.ems.dao.admin.AdminMapper;
+import com.liyuan.ems.dao.admin.MenuMapper;
 import com.liyuan.ems.model.admin.Menu;
 import com.liyuan.ems.model.admin.Permission;
 import com.liyuan.ems.model.admin.Role;
 import com.liyuan.ems.model.admin.User;
-import com.liyuan.ems.model.admin.constant.StatusEnum;
+import com.liyuan.ems.model.common.constant.StatusEnum;
 import com.liyuan.ems.service.AdminService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,34 +24,34 @@ public class AdminServiceImpl implements AdminService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
 
     @Autowired
-    AdminDAO adminDAO;
+    AdminMapper adminMapper;
 
     @Autowired
-    MenuDAO menuDAO;
+    MenuMapper menuMapper;
 
     @Override
     public List<Permission> getAllPermissions(StatusEnum status) {
-        return adminDAO.getAllPermissions(status);
+        return adminMapper.getAllPermissions(status);
     }
 
     @Override
     public User authentication(String username, String password) {
-        return adminDAO.getUserByUsernameAndPassword(username, password);
+        return adminMapper.getUserByUsernameAndPassword(username, password);
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return adminDAO.getUserByUsername(username);
+        return adminMapper.getUserByUsername(username);
     }
 
     @Override
     public List<Role> getRolesByUserId(Integer userId) {
-        return adminDAO.getRolesByUserId(userId);
+        return adminMapper.getRolesByUserId(userId);
     }
 
     @Override
     public List<Permission> getPermissionByRoleId(Integer roleId) {
-        return adminDAO.getPermissionByRoleId(roleId);
+        return adminMapper.getPermissionByRoleId(roleId);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class AdminServiceImpl implements AdminService {
     public List<Menu> getMenusByUsernameAndParentMenuId(String username, Integer parentMenuId) {
         List<Menu> menus = null;
         if (StringUtils.isEmpty(username)) {
-            menus = menuDAO.getMenusByUsernameAndParentMenuId(username, parentMenuId);
+            menus = menuMapper.getMenusByUsernameAndParentMenuId(username, parentMenuId);
         } else {
-            menus = menuDAO.getMenusByUsernameAndParentMenuId(username, parentMenuId);
+            menus = menuMapper.getMenusByUsernameAndParentMenuId(username, parentMenuId);
         }
 
         if (menus != null && !menus.isEmpty()) {
