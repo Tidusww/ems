@@ -27,9 +27,14 @@ config.module = {
         }
     ]
 };
+config.resolve = {
+    alias: {
+        '@src': path.resolve(__dirname, 'static/src')
+    }
+}
 module.exports = config;
-
  */
+
 
 
 /*
@@ -40,20 +45,31 @@ const path = require('path');
 module.exports = function(webpackConfig) {
     //转换es6的新API
     webpackConfig.babel.plugins.push('transform-runtime');
+
     //按需加载antd
     webpackConfig.babel.plugins.push(['import', {
         libraryName: 'antd',
         // style: 'css'
         style: true//引入antd的less文件
     }]);
+
     //修改默认输出目录
     webpackConfig.output = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'static/dist'),
     };
+
+    //定义根目录 @src:/static/src/
+    // webpackConfig.resolve.alias= {
+    //         '@src': path.resolve(__dirname, 'static/src')
+    // };
+    //定义根目录 从src开始
+    webpackConfig.resolve.root = [
+        path.resolve('./static')
+    ];
+
     //dev
     webpackConfig.devtool = 'cheap-module-eval-source-map';
-    //release
-    // webpackConfig.devtool = 'cheap-module-source-map';
+
     return webpackConfig;
 };

@@ -1,12 +1,6 @@
-//##################### product begin
-import '../css/core.css';
+import '../../css/core.css';
 import React from 'react';
 import {Upload, Icon, Modal} from 'antd';
-//##################### product end
-
-//##################### dev begin
-// const {Upload, Icon, Modal} = antd;
-//##################### dev end
 
 
 class PicturesWall extends React.Component {

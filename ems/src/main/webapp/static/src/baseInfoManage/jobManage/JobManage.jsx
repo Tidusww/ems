@@ -4,7 +4,7 @@ import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
 import { ConditionContainer } from 'src/core/component/ConditionContainer.jsx';
 // product end
 
-class GroupManage extends React.Component {
+class JobManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,14 +21,14 @@ class GroupManage extends React.Component {
         };
         this.configuration = {
             //提示
-            NOT_SELECT_MSG: "请先选择班组",
+            NOT_SELECT_MSG: "请先选择工种",
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
             //Table相关配置
-            conditionConfigCode: "GROUP_MANAGE",
+            conditionConfigCode: "JOB_MANAGE",
             keyId: "id",
-            tableUrl: `${_ctx_}/base/getGroups`,
+            tableUrl: `${_ctx_}/base/getJobs`,
             selectionType: "radio"
 
         };
@@ -36,11 +36,11 @@ class GroupManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
+            {title: '班组名称', dataIndex: 'jobName', key: 'jobName', width: 140
             },
-            {title: '班组组长', dataIndex: 'employeeName', key: 'employeeName', width: 100
+            {title: '是否特殊工种', dataIndex: 'isSpec', key: 'isSpec', width: 100
             },
-            {title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
+            {title: '工资', dataIndex: 'salary', key: 'salary', width: 75
             },
 
         ];
@@ -147,9 +147,7 @@ class GroupManage extends React.Component {
     /**
      * helper method
      */
-    handleOrderDetail = (orderDetail) => {
-
-    };
+    
 
     render = () => {
         //Table
@@ -182,7 +180,7 @@ class GroupManage extends React.Component {
                 />
                 <Table
                     bordered
-                    title={()=>`订单管理列表`}
+                    title={()=>`工种列表`}
                     rowKey={this.configuration.keyId}
                     loading={this.state.isLoading}
                     dataSource={this.state.dataSource}
@@ -196,4 +194,4 @@ class GroupManage extends React.Component {
 
 
 
-exports.GroupManage = GroupManage;
+exports.JobManage = JobManage;

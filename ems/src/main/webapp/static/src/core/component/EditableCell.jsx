@@ -1,9 +1,8 @@
-
-import '../css/core.css';
+import '../../css/core.css';
 import React from 'react';
 import { Input, Select, DatePicker } from 'antd';
-import { Constants } from '../core/Const.jsx';
 import moment from 'moment';
+import {Constants} from 'src/core/Const.jsx';
 
 
 

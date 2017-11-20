@@ -1,4 +1,4 @@
-package com.liyuan.ems.model.base;
+package com.liyuan.ems.model.base.area;
 
 import com.liyuan.ems.model.common.constant.StatusEnum;
 

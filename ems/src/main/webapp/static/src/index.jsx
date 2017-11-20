@@ -14,11 +14,19 @@ const {SubMenu} = Menu;
 const {Header, Content, Footer, Sider} = Layout;
 
 //页面
-import {GroupManage} from './baseInfoManage/groupManage/GroupManage.jsx'
+import {GroupManage} from 'src/baseInfoManage/groupManage/GroupManage.jsx'
+import {AreaManage} from 'src/baseInfoManage/areaManage/AreaManage.jsx'
+import {JobManage} from 'src/baseInfoManage/jobManage/JobManage.jsx'
 
 //菜单组件
 const GroupManageComponent = ({match}) => (
     <GroupManage />
+);
+const AreaManageComponent = ({match}) => (
+    <AreaManage />
+);
+const JobManageComponent = ({match}) => (
+    <JobManage />
 );
 
 
@@ -31,7 +39,9 @@ class App extends React.Component {
         menus: [],
         routeAndComponent: {},
         componentMap: {
-            GroupManageComponent: GroupManageComponent
+            GroupManageComponent: GroupManageComponent,
+            AreaManageComponent: AreaManageComponent,
+            JobManageComponent: JobManageComponent
         }
     };
     handleRequestMenuList = (result) => {
@@ -60,7 +70,6 @@ class App extends React.Component {
         this.setState({collapsed: !this.state.collapsed});
     };
     onMenuClick = (item) => {
-        debugger;
         this.setState({currentUrl: item.key});
     };
 

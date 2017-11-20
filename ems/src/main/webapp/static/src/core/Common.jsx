@@ -1,8 +1,6 @@
-// product begin
 import React from 'react';
-import { EditableCell } from '../core/EditableCell.jsx'
-import { Constants } from '../core/Const.jsx';
-// product end
+import { EditableCell } from 'src/core/component/EditableCell.jsx'
+import {Constants} from 'src/core/Const.jsx';
 
 
 const CommonHelper = {

@@ -1,10 +1,8 @@
-// product begin
 import React from 'react';
 import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
 import { ConditionContainer } from 'src/core/component/ConditionContainer.jsx';
-// product end
 
-class GroupManage extends React.Component {
+class AreaManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,14 +19,14 @@ class GroupManage extends React.Component {
         };
         this.configuration = {
             //提示
-            NOT_SELECT_MSG: "请先选择班组",
+            NOT_SELECT_MSG: "请先选择地区",
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
             //Table相关配置
-            conditionConfigCode: "GROUP_MANAGE",
+            conditionConfigCode: "AREA_MANAGE",
             keyId: "id",
-            tableUrl: `${_ctx_}/base/getGroups`,
+            tableUrl: `${_ctx_}/base/getAreas`,
             selectionType: "radio"
 
         };
@@ -36,11 +34,7 @@ class GroupManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
-            },
-            {title: '班组组长', dataIndex: 'employeeName', key: 'employeeName', width: 100
-            },
-            {title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
+            {title: '地区名称', dataIndex: 'areaName', key: 'areaName', width: 140
             },
 
         ];
@@ -147,9 +141,7 @@ class GroupManage extends React.Component {
     /**
      * helper method
      */
-    handleOrderDetail = (orderDetail) => {
-
-    };
+    
 
     render = () => {
         //Table
@@ -182,7 +174,7 @@ class GroupManage extends React.Component {
                 />
                 <Table
                     bordered
-                    title={()=>`订单管理列表`}
+                    title={()=>`地区列表`}
                     rowKey={this.configuration.keyId}
                     loading={this.state.isLoading}
                     dataSource={this.state.dataSource}
@@ -196,4 +188,4 @@ class GroupManage extends React.Component {
 
 
 
-exports.GroupManage = GroupManage;
+exports.AreaManage = AreaManage;

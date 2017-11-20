@@ -2,8 +2,12 @@ package com.liyuan.ems.controller;
 
 import com.liyuan.ems.common.utils.AjaxResult;
 import com.liyuan.ems.core.springmvc.controller.AbstractBaseController;
+import com.liyuan.ems.model.base.area.Area;
+import com.liyuan.ems.model.base.area.AreaConditions;
 import com.liyuan.ems.model.base.group.Group;
 import com.liyuan.ems.model.base.group.GroupConditions;
+import com.liyuan.ems.model.base.job.Job;
+import com.liyuan.ems.model.base.job.JobConditions;
 import com.liyuan.ems.model.common.PageableResult;
 import com.liyuan.ems.service.BaseInfoService;
 import org.slf4j.Logger;
@@ -30,6 +34,20 @@ public class BaseInfoController extends AbstractBaseController {
     @RequestMapping(value = "/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
         PageableResult<Group> pageableResult = baseInfoService.getGroupsByConditions(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAreas", name = "分页查询地区")
+    public AjaxResult getAreas(AreaConditions conditions) {
+        PageableResult<Area> pageableResult = baseInfoService.getAreasByConditions(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getJobs", name = "分页查询工种")
+    public AjaxResult getJobs(JobConditions conditions) {
+        PageableResult<Job> pageableResult = baseInfoService.getJobsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
 }

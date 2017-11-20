@@ -1,8 +1,8 @@
-import '../css/core.css';
+import '../../css/core.css';
 import React from 'react';
 import {Spin, Button, Input, Select, DatePicker, message, Collapse} from 'antd';
 import moment from 'moment';
-import {Constants} from '../core/Const.jsx';
+import {Constants} from 'src/core/Const.jsx';
 
 
 const Panel = Collapse.Panel;
