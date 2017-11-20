@@ -2,7 +2,6 @@ package com.liyuan.ems.dao.condition;
 
 import com.liyuan.ems.model.condition.ConditionItemDTO;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 

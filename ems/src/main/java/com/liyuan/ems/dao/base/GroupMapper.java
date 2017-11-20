@@ -24,5 +24,5 @@ public interface GroupMapper {
      * @param conditions
      * @return
      */
-    List<Group> getGroupsByCondition(GroupConditions conditions);
+    List<Group> getGroupsByConditions(GroupConditions conditions);
 }

@@ -70,7 +70,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="multipleDataSource"
           p:configLocation="classpath:mybatis-config.xml"
-          p:mapperLocations="classpath:com/liyuan/ems/dao/admin/mapper/*.xml">
+          p:mapperLocations="classpath:com/liyuan/ems/dao/**/mapper/*.xml">
         <property name="plugins">
             <array>
                 <bean class="com.github.pagehelper.PageInterceptor">

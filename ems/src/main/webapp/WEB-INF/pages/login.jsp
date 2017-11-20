@@ -2,14 +2,14 @@
 <%@ include file="common.jsp" %>
 <html>
 <head>
-    <title>励源人力资源管理系统 - 登陆</title>
+    <title>${companyName}人力资源管理系统 - 登陆</title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 
-    <meta name="description" content="励源人力资源管理系统 - 登陆">
+    <meta name="description" content="${companyName}人力资源管理系统 - 登陆">
     <meta name="author" content="">
     <link rel="icon" href="">
 
@@ -67,7 +67,7 @@
 <div class="login_wrap">
 
     <h6 class="clearfix">
-        <img class="logo" src="${ctx}/static/images/manager/login_logo.png"><span>励源人力资源管理系统</span>
+        <img class="logo" src="${ctx}/static/images/manager/login_logo.png"><span>${companyName}人力资源管理系统</span>
     </h6>
 
     <div class="login_box">

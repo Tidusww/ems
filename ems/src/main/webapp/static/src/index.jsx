@@ -144,7 +144,7 @@ class App extends React.Component {
                             />
                         </div>
                         <div className="app-brand">
-                            励源人力资源管理系统
+                            {`${_companyName_}人力资源管理系统`}
                         </div>
                         <div className="app-tools-right">
                             <Dropdown overlay={userMenu} placement="bottomRight">
@@ -166,7 +166,7 @@ class App extends React.Component {
                             ) : (null)}
                     </Content>
                     <Footer className="app-footer">
-                        Copyright © 励源人力资源版权所有 2017-2017. All rights reserved.
+                        {`Copyright © ${_companyName_}版权所有 2017-2017. All rights reserved.`}
                     </Footer>
                 </Layout>
             </Layout>

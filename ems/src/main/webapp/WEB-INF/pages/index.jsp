@@ -3,7 +3,7 @@
 <%@ include file="common.jsp" %>
 <html>
 <head>
-    <title>励源人力资源管理系统</title>
+    <title>${companyName}人力资源管理系统</title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"

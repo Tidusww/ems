@@ -12,17 +12,14 @@
     </resultMap>
 
     <select id="getGroupById" resultMap="BaseGroupMap">
-        SELECT g.* FROM group g WHERE g.id = #{id, jdbcType=INTEGER}
+        SELECT g.* FROM ly_group g WHERE g.id = #{id, jdbcType=INTEGER}
     </select>
 
-    <select id="getGroupsByCondition" parameterType="com.liyuan.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
-        SELECT g.* FROM group g WHERE 1=1
-
+    <select id="getGroupsByConditions" parameterType="com.liyuan.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
+        SELECT g.* FROM ly_group g WHERE 1=1
         <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
-
-        <if test="employeeName != null and employeeName != ''"> AND o.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-
-        <if test="phone != null and phone != ''"> AND o.phone = #{phone, jdbcType=VARCHAR} </if>
+        <if test="employeeName != null and employeeName != ''"> AND g.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
+        <if test="phone != null and phone != ''"> AND g.phone = #{phone, jdbcType=VARCHAR} </if>
     </select>
 
 </mapper>

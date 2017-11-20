@@ -12,7 +12,7 @@
     </resultMap>
 
     <resultMap id="ConditionItemDTO" type="com.liyuan.ems.model.condition.ConditionItemDTO">
-        <result column="condition_code" property="conditionCode" />
+        <id column="condition_code" property="conditionCode" />
         <result column="condition_key" property="conditionKey" />
         <result column="condition_name" property="conditionName" />
         <result column="condition_placeholder" property="conditionPlaceholder"/>
@@ -26,7 +26,7 @@
 
 
 
-    <select id="getConditions" resultMap="ConditionItemDTO">
+    <select id="getConditions" parameterType="java.lang.String" resultMap="ConditionItemDTO">
         SELECT ci.*, cc.order_by FROM condition_config cc, condition_item ci WHERE cc.condition_code = ci.condition_code
            AND cc.status = 1
            AND ci.status = 1

@@ -1,17 +1,14 @@
-package com.zy.ossadmin.common.utils;
+package com.liyuan.ems.common.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class PropertiesUtil {
     private static String filePath = "";//文件路径
 
-    public static String getSSOProperties(String key){
-        filePath = "sso.properties";
-        return getValue(key, filePath);
-    }
 
     public static String getDBProperties(String key) {
         filePath = "dataSource.properties";
@@ -21,6 +18,17 @@ public class PropertiesUtil {
     public static String getAppProperties(String key) {
         filePath = "application.properties";
         return getValue(key, filePath);
+    }
+
+    public static String getAppPropertiesInUTF8(String key) {
+        String value = getAppProperties(key);
+        String encodedValue = "";
+        try {
+            encodedValue = new String(value.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodedValue;
     }
 
     /**
@@ -45,8 +53,5 @@ public class PropertiesUtil {
         return value;
     }
 
-    public static String getSSOBaseUrl(){
-        return getSSOProperties("ssoBaseUrl");
-    }
 
 }

@@ -74,6 +74,8 @@
     <!-- 4、typeAliases -->
     <typeHandlers>
 
+        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.condition.constants.ConditionDatasource"/>
+        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.condition.constants.ConditionType"/>
         <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.common.constant.YesNoEnum"/>
         <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.common.constant.StatusEnum"/>
 

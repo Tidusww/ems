@@ -36,7 +36,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public PageableResult<Group> getGroupsByConditions(GroupConditions conditions) {
 
-        List<Group> groupList = groupMapper.getGroupsByCondition(conditions);
+        List<Group> groupList = groupMapper.getGroupsByConditions(conditions);
         PageInfo<Group> pageInfo = new PageInfo(groupList);
 
         return new PageableResult<Group>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), groupList);
