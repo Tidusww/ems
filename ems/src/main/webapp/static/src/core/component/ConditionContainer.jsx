@@ -238,6 +238,10 @@ class ConditionContainer extends React.Component {
         )
     };
     parseSelectOptions = (item) => {
+        if(!item.keyValueMaps){
+            return null;
+        }
+
         // 非联动下拉框,直接输出
         if (!item.conditionParentKey) {
             return item.keyValueMaps.map(keyValueMap => {
@@ -333,7 +337,8 @@ class ConditionContainer extends React.Component {
 
     render = () => {
         const {conditionItems} = this.state;
-
+        console.log("condition: ");
+        console.log(conditionItems);
         return (
             <Spin
                 delay="500"

@@ -36,7 +36,7 @@ class JobManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '班组名称', dataIndex: 'jobName', key: 'jobName', width: 140
+            {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 140
             },
             {title: '是否特殊工种', dataIndex: 'isSpec', key: 'isSpec', width: 100
             },

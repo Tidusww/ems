@@ -16,7 +16,7 @@
     </select>
 
     <select id="getGroupsByConditions" parameterType="com.liyuan.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
-        SELECT g.* FROM ly_group g WHERE 1=1
+        SELECT g.* FROM ly_group g WHERE 1=1 AND status = 1
         <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
         <if test="employeeName != null and employeeName != ''"> AND g.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
         <if test="phone != null and phone != ''"> AND g.phone = #{phone, jdbcType=VARCHAR} </if>

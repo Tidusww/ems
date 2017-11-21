@@ -49,7 +49,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
                 conditionItemDTO.setKeyValueMaps(keyValues);    //{key:`1`, value:`aa`}
                 conditionItemDTO.setValueMaps(valueMaps);       //{`1`: `aa`}
             }
-        }catch (EMSBaseException ex){
+        }catch (Exception ex){
             //执行Sql出错
             ex.printStackTrace();
         }finally {

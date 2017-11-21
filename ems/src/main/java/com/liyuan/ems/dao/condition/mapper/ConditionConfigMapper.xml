@@ -38,7 +38,7 @@
     <!-- 配置的Sql格式必须为 select XXX as instanceid, XXX as instancename ..... -->
     <!-- 例如 SELECT c.cityId as key, c.cityName as value FROM city c WHERE c.cityIsDeleted = 0 AND c.cityStatus = 0 -->
     <!-- 例如 SELECT 'YES' as `key`, '显示' as `value` FROM dual UNION SELECT 'NO' as `key`, '不显示' as `value` FROM dual -->
-    <select id="getInstanceModel" resultType="java.util.Map">
+    <select id="getConditionKeyValue" resultType="java.util.Map">
         ${paramSql}
     </select>
 

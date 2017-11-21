@@ -15,7 +15,7 @@
     </select>
 
     <select id="getJobsByConditions" parameterType="com.liyuan.ems.model.base.job.JobConditions" resultMap="BaseJobMap">
-        SELECT j.* FROM ly_job j WHERE 1=1
+        SELECT j.* FROM ly_job j WHERE 1=1 AND status = 1
         <if test="jobName != null and jobName != ''"> AND j.job_name like CONCAT('%', #{jobName, jdbcType=VARCHAR}, '%') </if>
         <if test="isSpec != null"> AND j.is_spec = #{isSpec, javaType=com.liyuan.ems.model.common.constant.YesNoEnum} </if>
     </select>

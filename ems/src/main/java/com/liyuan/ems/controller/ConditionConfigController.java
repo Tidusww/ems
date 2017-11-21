@@ -44,12 +44,16 @@ public class ConditionConfigController {
     public AjaxResult getConditions(HttpServletRequest request,
                                     Model model,
                                     @RequestParam(name = "configCode", required = false, defaultValue = "") String configCode) {
-
-        List<ConditionItemDTO> conditionItemDTOs = conditionConfigService.getConditions(configCode);
-
-        if (conditionItemDTOs == null) {
+        List<ConditionItemDTO> conditionItemDTOs = null;
+        try {
+            conditionItemDTOs = conditionConfigService.getConditions(configCode);
+        }catch (Exception ex){
             LOGGER.info(String.format("查询条件失败: configCode:[%s]", configCode));
-            AjaxResult.fail("请求失败");
+            AjaxResult.fail(String.format("查询条件失败: configCode:[%s]", configCode));
+        }
+
+        if(conditionItemDTOs == null || conditionItemDTOs.isEmpty()){
+            AjaxResult.success(conditionItemDTOs);
         }
 
         //处理下拉框键值对

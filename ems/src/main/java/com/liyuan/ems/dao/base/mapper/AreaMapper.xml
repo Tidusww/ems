@@ -13,7 +13,7 @@
     </select>
 
     <select id="getAreasByConditions" parameterType="com.liyuan.ems.model.base.area.AreaConditions" resultMap="BaseAreaMap">
-        SELECT a.* FROM ly_area a WHERE 1=1
+        SELECT a.* FROM ly_area a WHERE 1=1 AND status = 1
         <if test="areaName != null and areaName != ''"> AND j.area_name like CONCAT('%', #{areaName, jdbcType=VARCHAR}, '%') </if>
     </select>
 </mapper>
