@@ -59,13 +59,10 @@ module.exports = function(webpackConfig) {
         path: path.resolve(__dirname, 'static/dist'),
     };
 
-    //定义根目录 @src:/static/src/
-    // webpackConfig.resolve.alias= {
-    //         '@src': path.resolve(__dirname, 'static/src')
-    // };
-    //定义根目录 从src开始
+    //定义根目录 引用示例:
+    //                  import { ConditionContainer } from 'core/component/ConditionContainer.jsx';
     webpackConfig.resolve.root = [
-        path.resolve('./static')
+        path.resolve(__dirname, 'static/src')
     ];
     
     //release

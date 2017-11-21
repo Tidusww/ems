@@ -1,4 +1,4 @@
-import '../../css/core.css';
+import 'css/core.css';
 import React from 'react';
 import {Upload, Icon, Modal} from 'antd';
 

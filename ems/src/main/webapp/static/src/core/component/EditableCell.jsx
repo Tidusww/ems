@@ -1,4 +1,4 @@
-import '../../css/core.css';
+import 'css/core.css';
 import React from 'react';
 import { Input, Select, DatePicker } from 'antd';
 import moment from 'moment';

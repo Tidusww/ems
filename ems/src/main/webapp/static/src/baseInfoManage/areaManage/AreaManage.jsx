@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
-import { ConditionContainer } from 'src/core/component/ConditionContainer.jsx';
+import { ConditionContainer } from 'core/component/ConditionContainer.jsx';
 
 class AreaManage extends React.Component {
     constructor(props) {
