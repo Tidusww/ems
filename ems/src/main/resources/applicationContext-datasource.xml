@@ -56,7 +56,7 @@
     </bean>
 
     <!-- 配置多数据源 -->
-    <bean id="multipleDataSource" class="com.liyuan.ems.core.datasource.MultipleRoutingDataSource">
+    <bean id="multipleDataSource" class="com.ly.ems.core.datasource.MultipleRoutingDataSource">
         <property name="defaultTargetDataSource" ref="dataSourceEms"/>
         <property name="targetDataSources">
             <map>
@@ -70,7 +70,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="multipleDataSource"
           p:configLocation="classpath:mybatis-config.xml"
-          p:mapperLocations="classpath:com/liyuan/ems/dao/**/mapper/*.xml">
+          p:mapperLocations="classpath:com/ly/ems/dao/**/mapper/*.xml">
         <property name="plugins">
             <array>
                 <bean class="com.github.pagehelper.PageInterceptor">
@@ -88,15 +88,15 @@
      </bean>
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:basePackage="com.liyuan.ems.dao"
+          p:basePackage="com.ly.ems.dao"
           p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
 
 
     <!-- 配置dataSource 数据源切换 -->
-    <bean id="determineDataSourceAspect" class="com.liyuan.ems.core.datasource.DetermineDataSourceAspect"/>
+    <bean id="determineDataSourceAspect" class="com.ly.ems.core.datasource.DetermineDataSourceAspect"/>
     <aop:config>
         <aop:aspect id="ddsAspect" ref="determineDataSourceAspect">
-            <aop:pointcut id="ddsPointCut" expression="execution(* com.liyuan.ems.service..*.*(..))"/>
+            <aop:pointcut id="ddsPointCut" expression="execution(* com.ly.ems.service..*.*(..))"/>
             <aop:before pointcut-ref="ddsPointCut" method="before"/>
             <aop:after pointcut-ref="ddsPointCut" method="after"/>
         </aop:aspect>
@@ -115,12 +115,12 @@
             <tx:method name="query*" read-only="true"/><!--不需要事务-->
             <tx:method name="search*" read-only="true"/><!--不需要事务-->
             <tx:method name="find*" read-only="true"/><!--不需要事务-->
-            <tx:method name="*" propagation="REQUIRED" no-rollback-for="com.liyuan.ems.core.exception.EMSBaseException"/><!--需要事务-->
+            <tx:method name="*" propagation="REQUIRED" no-rollback-for="com.ly.ems.core.exception.EMSBaseException"/><!--需要事务-->
         </tx:attributes>
     </tx:advice>
     <!-- 事务aop -->
     <aop:config>
-        <aop:pointcut id="serviceMethods" expression="execution(* com.liyuan.ems.service.*.*(..))"/>
+        <aop:pointcut id="serviceMethods" expression="execution(* com.ly.ems.service.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
     <!-- 启用对事务注解的支持 -->

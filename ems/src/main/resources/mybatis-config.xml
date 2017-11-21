@@ -68,16 +68,16 @@
 
     <!-- 3、typeAliases -->
     <typeAliases>
-        <package name="com.liyuan.ems.model.admin"/>
+        <!--<package name="com.ly.ems.model.admin"/>-->
     </typeAliases>
 
     <!-- 4、typeAliases -->
     <typeHandlers>
 
-        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.condition.constants.ConditionDatasource"/>
-        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.condition.constants.ConditionType"/>
-        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.common.constant.YesNoEnum"/>
-        <typeHandler handler="com.liyuan.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.liyuan.ems.model.common.constant.StatusEnum"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionDatasource"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionType"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.YesNoEnum"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.StatusEnum"/>
 
     </typeHandlers>
 

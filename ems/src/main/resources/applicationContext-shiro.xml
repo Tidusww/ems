@@ -8,7 +8,7 @@
     <description>apache shiro配置</description>
 
     <!-- 自定义权限配置 -->
-    <bean id="permissionLoader" class="com.liyuan.ems.core.shiro.PermissionLoader">
+    <bean id="permissionLoader" class="com.ly.ems.core.shiro.PermissionLoader">
         <property name="filterChainDefinitions">
             <value>
                 <!-- 资源相关 -->
@@ -43,7 +43,7 @@
         <property name="cacheManager" ref="cacheManager"/>
     </bean>
     <!-- Realm实现 -->
-    <bean id="userRealm" class="com.liyuan.ems.core.shiro.UserRealm">
+    <bean id="userRealm" class="com.ly.ems.core.shiro.UserRealm">
         <property name="authorizationCachingEnabled" value="true"/>
         <property name="authorizationCacheName" value="authorizationCache"/>
         <property name="authenticationCachingEnabled" value="true"/>
@@ -54,6 +54,6 @@
         <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/>
     </bean>
 
-    <bean id="sessionExpiredFilter" class="com.liyuan.ems.core.shiro.filter.SessionExpiredFilter"/>
+    <bean id="sessionExpiredFilter" class="com.ly.ems.core.shiro.filter.SessionExpiredFilter"/>
 
 </beans>
