@@ -26,4 +26,22 @@ public interface JobMapper {
      * @return
      */
     List<Job> getJobsByConditions(JobConditions conditions);
+
+    /**
+     * 新增Job
+     * @param job
+     */
+    void insertJob(Job job);
+
+    /**
+     * 修改Job
+     * @param job
+     */
+    void updateJob(Job job);
+
+    /**
+     * 删除Job
+     * @param id
+     */
+    void deleteJob(@Param("id")Integer id);
 }

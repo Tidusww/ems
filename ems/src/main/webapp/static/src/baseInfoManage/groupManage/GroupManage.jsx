@@ -1,7 +1,7 @@
 // product begin
 import React from 'react';
 import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
-import { ConditionContainer } from 'core/component/ConditionContainer.jsx';
+import { ConditionContainer } from 'component/ConditionContainer.jsx';
 // product end
 
 class GroupManage extends React.Component {
@@ -111,7 +111,7 @@ class GroupManage extends React.Component {
     /**
      *  查询
      */
-    doSearch = ()=> {
+    doSearch = () => {
         this.setState({isLoading: true});
 
         const _this = this;

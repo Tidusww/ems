@@ -1,6 +1,6 @@
 import React from 'react';
-import { EditableCell } from 'src/core/component/EditableCell.jsx'
-import {Constants} from 'src/core/Const.jsx';
+import { EditableCell } from 'component/EditableCell.jsx'
+import {Constants} from 'core/Const.jsx';
 
 
 const CommonHelper = {

@@ -19,4 +19,32 @@
         <if test="jobName != null and jobName != ''"> AND j.job_name like CONCAT('%', #{jobName, jdbcType=VARCHAR}, '%') </if>
         <if test="isSpec != null"> AND j.is_spec = #{isSpec, javaType=com.ly.ems.model.common.constant.YesNoEnum} </if>
     </select>
+
+    <insert id="insertJob" parameterType="com.ly.ems.model.base.job.Job" useGeneratedKeys="true">
+        INSERT INTO ly_job (job_name, is_spec, salary, status) VALUES (#{jobName}, #{isSpec}, #{salary}, #{status})
+    </insert>
+
+    <update id="updateByIdSelective" parameterType="com.ly.ems.model.base.job.Job">
+        UPDATE ly_job
+        <set >
+            <if test="jobName != null" >
+                job_name = #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="isSpec != null" >
+                is_spec = #{isSpec,javaType=com.ly.ems.model.common.constant.YesNoEnum},
+            </if>
+            <if test="salary != null" >
+                salary = #{salary,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteJob" parameterType="java.lang.Integer" >
+        delete from ly_job
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
 </mapper>

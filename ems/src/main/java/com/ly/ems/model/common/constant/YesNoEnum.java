@@ -1,8 +1,8 @@
 package com.ly.ems.model.common.constant;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
-import org.codehaus.jackson.annotate.JsonValue;
 
 public enum YesNoEnum implements BaseKeyValueEnum {
     /**
