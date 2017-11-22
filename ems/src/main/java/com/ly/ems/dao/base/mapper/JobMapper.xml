@@ -24,7 +24,7 @@
         INSERT INTO ly_job (job_name, is_spec, salary, status) VALUES (#{jobName}, #{isSpec}, #{salary}, #{status})
     </insert>
 
-    <update id="updateByIdSelective" parameterType="com.ly.ems.model.base.job.Job">
+    <update id="updateJob" parameterType="com.ly.ems.model.base.job.Job">
         UPDATE ly_job
         <set >
             <if test="jobName != null" >

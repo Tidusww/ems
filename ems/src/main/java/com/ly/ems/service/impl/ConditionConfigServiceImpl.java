@@ -1,10 +1,7 @@
 package com.ly.ems.service.impl;
 
-import com.ly.ems.core.exception.EMSBaseException;
 import com.ly.ems.dao.condition.ConditionConfigMapper;
 import com.ly.ems.model.condition.ConditionItemDTO;
-import com.ly.ems.service.ConditionConfigService;
-import com.ly.ems.dao.condition.ConditionConfigMapper;
 import com.ly.ems.service.ConditionConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

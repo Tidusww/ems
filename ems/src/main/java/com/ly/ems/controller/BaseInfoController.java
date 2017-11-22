@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -47,10 +49,40 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success(pageableResult);
     }
 
+
+    /**
+     * **************** 工种 ****************
+     * @param conditions
+     * @return
+     */
     @ResponseBody
-    @RequestMapping(value = "/getJobs", name = "分页查询工种")
+    @RequestMapping(value = "/job/getJobs", name = "分页查询工种")
     public AjaxResult getJobs(JobConditions conditions) {
         PageableResult<Job> pageableResult = baseInfoService.getJobsByConditions(conditions);
         return AjaxResult.success(pageableResult);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/job/save", method = RequestMethod.POST, name = "保存工种")
+    public AjaxResult saveJob(Job job) {
+        try{
+            baseInfoService.saveJob(job);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            logger.error("保存工种失败");
+            return AjaxResult.fail("保存工种失败");
+        }
+        return AjaxResult.success("保存工种成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/job/delete", method = RequestMethod.POST, name = "删除工种")
+    public AjaxResult deleteJob(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteJob(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            logger.error("删除工种失败");
+            return AjaxResult.fail("删除工种失败");
+        }
+        return AjaxResult.success("删除工种成功");
     }
 }

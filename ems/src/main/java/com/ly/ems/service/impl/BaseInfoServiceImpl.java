@@ -82,4 +82,17 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         return new PageableResult<Job>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
+    @Override
+    public void saveJob(Job job) {
+        if(job.getId() == null){
+            job.setStatus(StatusEnum.ACTIVED);
+            jobMapper.insertJob(job);
+        }else{
+            jobMapper.updateJob(job);
+        }
+    }
+    @Override
+    public void deleteJob(Integer id) {
+        jobMapper.deleteJob(id);
+    }
 }

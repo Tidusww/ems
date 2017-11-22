@@ -110,17 +110,19 @@
     <!-- 事务策略 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="get*" read-only="true"/><!--不需要事务-->
-            <tx:method name="list*" read-only="true"/><!--不需要事务-->
-            <tx:method name="query*" read-only="true"/><!--不需要事务-->
-            <tx:method name="search*" read-only="true"/><!--不需要事务-->
-            <tx:method name="find*" read-only="true"/><!--不需要事务-->
-            <tx:method name="*" propagation="REQUIRED" no-rollback-for="com.ly.ems.core.exception.EMSBaseException"/><!--需要事务-->
+            <!--不需要事务-->
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="search*" read-only="true"/>
+            <!--需要事务-->
+            <tx:method name="*" propagation="REQUIRED" no-rollback-for="com.ly.ems.core.exception.EMSBaseException"/>
         </tx:attributes>
     </tx:advice>
     <!-- 事务aop -->
     <aop:config>
-        <aop:pointcut id="serviceMethods" expression="execution(* com.ly.ems.service.*.*(..))"/>
+        <aop:pointcut id="serviceMethods" expression="execution(* com.ly..*.service..*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
     <!-- 启用对事务注解的支持 -->
