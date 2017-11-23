@@ -11,7 +11,7 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <resultMap id="ConditionItemDTO" type="com.ly.ems.model.condition.ConditionItemDTO">
+    <resultMap id="ConditionItem" type="com.ly.ems.model.condition.ConditionItem">
         <id column="condition_code" property="conditionCode" />
         <result column="condition_key" property="conditionKey" />
         <result column="condition_name" property="conditionName" />
@@ -24,6 +24,10 @@
         <result column="status" property="status"/>
     </resultMap>
 
+    <resultMap id="ConditionItemDTO" type="com.ly.ems.model.condition.ConditionItemDTO" extends="ConditionItem">
+
+
+    </resultMap>
 
 
     <select id="getConditions" parameterType="java.lang.String" resultMap="ConditionItemDTO">
@@ -34,8 +38,20 @@
       ORDER BY cc.order_by
     </select>
 
+    <select id="getConditionItemByCode" resultMap="ConditionItemDTO">
+        SELECT ci.* FROM condition_item ci WHERE 1 = 1
+        AND ci.status = 1
+        AND ci.condition_code = #{conditionCode, jdbcType=VARCHAR}
+    </select>
 
-    <!-- 配置的Sql格式必须为 select XXX as instanceid, XXX as instancename ..... -->
+    <select id="getConditionItemByCodeAndType" resultMap="ConditionItemDTO">
+        SELECT ci.* FROM condition_item ci WHERE 1 = 1
+        AND ci.status = 1
+        AND ci.condition_code = #{conditionCode, jdbcType=VARCHAR}
+        AND ci.condition_type = #{conditionType, javaType=com.ly.ems.model.condition.constants.ConditionType}
+    </select>
+
+    <!-- 配置的Sql格式必须为 select XXX as key, XXX as value ..... -->
     <!-- 例如 SELECT c.cityId as key, c.cityName as value FROM city c WHERE c.cityIsDeleted = 0 AND c.cityStatus = 0 -->
     <!-- 例如 SELECT 'YES' as `key`, '显示' as `value` FROM dual UNION SELECT 'NO' as `key`, '不显示' as `value` FROM dual -->
     <select id="getConditionKeyValue" resultType="java.util.Map">

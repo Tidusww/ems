@@ -2,6 +2,7 @@ package com.ly.ems.service.impl;
 
 import com.ly.ems.dao.condition.ConditionConfigMapper;
 import com.ly.ems.model.condition.ConditionItemDTO;
+import com.ly.ems.model.condition.constants.ConditionType;
 import com.ly.ems.service.ConditionConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,13 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         return conditionDTOs;
     }
 
+    @Override
+    public ConditionItemDTO getSelectItem(String conditionCode) {
+        ConditionItemDTO conditionItemDTO = conditionConfigMapper.getConditionItemByCodeAndType(conditionCode, ConditionType.SELECT);
+        return conditionItemDTO;
+    }
+
+    @Override
     public void setConditionDTOKeyValue(ConditionItemDTO conditionItemDTO) {
         String conditionSql = conditionItemDTO.getConditionSql();
         try {
@@ -56,4 +64,5 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         }
 
     }
+
 }

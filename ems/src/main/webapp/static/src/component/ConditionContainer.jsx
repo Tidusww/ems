@@ -3,6 +3,7 @@ import React from 'react';
 import {Spin, Button, Input, Select, DatePicker, message, Collapse} from 'antd';
 import moment from 'moment';
 import {Constants} from 'core/Const.jsx';
+import { CommonHelper } from 'core/Common.jsx'
 
 
 const Panel = Collapse.Panel;
@@ -152,41 +153,13 @@ class ConditionContainer extends React.Component {
         this.setState({failed: true, isLoading: false});
     };
 
-    /**
-     * 获取condition_ext中的属性
-     * @param conditionExt { String }
-     * @returns { Object }
-     */
-    getExtMap = (conditionExt) => {
-        const extMap = {};
-        if(!conditionExt){
-            return extMap;
-        }
-        const extArray = conditionExt.split(';');
-        if(!extArray || extArray.length == 0){
-            return extMap;
-        }
-
-        for(let i=0; i<extArray.length; i++){
-            const ext = extArray[i];
-            const extKeyValue = ext.split('=');
-            if(!extKeyValue || extKeyValue.length != 2) {
-                continue;
-            }
-            const extKey=extKeyValue[0], extValue=extKeyValue[1];
-            extMap[extKey] = extValue;
-        }
-
-        return extMap;
-    };
-
 
     /**
      * parse component
      */
     parseInput = (item, key) => {
         const {conditionValues} = this.state;
-        const extMap = this.getExtMap(item.conditionExt);
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
         return (
             <Input key={item.conditionCode}
                    addonBefore={item.conditionName}
@@ -200,7 +173,7 @@ class ConditionContainer extends React.Component {
     };
 
     parseButton = (item, key, parsePrimary) => {
-        const extMap = this.getExtMap(item.conditionExt);
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
         if(parsePrimary){
             return extMap["type"] == "primary" ? (
                 <Button key={item.conditionCode}
@@ -226,7 +199,7 @@ class ConditionContainer extends React.Component {
      */
     parseSelect = (item, key) => {
         const {conditionValues} = this.state;
-        const extMap = this.getExtMap(item.conditionExt);
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
         return (
             <Select key={item.conditionCode} allowClear placeholder={item.conditionPlaceholder}
                     style={{ width:parseInt(extMap["width"])||180 }}
@@ -272,7 +245,7 @@ class ConditionContainer extends React.Component {
     };
 
     parseDatePicker = (item, key) => {
-        const extMap = this.getExtMap(item.conditionExt);
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
         const defaultMoment = moment().hour(0).minute(0).second(0);
         return (
             <DatePicker
@@ -296,7 +269,7 @@ class ConditionContainer extends React.Component {
     parseRangePicker = (item, key) => {
         const keys = item.conditionKey.split(',');
 
-        const extMap = this.getExtMap(item.conditionExt);
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
         const format = extMap["format"];
         const showTimeFormat = extMap["showTimeFormat"];
         const showTimeDefault = extMap["showTimeDefault"].split(',');
@@ -337,8 +310,6 @@ class ConditionContainer extends React.Component {
 
     render = () => {
         const {conditionItems} = this.state;
-        console.log("condition: ");
-        console.log(conditionItems);
         return (
             <Spin
                 delay="500"

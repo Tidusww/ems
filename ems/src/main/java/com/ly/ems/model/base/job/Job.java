@@ -14,6 +14,7 @@ public class Job {
     private Integer id;
     private String jobName;
     private YesNoEnum isSpec;
+    private String isSpec_value;
     private Double salary;
     private StatusEnum status;
 
@@ -39,6 +40,11 @@ public class Job {
 
     public void setIsSpec(YesNoEnum isSpec) {
         this.isSpec = isSpec;
+        this.isSpec_value = isSpec.getValue();
+    }
+
+    public String getIsSpec_value() {
+        return isSpec_value;
     }
 
     public Double getSalary() {

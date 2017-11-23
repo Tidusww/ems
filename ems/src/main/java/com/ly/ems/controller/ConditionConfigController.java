@@ -41,20 +41,20 @@ public class ConditionConfigController {
     private ConditionConfigService conditionConfigService;
 
     @ResponseBody
-    @RequestMapping(value = "/getConditions")
-    public AjaxResult getConditions(HttpServletRequest request,
-                                    Model model,
-                                    @RequestParam(name = "configCode", required = false, defaultValue = "") String configCode) {
+    @RequestMapping(value = "/getConditions", name="获取ConfigCode下所有条件")
+    public AjaxResult getConditions(HttpServletRequest request, Model model,
+                                    @RequestParam(name = "configCode") String configCode) {
         List<ConditionItemDTO> conditionItemDTOs = null;
         try {
             conditionItemDTOs = conditionConfigService.getConditions(configCode);
         }catch (Exception ex){
+            ex.printStackTrace();
             LOGGER.info(String.format("查询条件失败: configCode:[%s]", configCode));
-            AjaxResult.fail(String.format("查询条件失败: configCode:[%s]", configCode));
+            return AjaxResult.fail(String.format("查询条件失败: configCode:[%s]", configCode));
         }
 
         if(conditionItemDTOs == null || conditionItemDTOs.isEmpty()){
-            AjaxResult.success(conditionItemDTOs);
+            return AjaxResult.success(conditionItemDTOs);
         }
 
         //处理下拉框键值对
@@ -81,4 +81,26 @@ public class ConditionConfigController {
         return AjaxResult.success(conditionItemDTOs);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getSelectItem", name = "获取下拉框类型的条件项")
+    public AjaxResult getSelectItem(HttpServletRequest request, Model model,
+                                    @RequestParam(name = "conditionCode") String conditionCode) {
+        ConditionItemDTO conditionItemDTO = null;
+        try {
+            conditionItemDTO = conditionConfigService.getSelectItem(conditionCode);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            LOGGER.info(String.format("查询下拉框数据失败: configCode:[%s]", conditionCode));
+            return AjaxResult.fail(String.format("查询下拉框数据失败: configCode:[%s]", conditionCode));
+        }
+
+        if(conditionItemDTO == null){
+            return AjaxResult.success(conditionItemDTO);
+        }
+
+        //处理下拉框键值对 查找键值
+        conditionConfigService.setConditionDTOKeyValue(conditionItemDTO);
+
+        return AjaxResult.success(conditionItemDTO);
+    }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, InputNumber, Button, message, Modal, Form, Select } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 import { ModalForm } from 'component/ModalForm.jsx'
+import { ConditionSelect } from 'component/ConditionSelect.jsx'
 
 const { Option } = Select;
 
@@ -48,7 +49,7 @@ class JobManage extends React.Component {
         this.columns = [
             {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 140
             },
-            {title: '是否特殊工种', dataIndex: 'isSpec', key: 'isSpec', width: 100
+            {title: '是否特殊工种', dataIndex: 'isSpec_value', key: 'isSpec_value', width: 100
             },
             {title: '工资', dataIndex: 'salary', key: 'salary', width: 75
             },
@@ -101,33 +102,16 @@ class JobManage extends React.Component {
             }
             case "insert":
             {
-                const { modalForm } = this.state;
-                Object.assign(modalForm, {
+                this.setModalFormState({
                     modalTitle: "新增工种",
                     formData: {},
                     modalVisible: true
-                });
-                this.setState({
-                    modalForm: modalForm
                 });
                 break;
             }
             case "update":
             {
-                if(this.state.selectedRows.length <= 0){
-                    message.info(this.configuration.NOT_SELECT_MSG);
-                    return;
-                }
-                const formData = this.state.selectedRows[0];
-                const { modalForm } = this.state;
-                Object.assign(modalForm, {
-                    modalTitle: "新增工种",
-                    formData: formData,
-                    modalVisible: true
-                });
-                this.setState({
-                    modalForm: modalForm
-                });
+                this.handleUpdate();
                 break;
             }
             case "export":
@@ -153,6 +137,14 @@ class JobManage extends React.Component {
     /**
      * ModalForm相关
      */
+    setModalFormState = (newState, callback) => {
+        const { modalForm } = this.state;
+        Object.assign(modalForm, newState);
+        callback = callback || (()=>{});
+        this.setState({
+            modalForm: modalForm
+        }, callback);
+    };
     //引用Form
     saveFormRef = (form) => {
         this.state.modalForm.form = form;
@@ -162,39 +154,33 @@ class JobManage extends React.Component {
         console.log("JobManage 表单值改变:props[%o], values[%o]", props, values);
         //保存正在编辑的数据
         Object.assign(this.state.modalForm.formData, values);
-    }
+    };
     //Modal提交
     handleSubmit = () => {
         const form = this.state.modalForm.form.props.form;
         form.validateFields((err, values) => {
             if (!err) {
-                // TODO
-                const { modalForm } = this.state;
-                Object.assign(modalForm, {
+                this.setModalFormState({
                     isSubmitting: true
+                }, () => {
+                    this.doSave();
                 });
-                this.setState({
-                    modalForm: modalForm
-                });
-                // setTimeout(()=>{
-                //     this.handleCancel();
-                // }, 1000)
-                this.doSave();
             }
         });
     };
     //Modal取消
-    handleCancel = () => {
-        const { modalForm } = this.state;
-        Object.assign(modalForm, {
+    handleCancel = (doSearch) => {
+        this.setModalFormState({
             modalVisible: false
-        });
-        this.setState({
-            modalForm: modalForm
-        },() => {
+        }, () => {
             this.state.modalForm.modalTitle = "";
             this.state.modalForm.isSubmitting = false;
             this.state.modalForm.formData = {};
+
+            if(doSearch){
+                this.state.dataParam.current = 1;
+                this.doSearch();
+            }
         });
     };
     //表单字段
@@ -224,10 +210,7 @@ class JobManage extends React.Component {
                     {required: true, message: '请选择是否特殊工种'}
                 ],
                 item:(
-                    <Select disabled={this.state.modalForm.isSubmitting} allowClear placeholder="是否特殊工种">
-                        <Option key="0">非特殊工种</Option>
-                        <Option key="1">特殊工种</Option>
-                    </Select>
+                    <ConditionSelect conditionCode="JOB_IS_SPEC" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
                 )
             }
         ];
@@ -266,6 +249,21 @@ class JobManage extends React.Component {
         });
     };
 
+    handleUpdate = () => {
+        if(this.state.selectedRows.length <= 0){
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        let formData = {};
+        Object.assign(formData, this.state.selectedRows[0]);
+
+        this.setModalFormState({
+            modalTitle: "编辑工种",
+            formData: formData,
+            modalVisible: true
+        });
+    }
+
     doSave = () => {
         const that = this;
         $.ajax({
@@ -285,23 +283,17 @@ class JobManage extends React.Component {
                 that.insertFail(result);
             }
         });
-    }
+    };
     insertSuccess = (result) => {
         message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
-        this.state.dataParam.current = 1;
-        this.doSearch();
-        this.handleCancel();
-    }
+        this.handleCancel(true);
+    };
     insertFail = (result) => {
         message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
-        const { modalForm } = this.state;
-        Object.assign(modalForm, {
+        this.setModalFormState({
             isSubmitting: false
         });
-        this.setState({
-            modalForm: modalForm
-        });
-    }
+    };
 
     /**
      * helper method
@@ -356,7 +348,7 @@ class JobManage extends React.Component {
                     saveFormRef={this.saveFormRef}
                     handleFormFieldsChange={this.handleFormFieldsChange}
                     handleSubmit={this.handleSubmit}
-                    handleCancel={this.handleCancel}
+                    handleCancel={()=>{this.handleCancel(false)}}
                 >
                 </ModalForm>
             </div>

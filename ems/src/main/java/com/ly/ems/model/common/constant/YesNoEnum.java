@@ -21,6 +21,7 @@ public enum YesNoEnum implements BaseKeyValueEnum {
         this.value = value;
     }
 
+    @JsonValue
     @Override
     public Integer getKey() {
         return key;
@@ -30,7 +31,6 @@ public enum YesNoEnum implements BaseKeyValueEnum {
         this.key = key;
     }
 
-    @JsonValue
     @Override
     public String getValue() {
         return value;

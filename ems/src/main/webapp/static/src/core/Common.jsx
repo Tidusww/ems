@@ -28,6 +28,33 @@ const CommonHelper = {
             save={(newValue) => saveFunc(index, record, key, newValue)}
             cancel={cancelFunc}
         />);
+    },
+    /**
+     * 获取condition_ext中的属性
+     * @param conditionExt { String }
+     * @returns { Object }
+     */
+    getExtMap : (conditionExt) => {
+        const extMap = {};
+        if(!conditionExt){
+            return extMap;
+        }
+        const extArray = conditionExt.split(';');
+        if(!extArray || extArray.length == 0){
+            return extMap;
+        }
+    
+        for(let i=0; i<extArray.length; i++){
+            const ext = extArray[i];
+            const extKeyValue = ext.split('=');
+            if(!extKeyValue || extKeyValue.length != 2) {
+                continue;
+            }
+            const extKey=extKeyValue[0], extValue=extKeyValue[1];
+            extMap[extKey] = extValue;
+        }
+    
+        return extMap;
     }
 }
 

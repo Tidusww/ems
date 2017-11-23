@@ -14,6 +14,9 @@ public interface ConditionConfigService {
 
     List<ConditionItemDTO> getConditions(String configCode);
 
+    ConditionItemDTO getSelectItem(String conditionCode);
+
     @DetermineDataSource(MultipleRoutingDataSource.DATA_SOURCE_NOT_CONTROL)
     void setConditionDTOKeyValue(ConditionItemDTO conditionItemDTO);
+
 }

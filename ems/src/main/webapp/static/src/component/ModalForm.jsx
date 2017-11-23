@@ -26,43 +26,50 @@
             }
  
         //2. 上层组件中定义:
+            setModalFormState = (newState, callback) => {
+                const { modalForm } = this.state;
+                Object.assign(modalForm, newState);
+                callback = callback || (()=>{});
+                this.setState({
+                    modalForm: modalForm
+                }, callback);
+            };
             //引用Form
             saveFormRef = (form) => {
                 this.state.modalForm.form = form;
             };
             //表单值改变
             handleFormFieldsChange = (props, values) => {
+                console.log("JobManage 表单值改变:props[%o], values[%o]", props, values);
+                //保存正在编辑的数据
                 Object.assign(this.state.modalForm.formData, values);
-            }
+            };
             //Modal提交
             handleSubmit = () => {
                 const form = this.state.modalForm.form.props.form;
                 form.validateFields((err, values) => {
                     if (!err) {
-                        // TODO
-                        const { modalForm } = this.state;
-                        Object.assign(modalForm, {
+                        this.setModalFormState({
                             isSubmitting: true
+                        }, () => {
+                            this.doSave();
                         });
-                        this.setState({
-                            modalForm: modalForm
-                        });
-                        setTimeout(()=>{
-                            this.handleCancel();
-                        }, 1000)
                     }
                 });
             };
             //Modal取消
-            handleCancel = () => {
-                const { modalForm } = this.state;
-                Object.assign(modalForm, {
-                    isSubmitting: false,
-                    modalVisible: false,
-                    formData: {}
-                });
-                this.setState({
-                    modalForm: modalForm
+            handleCancel = (doSearch) => {
+                this.setModalFormState({
+                    modalVisible: false
+                }, () => {
+                    this.state.modalForm.modalTitle = "";
+                    this.state.modalForm.isSubmitting = false;
+                    this.state.modalForm.formData = {};
+
+                    if(doSearch){
+                        this.state.dataParam.current = 1;
+                        this.doSearch();
+                    }
                 });
             };
             //表单字段
@@ -128,22 +135,26 @@ class ModalForm extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log(this.props);
+        console.log("ModalForm DidMount:%o", this.props);
     };
     componentWillReceiveProps = (nextProps) => {
-
+        console.log("modalFormWillReceiveProps");
     };
     shouldComponentUpdate = (nextProps, nextState) => {
+        if(!this.props.visible && !nextProps.visible){
+            //从隐藏状态变为隐藏状态,不需要更新
+            return false;
+        }
         return true;
     };
     componentWillUpdate = (nextProps, nextState) => {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("ModalFormDidUpdate");
+        console.log("ModalForm DidUpdate");
     };
     componentWillUnmount = () => {
-        //todo 取消请求
+        console.log("modalForm will unmount");
     };
 
     /**
@@ -169,12 +180,14 @@ class ModalForm extends React.Component {
                 visible={this.props.visible}
                 footer={modalFooter}
             >
-                <WrappedInnerForm
-                    wrappedComponentRef={this.props.saveFormRef}
-                    formFields={this.props.formFields}
-                    formData={this.props.formData}
-                    formDataIdKey={this.props.formDataIdKey}
-                />
+                {this.props.visible && (
+                    <WrappedInnerForm
+                        wrappedComponentRef={this.props.saveFormRef}
+                        formFields={this.props.formFields}
+                        formData={this.props.formData}
+                        formDataIdKey={this.props.formDataIdKey}
+                    />
+                )}
             </Modal>
         );
     }
@@ -197,7 +210,7 @@ class InnerForm extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log(this.props.data);
+        console.log("InnerForm DidMount:%o", this.props);
     };
     componentWillReceiveProps = (nextProps) => {
 
@@ -209,10 +222,10 @@ class InnerForm extends React.Component {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("InnerFormDidUpdate");
+        console.log("InnerForm DidUpdate");
     };
     componentWillUnmount = () => {
-        //todo 取消请求
+        console.log("InnerForm will unmount");
     };
 
 
@@ -236,6 +249,14 @@ class InnerForm extends React.Component {
             labelCol: { span: labelSpan },
             wrapperCol: { span: fieldSpan },
         };
+        let initialValue = "";
+        if(itemKey in this.props.formData){
+            initialValue = this.props.formData[itemKey];
+            if(initialValue != undefined) {
+                initialValue = initialValue.toString();
+            }
+        }
+
         return (
             <Col key={i} span={24}>
                 <FormItem
@@ -243,7 +264,7 @@ class InnerForm extends React.Component {
                     label={itemLabel}
                 >
                     {getFieldDecorator(itemKey, {
-                        initialValue : this.props.formData[itemKey],
+                        initialValue : initialValue,
                         rules: rules
                     })(
                         item

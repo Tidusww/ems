@@ -47,7 +47,7 @@ class App extends React.Component {
     handleRequestMenuList = (result) => {
         if (result.success) {
             //成功获取内容
-            console.log(result);
+            // console.log(result);
             this.setState({menus: result.data.menus, routeAndComponent: result.data.routeAndComponent, loading: false});
         }else {
             this.setState({loading: false, failed: true});
@@ -58,9 +58,9 @@ class App extends React.Component {
         this.doGetMenu();
     };
     doGetMenu = () => {
-        console.log("props.menuUrl is " + this.props.menuUrl);
+        // console.log("props.menuUrl is " + this.props.menuUrl);
         if (!this.props.menuUrl) {
-            console.log("props.menuUrl is empty !");
+            console.error("props.menuUrl is empty !");
             return;
         }
         this.setState({loading: true});
