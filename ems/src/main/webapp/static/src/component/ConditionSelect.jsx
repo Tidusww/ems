@@ -1,3 +1,19 @@
+/**
+ * 自动根据conditionCode加载下拉项的下拉框
+ *
+ * 使用方法:
+ *      上层组件需要提供:
+ *          title, visible, width, isSubmitting,
+ *          formFields, formData, formDataIdKey
+ *      回调:
+ *          saveFormRef                 保存表单索引
+ *          handleFormFieldsChange      表单字段改变
+ *          handleSubmit                点击了提交
+ *          handleCancel                点击了取消
+ *
+ *  简单例子:
+ *  <ConditionSelect conditionCode="" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+ **/
 import React from 'react';
 import { Select, Spin, message } from 'antd';
 import { CommonHelper } from 'core/Common.jsx';
@@ -25,7 +41,7 @@ class ConditionSelect extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log("ConditionSelectDidMount:%o", this.props);
+        console.log("ConditionSelect DidMount:%o", this.props);
         if(!this.state.conditionItem){
             console.log("ConditionSelect LoadData");
             this.getConditionItem();
@@ -55,9 +71,13 @@ class ConditionSelect extends React.Component {
         console.log("ConditionSelect DidUpdate");
     };
     componentWillUnmount = () => {
-        console.log("ConditionSelect will unmount");
+        console.log("ConditionSelect willUnmount");
     };
 
+    /**
+     * handler
+     * @param value
+     */
     handleValueChange = (value) => {
         if (!('value' in this.props)) {
             this.setState({ value });
@@ -65,6 +85,10 @@ class ConditionSelect extends React.Component {
         this.triggerChange(value);
     };
 
+    /**
+     * 针对被Form包装的回调
+     * @param changedValue
+     */
     triggerChange = (changedValue) => {
         // Should provide an event to pass value to Form.
         const onChange = this.props.onChange;
@@ -101,7 +125,7 @@ class ConditionSelect extends React.Component {
                 that.handleGetConditionItemFailed(result);
             }
         });
-    }
+    };
     handleConditionItemResult = (conditionItem) => {
         this.setState({conditionItem, failed: false, isLoading: false});
     };
@@ -110,7 +134,7 @@ class ConditionSelect extends React.Component {
     };
 
     /**
-     * TODO Select 暂未实现默认值
+     *
      */
     parseSelectOptions = (item) => {
         if (!item.keyValueMaps) {

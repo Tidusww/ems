@@ -56,6 +56,6 @@ const CommonHelper = {
     
         return extMap;
     }
-}
+};
 
 exports.CommonHelper = CommonHelper;

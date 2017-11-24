@@ -18,6 +18,7 @@ public class ConditionItem {
     private ConditionType conditionType;
     private ConditionDatasource conditionDatasource;
     private String conditionSql;
+    private String conditionEnum;
     private String conditionParentKey;
     private String conditionExt;
     private StatusEnum status;
@@ -101,5 +102,13 @@ public class ConditionItem {
 
     public void setConditionSql(String conditionSql) {
         this.conditionSql = conditionSql;
+    }
+
+    public String getConditionEnum() {
+        return conditionEnum;
+    }
+
+    public void setConditionEnum(String conditionEnum) {
+        this.conditionEnum = conditionEnum;
     }
 }

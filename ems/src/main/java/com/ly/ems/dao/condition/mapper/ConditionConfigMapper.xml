@@ -19,6 +19,7 @@
         <result column="condition_type" property="conditionType"/>
         <result column="condition_datasource" property="conditionDatasource"/>
         <result column="condition_sql" property="conditionSql"/>
+        <result column="condition_enum" property="conditionEnum"/>
         <result column="condition_parent_key" property="conditionParentKey"/>
         <result column="condition_ext" property="conditionExt"/>
         <result column="status" property="status"/>

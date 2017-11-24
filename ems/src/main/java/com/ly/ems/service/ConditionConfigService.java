@@ -16,7 +16,16 @@ public interface ConditionConfigService {
 
     ConditionItemDTO getSelectItem(String conditionCode);
 
+    /**
+     * 根据条件所带的Sql查询 key value
+     * @param conditionItemDTO
+     */
     @DetermineDataSource(MultipleRoutingDataSource.DATA_SOURCE_NOT_CONTROL)
-    void setConditionDTOKeyValue(ConditionItemDTO conditionItemDTO);
+    void getConditionDTOKeyValueBySql(ConditionItemDTO conditionItemDTO);
 
+    /**
+     * 根据条件对应的ENUM查询 key value
+     * @param conditionItemDTO
+     */
+    void getConditionKeyValueByEnum(ConditionItemDTO conditionItemDTO);
 }

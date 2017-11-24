@@ -42,7 +42,7 @@ public interface ConditionConfigMapper {
      * @param sql
      * @return
      */
-    List<Map> getConditionKeyValue(@Param("paramSql") String sql);
+    List<Map<String, String>> getConditionKeyValue(@Param("paramSql") String sql);
 
 
 }

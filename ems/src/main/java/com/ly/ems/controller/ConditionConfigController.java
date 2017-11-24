@@ -60,22 +60,9 @@ public class ConditionConfigController {
         //处理下拉框键值对
         for (int i = 0; i < conditionItemDTOs.size(); i++) {
             ConditionItemDTO conditionItemDTO = conditionItemDTOs.get(i);
-            if (conditionItemDTO.getConditionType() != ConditionType.SELECT
-                    || StringUtils.isEmpty(conditionItemDTO.getConditionSql())) {
-                continue;
+            if (conditionItemDTO.getConditionType() == ConditionType.SELECT) {
+                this.getConditionItemKeyValues(conditionItemDTO);
             }
-
-            //切换数据源
-            ConditionDatasource conditionDatasource = conditionItemDTO.getConditionDatasource();
-            String datasource = datasourceMapper.get(conditionDatasource);
-            if(!StringUtils.isEmpty(datasource)){
-                MultipleRoutingDataSource.setDataSourceKey(datasource);
-            }else{
-                MultipleRoutingDataSource.setDataSourceKey(MultipleRoutingDataSource.DATA_SOURCE_EMS);
-            }
-
-            //查找键值
-            conditionConfigService.setConditionDTOKeyValue(conditionItemDTO);
         }
 
         return AjaxResult.success(conditionItemDTOs);
@@ -98,9 +85,36 @@ public class ConditionConfigController {
             return AjaxResult.success(conditionItemDTO);
         }
 
-        //处理下拉框键值对 查找键值
-        conditionConfigService.setConditionDTOKeyValue(conditionItemDTO);
+        //处理下拉框键值对
+        this.getConditionItemKeyValues(conditionItemDTO);
 
         return AjaxResult.success(conditionItemDTO);
     }
+
+    private void getConditionItemKeyValues(ConditionItemDTO conditionItemDTO) {
+        //根据SQL找
+        if( !StringUtils.isEmpty(conditionItemDTO.getConditionSql()) ){
+            //切换数据源
+            ConditionDatasource conditionDatasource = conditionItemDTO.getConditionDatasource();
+            String datasource = datasourceMapper.get(conditionDatasource);
+            if(!StringUtils.isEmpty(datasource)){
+                MultipleRoutingDataSource.setDataSourceKey(datasource);
+            }else{
+                MultipleRoutingDataSource.setDataSourceKey(MultipleRoutingDataSource.DATA_SOURCE_EMS);
+            }
+            //查找键值
+            conditionConfigService.getConditionDTOKeyValueBySql(conditionItemDTO);
+        }
+
+        //根据Enum找
+        if ((conditionItemDTO.getKeyValueMaps() == null || conditionItemDTO.getValueMaps() == null)
+                && !StringUtils.isEmpty(conditionItemDTO.getConditionEnum())) {
+            conditionConfigService.getConditionKeyValueByEnum(conditionItemDTO);
+        }
+
+        //无论找不找到都清空相关信息
+        conditionItemDTO.setConditionSql("");
+        conditionItemDTO.setConditionEnum("");
+    }
+
 }

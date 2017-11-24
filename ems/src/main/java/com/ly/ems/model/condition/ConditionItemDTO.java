@@ -8,22 +8,22 @@ import java.util.Map;
  */
 public class ConditionItemDTO extends ConditionItem{
 
-    private List<Map> keyValueMaps;
-    private List<Map> valueMaps;
+    private List<Map<String, String>> keyValueMaps;
+    private List<Map<String, String>> valueMaps;
 
-    public List<Map> getKeyValueMaps() {
+    public List<Map<String, String>> getKeyValueMaps() {
         return keyValueMaps;
     }
 
-    public void setKeyValueMaps(List<Map> keyValueMaps) {
+    public void setKeyValueMaps(List<Map<String, String>> keyValueMaps) {
         this.keyValueMaps = keyValueMaps;
     }
 
-    public List<Map> getValueMaps() {
+    public List<Map<String, String>> getValueMaps() {
         return valueMaps;
     }
 
-    public void setValueMaps(List<Map> conditionKeyValues) {
+    public void setValueMaps(List<Map<String, String>> conditionKeyValues) {
         this.valueMaps = conditionKeyValues;
     }
 
