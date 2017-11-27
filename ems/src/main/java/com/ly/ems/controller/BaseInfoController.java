@@ -42,12 +42,55 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success(pageableResult);
     }
 
+
+    /**
+     * **************** 地区 ****************
+     * @param conditions
+     * @return
+     */
     @ResponseBody
-    @RequestMapping(value = "/getAreas", name = "分页查询地区")
+    @RequestMapping(value = "/area/getAreas", name = "分页查询地区")
     public AjaxResult getAreas(AreaConditions conditions) {
         PageableResult<Area> pageableResult = baseInfoService.getAreasByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
+    @ResponseBody
+    @RequestMapping(value = "/area/save", method = RequestMethod.POST, name = "保存地区")
+    public AjaxResult saveArea(Area area) {
+        try{
+            baseInfoService.saveArea(area);
+        }catch (Exception ex){
+            logger.error("保存地区失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("保存地区失败");
+        }
+        return AjaxResult.success("保存地区成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/area/disable", method = RequestMethod.POST, name = "作废地区")
+    public AjaxResult disableArea(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableArea(id);
+        }catch (Exception ex){
+            logger.error("作废地区失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("作废地区失败");
+        }
+        return AjaxResult.success("作废地区成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/area/delete", method = RequestMethod.POST, name = "删除地区")
+    public AjaxResult deleteArea(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteArea(id);
+        }catch (Exception ex){
+            logger.error("删除地区失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("删除地区失败");
+        }
+        return AjaxResult.success("删除地区成功");
+    }
+
 
 
     /**
@@ -67,8 +110,8 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.saveJob(job);
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error("保存工种失败");
+            ex.printStackTrace();
             return AjaxResult.fail("保存工种失败");
         }
         return AjaxResult.success("保存工种成功");
@@ -79,8 +122,8 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.disableJob(id);
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error("作废工种失败");
+            ex.printStackTrace();
             return AjaxResult.fail("作废工种失败");
         }
         return AjaxResult.success("作废工种成功");
@@ -91,8 +134,8 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.deleteJob(id);
         }catch (Exception ex){
-            ex.printStackTrace();
             logger.error("删除工种失败");
+            ex.printStackTrace();
             return AjaxResult.fail("删除工种失败");
         }
         return AjaxResult.success("删除工种成功");

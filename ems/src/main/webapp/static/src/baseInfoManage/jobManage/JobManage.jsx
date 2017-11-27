@@ -39,8 +39,10 @@ class JobManage extends React.Component {
             //Table相关配置
             conditionConfigCode: "JOB_MANAGE",
             keyId: "id",
-            tableUrl: `${_ctx_}/base/job/getJobs`,
-            selectionType: "radio"
+            selectionType: "radio",
+            getUrl: `${_ctx_}/base/job/getJobs`,
+            saveUrl: `${_ctx_}/base/job/save`,
+            disableUrl: `${_ctx_}/base/job/disable`
 
         };
         /**
@@ -227,7 +229,7 @@ class JobManage extends React.Component {
 
         const _this = this;
         $.ajax({
-            url: this.configuration.tableUrl,
+            url: this.configuration.getUrl,
             type: 'GET',
             data: this.state.dataParam,
             async: true,
@@ -267,7 +269,7 @@ class JobManage extends React.Component {
     doSave = () => {
         const that = this;
         $.ajax({
-            url: `${_ctx_}/base/job/save`,
+            url: this.configuration.saveUrl,
             type: 'POST',
             data: this.state.modalForm.formData,
             async: true,
@@ -315,7 +317,7 @@ class JobManage extends React.Component {
     doDisable = () => {
         const that = this;
         $.ajax({
-            url: `${_ctx_}/base/job/disable`,
+            url: this.configuration.disableUrl,
             type: 'POST',
             data: {id: this.state.selectedRowKeys[0]},
             async: true,
@@ -339,7 +341,7 @@ class JobManage extends React.Component {
     };
     disableFail = (result) => {
         message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
-    }
+    };
 
 
     /**

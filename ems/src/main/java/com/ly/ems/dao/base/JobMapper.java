@@ -41,7 +41,7 @@ public interface JobMapper {
     void updateJob(Job job);
 
     /**
-     * 删除Job
+     * 修改Job状态
      * @param id
      */
     void updateJobStatus(@Param("id")Integer id, @Param("status")StatusEnum statusEnum);

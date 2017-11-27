@@ -63,6 +63,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     }
 
+
     @Override
     public PageableResult<Area> getAreasByConditions(AreaConditions conditions) {
 
@@ -72,6 +73,25 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         return new PageableResult<Area>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
+    @Override
+    public void saveArea(Area area) {
+        if(area.getId() == null){
+            area.setStatus(StatusEnum.ACTIVED);
+            areaMapper.insertArea(area);
+        }else{
+            areaMapper.updateArea(area);
+        }
+    }
+    @Override
+    public void disableArea(Integer id) {
+        areaMapper.updateAreaStatus(id, StatusEnum.DISABLED);
+    }
+    @Override
+    public void deleteArea(Integer id) {
+        areaMapper.deleteArea(id);
+    }
+
+
 
     @Override
     public PageableResult<Job> getJobsByConditions(JobConditions conditions) {

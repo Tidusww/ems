@@ -1,8 +1,8 @@
-// product begin
 import React from 'react';
-import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
+import { Table, message, Modal, Input, InputNumber } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
-// product end
+import { ModalForm } from 'component/ModalForm.jsx'
+import { ConditionSelect } from 'component/ConditionSelect.jsx'
 
 class GroupManage extends React.Component {
     constructor(props) {

@@ -1,6 +1,9 @@
 import React from 'react';
-import { Table, Input, Button, message, Modal, Form, Select } from 'antd';
+import { Table, message, Modal, Input, InputNumber } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
+import { ModalForm } from 'component/ModalForm.jsx'
+
+const confirm = Modal.confirm;
 
 class AreaManage extends React.Component {
     constructor(props) {
@@ -15,6 +18,15 @@ class AreaManage extends React.Component {
             dataParam: {
                 current: 1,
                 pageSize: 10
+            },
+            modalForm: {
+                form: undefined,
+                modalTitle: "",
+                modalVisible: false,
+                modalWidth: "40%",
+                formData: {},
+                formDataIdKey: "id",
+                isSubmitting: false
             }
         };
         this.configuration = {
@@ -26,8 +38,10 @@ class AreaManage extends React.Component {
             //Table相关配置
             conditionConfigCode: "AREA_MANAGE",
             keyId: "id",
-            tableUrl: `${_ctx_}/base/getAreas`,
-            selectionType: "radio"
+            selectionType: "radio",
+            tableUrl: `${_ctx_}/base/area/getAreas`,
+            saveUrl: `${_ctx_}/base/area/save`,
+            disableUrl: `${_ctx_}/base/area/disable`
 
         };
         /**
@@ -35,8 +49,7 @@ class AreaManage extends React.Component {
          */
         this.columns = [
             {title: '地区名称', dataIndex: 'areaName', key: 'areaName', width: 140
-            },
-
+            }
         ];
 
     }
@@ -83,8 +96,23 @@ class AreaManage extends React.Component {
                 this.doSearch();
                 break;
             }
-            case "export":
+            case "insert":
             {
+                this.setModalFormState({
+                    modalTitle: "新增地区",
+                    formData: {},
+                    modalVisible: true
+                });
+                break;
+            }
+            case "update":
+            {
+                this.handleUpdate();
+                break;
+            }
+            case "disable":
+            {
+                this.handleDisable();
                 break;
             }
         }
@@ -103,7 +131,72 @@ class AreaManage extends React.Component {
     };
 
     /**
-     *  查询
+     * ModalForm相关
+     */
+    setModalFormState = (newState, callback) => {
+        const { modalForm } = this.state;
+        Object.assign(modalForm, newState);
+        callback = callback || (()=>{});
+        this.setState({
+            modalForm: modalForm
+        }, callback);
+    };
+    //引用Form
+    saveFormRef = (form) => {
+        this.state.modalForm.form = form;
+    };
+    //表单值改变
+    handleFormFieldsChange = (props, values) => {
+        console.log("AreaManage 表单值改变:props[%o], values[%o]", props, values);
+        //保存正在编辑的数据
+        Object.assign(this.state.modalForm.formData, values);
+    };
+    //Modal提交
+    handleSubmit = () => {
+        const form = this.state.modalForm.form.props.form;
+        form.validateFields((err, values) => {
+            if (!err) {
+                this.setModalFormState({
+                    isSubmitting: true
+                }, () => {
+                    this.doSave();
+                });
+            }
+        });
+    };
+    //Modal取消
+    handleCancel = (doSearch) => {
+        this.setModalFormState({
+            modalVisible: false
+        }, () => {
+            this.state.modalForm.modalTitle = "";
+            this.state.modalForm.isSubmitting = false;
+            this.state.modalForm.formData = {};
+
+            if(doSearch){
+                this.state.dataParam.current = 1;
+                this.doSearch();
+            }
+        });
+    };
+    //表单字段
+    getFormFields = () => {
+        return [
+            {
+                label: "地区名称", key: "areaName", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请输入地区名称'}
+                ],
+                item:(
+                    <Input disabled={this.state.modalForm.isSubmitting} />
+                )
+            }
+        ];
+    };
+
+
+    /**
+     *  增删查改
      */
     doSearch = () => {
         this.setState({isLoading: true});
@@ -133,15 +226,105 @@ class AreaManage extends React.Component {
         });
     };
 
+    handleUpdate = () => {
+        if(this.state.selectedRows.length <= 0){
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        let formData = {};
+        Object.assign(formData, this.state.selectedRows[0]);
 
-    /**
-     *  操作按钮
-     */
+        this.setModalFormState({
+            modalTitle: "编辑地区",
+            formData: formData,
+            modalVisible: true
+        });
+    };
+    doSave = () => {
+        const that = this;
+        $.ajax({
+            url: this.configuration.saveUrl,
+            type: 'POST',
+            data: this.state.modalForm.formData,
+            async: true,
+            dataType: "json",
+            success: function (result) {
+                if (result.success) {
+                    that.saveSuccess(result);
+                } else {
+                    that.saveFail(result);
+                }
+            },
+            error: function (result) {
+                that.saveFail(result);
+            }
+        });
+    };
+    saveSuccess = (result) => {
+        message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
+        this.handleCancel(true);
+    };
+    saveFail = (result) => {
+        message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+        this.setModalFormState({
+            isSubmitting: false
+        });
+    };
+
+    handleDisable = () => {
+        if(this.state.selectedRows.length <= 0){
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        confirm({
+            title: '确定作废该地区?',
+            content: '',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: this.doDisable,
+            onCancel: () => {
+
+            }
+        });
+    };
+    doDisable = () => {
+        const that = this;
+        $.ajax({
+            url: this.configuration.disableUrl,
+            type: 'POST',
+            data: {id: this.state.selectedRowKeys[0]},
+            async: true,
+            dataType: "json",
+            success: function (result) {
+                if (result.success) {
+                    that.disableSuccess(result);
+                } else {
+                    that.disableFail(result);
+                }
+            },
+            error: function (result) {
+                that.disableFail(result);
+            }
+        });
+    };
+    disableSuccess = (result) => {
+        message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
+        this.state.dataParam.current = 1;
+        this.doSearch();
+    };
+    disableFail = (result) => {
+        message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+    };
 
     /**
      * helper method
      */
-    
+    clearSelection = () => {
+        this.state.selectedRowKeys = [];
+        this.state.selectedRows = [];
+    };
+
 
     render = () => {
         //Table
@@ -158,10 +341,6 @@ class AreaManage extends React.Component {
             onChange: (selectedRowKeys, selectedRows) => this.onSelectionChange(selectedRowKeys, selectedRows)
         };
 
-        const modalFooter = [
-            <Button size="large" loading={this.state.isSubmitting} onClick={this.handleCancel}>关 闭</Button>,
-            <Button type="primary" size="large" disabled={this.state.orderStatus!='订单异常'} loading={this.state.isSubmitting} onClick={this.handleRewriteOrder} >重新回写TMS</Button>
-        ];
 
         return (
             <div>
@@ -180,7 +359,22 @@ class AreaManage extends React.Component {
                     dataSource={this.state.dataSource}
                     columns={this.columns}
                     pagination={pagination}
+                    rowSelection={rowSelection}
                 />
+                <ModalForm
+                    title={this.state.modalForm.modalTitle}
+                    visible={this.state.modalForm.modalVisible}
+                    width={this.state.modalForm.modalWidth}
+                    isSubmitting={this.state.modalForm.isSubmitting}
+                    formData={this.state.modalForm.formData}
+                    formDataIdKey={this.state.modalForm.formDataIdKey}
+                    formFields={this.getFormFields()}
+                    saveFormRef={this.saveFormRef}
+                    handleFormFieldsChange={this.handleFormFieldsChange}
+                    handleSubmit={this.handleSubmit}
+                    handleCancel={()=>{this.handleCancel(false)}}
+                >
+                </ModalForm>
             </div>
         );
     }

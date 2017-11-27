@@ -33,6 +33,9 @@ public interface BaseInfoService {
      * @return
      */
     PageableResult<Area> getAreasByConditions(AreaConditions conditions);
+    void saveArea(Area job);
+    void disableArea(Integer id);
+    void deleteArea(Integer id);
 
     /**
      * **************** 工种 ****************

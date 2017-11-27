@@ -16,4 +16,32 @@
         SELECT a.* FROM ly_area a WHERE 1=1 AND status = 1
         <if test="areaName != null and areaName != ''"> AND j.area_name like CONCAT('%', #{areaName, jdbcType=VARCHAR}, '%') </if>
     </select>
+
+    <insert id="insertArea" parameterType="com.ly.ems.model.base.area.Area" useGeneratedKeys="true">
+        INSERT INTO ly_area (area_name, status) VALUES (#{areaName}, #{status})
+    </insert>
+
+    <update id="updateArea" parameterType="com.ly.ems.model.base.area.Area">
+        UPDATE ly_area
+        <set >
+            <if test="areaName != null" >
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="updateAreaStatus" >
+        UPDATE ly_area
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteArea" parameterType="java.lang.Integer" >
+        DELETE FROM ly_area
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
 </mapper>
