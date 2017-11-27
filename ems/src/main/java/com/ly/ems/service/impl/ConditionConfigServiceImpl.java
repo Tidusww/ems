@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         String conditionSql = conditionItemDTO.getConditionSql();
         try {
             //通过Sql查询下拉项并转换为keyValues
-            List<Map<String, String>> keyValues = conditionConfigMapper.getConditionKeyValue(conditionSql);
+            List<Map> keyValues = conditionConfigMapper.getConditionKeyValue(conditionSql);
             this.setConditionItemKeyValues(conditionItemDTO, keyValues);
         }catch (Exception ex){
             //执行Sql出错
@@ -61,7 +62,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         String enumPath = conditionItemDTO.getConditionEnum();
         try {
             //通过Enum查询下拉项并转换为keyValues
-            List<Map<String, String>> keyValues = null;
+            List<Map> keyValues = null;
 
             Class<?> Clazz = Class.forName(enumPath);
             if (BaseKeyValueEnum.class.isAssignableFrom(Clazz)) {
@@ -88,12 +89,13 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
      * @param conditionItemDTO
      * @param keyValues
      */
-    private void setConditionItemKeyValues(ConditionItemDTO conditionItemDTO, List<Map<String, String>> keyValues){
+    @Transactional(readOnly = true)
+    private void setConditionItemKeyValues(ConditionItemDTO conditionItemDTO, List<Map> keyValues){
         if(keyValues != null && keyValues.size() > 0){
-            List<Map<String, String>> valueMaps = new ArrayList<Map<String, String>>();
+            List<Map> valueMaps = new ArrayList<Map>();
             for (int j = 0; j < keyValues.size(); j++) {
-                Map<String, String> keyValue = keyValues.get(j);
-                Map<String, String> valueMap = new HashMap<String, String>();
+                Map keyValue = keyValues.get(j);
+                Map valueMap = new HashMap<String, String>();
                 valueMap.put(keyValue.get("key")+"", keyValue.get("value")+"");
                 valueMaps.add(valueMap);
             }
@@ -107,8 +109,9 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
      * @param Clazz
      * @return
      */
-    private List<Map<String, String>> getKeyValuesFromKeyValueEnum(Class<BaseKeyValueEnum> Clazz) {
-        List<Map<String, String>> keyValues = new ArrayList<Map<String, String>>();
+    @Transactional(readOnly = true)
+    private List<Map> getKeyValuesFromKeyValueEnum(Class<BaseKeyValueEnum> Clazz) {
+        List<Map> keyValues = new ArrayList<Map>();
         BaseKeyValueEnum[] keyValueEnums = Clazz.getEnumConstants();
         for (int i = 0; i < keyValueEnums.length; i++) {
             final BaseKeyValueEnum keyValueEnum = keyValueEnums[i];
@@ -128,8 +131,9 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
      * @param Clazz
      * @return
      */
-    private List<Map<String, String>> getKeyValuesFromCodeValueEnum(Class<BaseCodeValueEnum> Clazz) {
-        List<Map<String, String>> keyValues = new ArrayList<Map<String, String>>();
+    @Transactional(readOnly = true)
+    private List<Map> getKeyValuesFromCodeValueEnum(Class<BaseCodeValueEnum> Clazz) {
+        List<Map> keyValues = new ArrayList<Map>();
         BaseCodeValueEnum[] codeValueEnums = Clazz.getEnumConstants();
         for (int i = 0; i < codeValueEnums.length; i++) {
             final BaseCodeValueEnum codeValueEnum = codeValueEnums[i];

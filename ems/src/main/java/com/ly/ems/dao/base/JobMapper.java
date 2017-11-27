@@ -3,6 +3,7 @@ package com.ly.ems.dao.base;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.job.Job;
+import com.ly.ems.model.common.constant.StatusEnum;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -38,6 +39,12 @@ public interface JobMapper {
      * @param job
      */
     void updateJob(Job job);
+
+    /**
+     * 删除Job
+     * @param id
+     */
+    void updateJobStatus(@Param("id")Integer id, @Param("status")StatusEnum statusEnum);
 
     /**
      * 删除Job

@@ -41,5 +41,6 @@ public interface BaseInfoService {
      */
     PageableResult<Job> getJobsByConditions(JobConditions conditions);
     void saveJob(Job job);
+    void disableJob(Integer id);
     void deleteJob(Integer id);
 }

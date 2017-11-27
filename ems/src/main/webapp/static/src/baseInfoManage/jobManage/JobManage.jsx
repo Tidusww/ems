@@ -1,10 +1,10 @@
 import React from 'react';
-import { Table, Input, InputNumber, Button, message, Modal, Form, Select } from 'antd';
+import { Table, message, Modal, Input, InputNumber } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 import { ModalForm } from 'component/ModalForm.jsx'
 import { ConditionSelect } from 'component/ConditionSelect.jsx'
 
-const { Option } = Select;
+const confirm = Modal.confirm;
 
 class JobManage extends React.Component {
     constructor(props) {
@@ -114,8 +114,9 @@ class JobManage extends React.Component {
                 this.handleUpdate();
                 break;
             }
-            case "export":
+            case "disable":
             {
+                this.handleDisable();
                 break;
             }
         }
@@ -262,8 +263,7 @@ class JobManage extends React.Component {
             formData: formData,
             modalVisible: true
         });
-    }
-
+    };
     doSave = () => {
         const that = this;
         $.ajax({
@@ -274,26 +274,73 @@ class JobManage extends React.Component {
             dataType: "json",
             success: function (result) {
                 if (result.success) {
-                    that.insertSuccess(result);
+                    that.saveSuccess(result);
                 } else {
-                    that.insertFail(result);
+                    that.saveFail(result);
                 }
             },
             error: function (result) {
-                that.insertFail(result);
+                that.saveFail(result);
             }
         });
     };
-    insertSuccess = (result) => {
+    saveSuccess = (result) => {
         message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
         this.handleCancel(true);
     };
-    insertFail = (result) => {
+    saveFail = (result) => {
         message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
         this.setModalFormState({
             isSubmitting: false
         });
     };
+
+    handleDisable = () => {
+        if(this.state.selectedRows.length <= 0){
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        confirm({
+            title: '确定作废该工种?',
+            content: '',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: this.doDisable,
+            onCancel: () => {
+
+            }
+        });
+    };
+    doDisable = () => {
+        const that = this;
+        $.ajax({
+            url: `${_ctx_}/base/job/disable`,
+            type: 'POST',
+            data: {id: this.state.selectedRowKeys[0]},
+            async: true,
+            dataType: "json",
+            success: function (result) {
+                if (result.success) {
+                    that.disableSuccess(result);
+                } else {
+                    that.disableFail(result);
+                }
+            },
+            error: function (result) {
+                that.disableFail(result);
+            }
+        });
+    };
+    disableSuccess = (result) => {
+        message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
+        this.state.dataParam.current = 1;
+        this.doSearch();
+    };
+    disableFail = (result) => {
+        message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+    }
+
 
     /**
      * helper method

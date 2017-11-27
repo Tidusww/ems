@@ -11,7 +11,6 @@ public enum YesNoEnum implements BaseKeyValueEnum {
      * 1: 是
      */
     NO(0, "否"),
-    NONE(2, "不知道"),
     YES(1, "是");
 
     private Integer key;

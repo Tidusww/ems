@@ -92,6 +92,10 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         }
     }
     @Override
+    public void disableJob(Integer id) {
+        jobMapper.updateJobStatus(id, StatusEnum.DISABLED);
+    }
+    @Override
     public void deleteJob(Integer id) {
         jobMapper.deleteJob(id);
     }

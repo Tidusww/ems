@@ -43,8 +43,14 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
 
+    <delete id="updateJobStatus" >
+        UPDATE ly_job
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
     <delete id="deleteJob" parameterType="java.lang.Integer" >
-        delete from ly_job
-        where id = #{id,jdbcType=INTEGER}
+        DELETE FROM ly_job
+        WHERE id = #{id,jdbcType=INTEGER}
     </delete>
 </mapper>

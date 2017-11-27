@@ -74,6 +74,18 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("保存工种成功");
     }
     @ResponseBody
+    @RequestMapping(value = "/job/disable", method = RequestMethod.POST, name = "作废工种")
+    public AjaxResult disableJob(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableJob(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            logger.error("作废工种失败");
+            return AjaxResult.fail("作废工种失败");
+        }
+        return AjaxResult.success("作废工种成功");
+    }
+    @ResponseBody
     @RequestMapping(value = "/job/delete", method = RequestMethod.POST, name = "删除工种")
     public AjaxResult deleteJob(@RequestParam(name = "id") Integer id) {
         try{

@@ -9,11 +9,10 @@ import com.ly.ems.model.common.constant.YesNoEnum;
  */
 public class Job {
 
-
-
     private Integer id;
     private String jobName;
     private YesNoEnum isSpec;
+    //用于前端展示
     private String isSpec_value;
     private Double salary;
     private StatusEnum status;
@@ -40,11 +39,15 @@ public class Job {
 
     public void setIsSpec(YesNoEnum isSpec) {
         this.isSpec = isSpec;
-        this.isSpec_value = isSpec.getValue();
+        this.setIsSpec_value(isSpec.getValue());
     }
 
     public String getIsSpec_value() {
         return isSpec_value;
+    }
+
+    public void setIsSpec_value(String isSpec_value) {
+        this.isSpec_value = isSpec_value;
     }
 
     public Double getSalary() {
