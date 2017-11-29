@@ -1,7 +1,7 @@
 package com.ly.ems.core.springmvc.conversion.date;
 
-import com.zy.ossadmin.common.utils.DateUtil;
-import com.zy.ossadmin.exception.BusinessException;
+import com.ly.ems.common.utils.DateUtil;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.Date;
@@ -18,7 +18,7 @@ public class DateConverter<T extends Date> implements Converter<String, T> {
         try {
             Date date = DateUtil.parseDate(source);
             return (T) date;
-        } catch (BusinessException e) {
+        } catch (EMSRuntimeException e) {
             e.printStackTrace();
         }
 
