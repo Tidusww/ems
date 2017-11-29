@@ -1,4 +1,4 @@
-package com.ly.ems.core.springmvc.conversion;
+package com.ly.ems.core.springmvc.conversion.enumerate;
 
 import com.ly.ems.common.utils.EnumUtil;
 import com.ly.ems.core.mybatis.BaseCodeValueEnum;

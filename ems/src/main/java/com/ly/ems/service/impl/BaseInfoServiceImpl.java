@@ -62,6 +62,23 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         return new PageableResult<Group>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
+    @Override
+    public void saveGroup(Group group) {
+        if(group.getId() == null){
+            group.setStatus(StatusEnum.ACTIVED);
+            groupMapper.insertGroup(group);
+        }else{
+            groupMapper.updateGroup(group);
+        }
+    }
+    @Override
+    public void disableGroup(Integer id) {
+        groupMapper.updateGroupStatus(id, StatusEnum.DISABLED);
+    }
+    @Override
+    public void deleteGroup(Integer id) {
+        groupMapper.deleteGroup(id);
+    }
 
 
     @Override

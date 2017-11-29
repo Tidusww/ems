@@ -26,6 +26,9 @@ public interface BaseInfoService {
      * @return
      */
     PageableResult<Group> getGroupsByConditions(GroupConditions conditions);
+    void saveGroup(Group group);
+    void disableGroup(Integer id);
+    void deleteGroup(Integer id);
 
     /**
      * **************** 地区 ****************

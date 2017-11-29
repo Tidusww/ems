@@ -22,4 +22,74 @@
         <if test="phone != null and phone != ''"> AND g.phone = #{phone, jdbcType=VARCHAR} </if>
     </select>
 
+    <insert id="insertGroup" parameterType="com.ly.ems.model.base.group.Group" useGeneratedKeys="true">
+        INSERT INTO ly_group
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="groupName != null" >
+                group_name,
+            </if>
+            <if test="employeeId != null" >
+                employee_id,
+            </if>
+            <if test="employeeName != null" >
+                employee_name,
+            </if>
+            <if test="phone != null" >
+                phone,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+            <if test="groupName != null" >
+                #{groupName},
+            </if>
+            <if test="employeeId != null" >
+                #{employeeId},
+            </if>
+            <if test="employeeName != null" >
+                #{employeeName},
+            </if>
+            <if test="phone != null" >
+                #{phone},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="com.ly.ems.model.base.group.Group">
+        UPDATE ly_group
+        <set >
+            <if test="groupName != null" >
+                group_name = #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeId != null" >
+                employee_id = #{employeeId,jdbcType=INTEGER},
+            </if>
+            <if test="employeeName != null" >
+                employee_name = #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null" >
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="updateGroupStatus" >
+        UPDATE ly_group
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteGroup" parameterType="java.lang.Integer" >
+        DELETE FROM ly_group
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
 </mapper>

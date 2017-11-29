@@ -1,5 +1,6 @@
 package com.ly.ems.dao.base;
 
+import com.ly.ems.model.base.area.Area;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.base.group.GroupConditions;
@@ -31,4 +32,27 @@ public interface GroupMapper {
     List<Group> getGroupsByConditions(GroupConditions conditions);
 
 
+    /**
+     * 新增Group
+     * @param group
+     */
+    void insertGroup(Group group);
+
+    /**
+     * 修改Group
+     * @param group
+     */
+    void updateGroup(Group group);
+
+    /**
+     * 修改Group状态
+     * @param id
+     */
+    void updateGroupStatus(@Param("id")Integer id, @Param("status")StatusEnum statusEnum);
+
+    /**
+     * 删除Group
+     * @param id
+     */
+    void deleteGroup(@Param("id")Integer id);
 }

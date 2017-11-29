@@ -3,7 +3,7 @@ package com.ly.ems.model.common.constant;
 
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusEnum implements BaseKeyValueEnum {
     /**

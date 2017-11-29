@@ -10,7 +10,7 @@ public class Group {
 
     private Integer id;
     private String groupName;
-    private String employeeId;
+    private Integer employeeId;
     private String employeeName;
     private String phone;
     private StatusEnum status;
@@ -31,11 +31,11 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public String getEmployeeId() {
+    public Integer getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
     }
 

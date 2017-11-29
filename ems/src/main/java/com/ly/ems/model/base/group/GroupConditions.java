@@ -10,9 +10,7 @@ public class GroupConditions extends PageableCondition {
 
 
     /** 开始结束时间*/
-//    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 //    private Date orderStartDate;
-//    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 //    private Date orderEndDate;
 
     /** 班组名称*/

@@ -1,4 +1,4 @@
-package com.ly.ems.core.springmvc.conversion;
+package com.ly.ems.core.springmvc.conversion.enumerate;
 
 import org.springframework.core.convert.converter.Converter;
 

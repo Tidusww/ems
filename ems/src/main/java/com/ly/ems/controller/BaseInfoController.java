@@ -36,12 +36,47 @@ public class BaseInfoController extends AbstractBaseController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getGroups", name = "分页查询班组")
+    @RequestMapping(value = "/group/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
         PageableResult<Group> pageableResult = baseInfoService.getGroupsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
-
+    @ResponseBody
+    @RequestMapping(value = "/group/save", method = RequestMethod.POST, name = "保存班组")
+    public AjaxResult saveGroup(Group group) {
+        try{
+            baseInfoService.saveGroup(group);
+        }catch (Exception ex){
+            logger.error("保存班组失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("保存班组失败");
+        }
+        return AjaxResult.success("保存班组成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/group/disable", method = RequestMethod.POST, name = "作废班组")
+    public AjaxResult disableGroup(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableGroup(id);
+        }catch (Exception ex){
+            logger.error("作废班组失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("作废班组失败");
+        }
+        return AjaxResult.success("作废班组成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/group/delete", method = RequestMethod.POST, name = "删除班组")
+    public AjaxResult deleteGroup(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteGroup(id);
+        }catch (Exception ex){
+            logger.error("删除班组失败");
+            ex.printStackTrace();
+            return AjaxResult.fail("删除班组失败");
+        }
+        return AjaxResult.success("删除班组成功");
+    }
 
     /**
      * **************** 地区 ****************

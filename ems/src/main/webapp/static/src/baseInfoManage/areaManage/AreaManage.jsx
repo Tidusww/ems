@@ -39,7 +39,7 @@ class AreaManage extends React.Component {
             conditionConfigCode: "AREA_MANAGE",
             keyId: "id",
             selectionType: "radio",
-            tableUrl: `${_ctx_}/base/area/getAreas`,
+            getUrl: `${_ctx_}/base/area/getAreas`,
             saveUrl: `${_ctx_}/base/area/save`,
             disableUrl: `${_ctx_}/base/area/disable`
 
@@ -203,7 +203,7 @@ class AreaManage extends React.Component {
 
         const _this = this;
         $.ajax({
-            url: this.configuration.tableUrl,
+            url: this.configuration.getUrl,
             type: 'GET',
             data: this.state.dataParam,
             async: true,

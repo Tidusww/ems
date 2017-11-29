@@ -1,7 +1,5 @@
-package com.ly.ems.core.springmvc.conversion;
+package com.ly.ems.core.springmvc.conversion.enumerate;
 
-import com.ly.ems.core.mybatis.BaseCodeValueEnum;
-import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import com.ly.ems.core.mybatis.BaseCodeValueEnum;
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import org.springframework.core.convert.converter.Converter;

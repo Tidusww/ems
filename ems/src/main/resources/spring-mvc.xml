@@ -20,7 +20,7 @@
 
     <!-- 自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter
           这两个beans在pring MVC中为@Controllers分发请求所必须的 -->
-    <mvc:annotation-driven conversion-service="EnumConversionService">
+    <mvc:annotation-driven conversion-service="conversionService">
         <!-- 拓展参数解析，解决前端组件化传递的参数和需要的对象名不一致的一些问题 -->
         <!-- example 例如前端传递的参数名为gId 可以讲改参数映射到gradationId上，可以根据具体的业务字段去定义 -->
         <mvc:argument-resolvers>
@@ -31,11 +31,12 @@
     </mvc:annotation-driven>
 
     <!-- 处理前端传入的String, 转换为对应的Enum -->
-    <bean id="EnumConversionService"
+    <bean id="conversionService"
           class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="com.ly.ems.core.springmvc.conversion.CommonEnumConverterFactory" />
+                <bean class="com.ly.ems.core.springmvc.conversion.enumerate.CommonEnumConverterFactory" />
+                <bean class="com.ly.ems.core.springmvc.conversion.date.DateConverterFactory" />
             </set>
         </property>
     </bean>
