@@ -203,6 +203,7 @@ class GroupManage extends React.Component {
      *  增删查改
      */
     doSearch = () => {
+        this.clearSelection();
         this.setState({isLoading: true});
 
         const _this = this;
