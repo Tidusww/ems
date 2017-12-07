@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PageController extends AbstractBaseController {
 
-    private Logger logger = LoggerFactory.getLogger(PageController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 
 
     @RequestMapping(value = "/login")

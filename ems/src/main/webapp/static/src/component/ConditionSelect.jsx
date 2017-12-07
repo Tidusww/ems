@@ -3,13 +3,9 @@
  *
  * 使用方法:
  *      上层组件需要提供:
- *          title, visible, width, isSubmitting,
- *          formFields, formData, formDataIdKey
+ *          conditionCode
  *      回调:
- *          saveFormRef                 保存表单索引
- *          handleFormFieldsChange      表单字段改变
- *          handleSubmit                点击了提交
- *          handleCancel                点击了取消
+ *          onChange
  *
  *  简单例子:
  *  <ConditionSelect conditionCode="" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
@@ -163,7 +159,8 @@ class ConditionSelect extends React.Component {
             >
                 {
                     item ? (
-                        <Select key={item.conditionCode} allowClear
+                        <Select key={item.conditionCode}
+                                allowClear={this.props.allowClear}
                                 disabled={this.props.disabled}
                                 placeholder={item.conditionPlaceholder}
                                 onChange={this.handleValueChange}

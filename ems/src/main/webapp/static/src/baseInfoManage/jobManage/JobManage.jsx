@@ -51,7 +51,7 @@ class JobManage extends React.Component {
         this.columns = [
             {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 140
             },
-            {title: '是否特殊工种', dataIndex: 'isSpec_value', key: 'isSpec_value', width: 100
+            {title: '是否特殊工种', dataIndex: 'isSpecValue', key: 'isSpecValue', width: 100
             },
             {title: '工资', dataIndex: 'salary', key: 'salary', width: 75
             },

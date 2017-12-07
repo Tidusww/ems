@@ -1,11 +1,17 @@
 package com.ly.ems.controller;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.*;
+
 import com.ly.ems.common.utils.AjaxResult;
+import com.ly.ems.core.exception.EMSBaseException;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.admin.Menu;
 import com.ly.ems.model.admin.User;
 import com.ly.ems.service.AdminService;
+import com.ly.ems.model.admin.User;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -13,6 +19,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
