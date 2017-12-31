@@ -28,11 +28,10 @@
         //2. 上层组件中定义:
             setModalFormState = (newState, callback) => {
                 const { modalForm } = this.state;
-                Object.assign(modalForm, newState);
-                callback = callback || (()=>{});
+                const newModalForm = Object.assign({}, modalForm, newState);
                 this.setState({
-                    modalForm: modalForm
-                }, callback);
+                    modalForm: newModalForm
+                }, callback || (()=>{}));
             };
             //引用Form
             saveFormRef = (form) => {
@@ -102,6 +101,18 @@
                 handleCancel={this.handleCancel}
             >
             </ModalForm>
+
+        //4. 调用
+            //编辑
+            showModalForm  = (record) => {
+                let formData = {};
+                Object.assign(formData, record);
+                this.setModalFormState({
+                    modalTitle: "",
+                    formData: formData,
+                    modalVisible: true
+                });
+            };
  */
 
 import React from 'react';
@@ -110,7 +121,7 @@ import { Modal, Button, Input, Form, Row, Col } from 'antd';
 const FormItem = Form.Item;
 
 class ModalForm extends React.Component {
-    propTypes:{
+    static propTypes = {
         title: React.PropTypes.string,
         visible: React.PropTypes.bool,
         width: React.PropTypes.object,
@@ -122,7 +133,7 @@ class ModalForm extends React.Component {
         handleFormFieldsChange: React.PropTypes.func,
         handleSubmit: React.PropTypes.func,
         handleCancel: React.PropTypes.func
-        };
+    };
 
     constructor(props) {
         super(props);
@@ -195,12 +206,12 @@ class ModalForm extends React.Component {
 
 
 class InnerForm extends React.Component {
-    propTypes:{
+    static propTypes = {
         formFields: React.PropTypes.array,
         formData: React.PropTypes.object,
         formDataIdKey: React.PropTypes.string,
         isSubmitting: React.PropTypes.bool
-        };
+    };
 
     constructor(props) {
         super(props);

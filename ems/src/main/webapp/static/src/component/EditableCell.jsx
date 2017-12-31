@@ -7,7 +7,7 @@ import { Constants } from 'core/Const.jsx';
 
 
 class EditableCell extends React.Component {
-    propTypes:{
+    static propTypes = {
         value: React.PropTypes.string.isRequired,       //单元格值
         isEditing: React.PropTypes.string.isRequired,   //是否正在编辑
         operation: React.PropTypes.string.isRequired,   //接受的操作:保存 / 取消

@@ -142,11 +142,10 @@ class JobManage extends React.Component {
      */
     setModalFormState = (newState, callback) => {
         const { modalForm } = this.state;
-        Object.assign(modalForm, newState);
-        callback = callback || (()=>{});
+        const newModalForm = Object.assign({}, modalForm, newState);
         this.setState({
-            modalForm: modalForm
-        }, callback);
+            modalForm: newModalForm
+        }, callback || (()=>{}));
     };
     //引用Form
     saveFormRef = (form) => {

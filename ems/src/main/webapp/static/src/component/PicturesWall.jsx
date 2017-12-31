@@ -4,7 +4,7 @@ import {Upload, Icon, Modal} from 'antd';
 
 
 class PicturesWall extends React.Component {
-    propTypes:{
+    static propTypes = {
         actionUrl: React.PropTypes.string.isRequired,
         maxPicture: React.PropTypes.number.isRequired,
         fileList: React.PropTypes.array,

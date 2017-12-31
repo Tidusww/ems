@@ -18,9 +18,9 @@ const { Option } = Select;
 
 
 class ConditionSelect extends React.Component {
-    propTypes:{
+    static propTypes = {
         conditionCode: React.PropTypes.string
-        };
+    };
 
     constructor(props) {
         super(props);

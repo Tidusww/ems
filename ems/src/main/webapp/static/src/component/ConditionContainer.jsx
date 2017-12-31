@@ -11,7 +11,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 class ConditionContainer extends React.Component {
-    propTypes:{
+    static propTypes = {
         configCode: React.PropTypes.string.isRequired,
         conditionValues: React.PropTypes.array,
         onItemChange: React.PropTypes.func,
