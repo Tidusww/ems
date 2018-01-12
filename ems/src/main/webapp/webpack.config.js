@@ -60,7 +60,7 @@ module.exports = function(webpackConfig) {
     };
 
     //定义根目录 引用示例:
-    //                  import { ConditionContainer } from 'core/component/ConditionContainer.jsx';
+    //                  import { ConditionContainer } from 'component/ConditionContainer.jsx';
     webpackConfig.resolve.root = [
         path.resolve(__dirname, 'static/src')
     ];

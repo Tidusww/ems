@@ -31,7 +31,7 @@
 
     <%--PRODUCT--%>
     <%--common--%>
-    <%--<link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css"/>--%>
+    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css"/>
     <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/index.css"/>
 
 

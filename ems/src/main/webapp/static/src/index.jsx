@@ -65,17 +65,17 @@ class App extends React.Component {
         }
         this.setState({loading: true});
         $.get(this.props.menuUrl, this.handleRequestMenuList);
-    }
+    };
     toggle = () => {
         this.setState({collapsed: !this.state.collapsed});
     };
     onMenuClick = (item) => {
         this.setState({currentUrl: item.key});
     };
-
     handleLogout = () => {
         window.location.href = `${_ctx_}/logout`;
     };
+
 
     render = () => {
 
