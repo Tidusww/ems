@@ -37,14 +37,14 @@ class ConditionSelect extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log("ConditionSelect DidMount:%o", this.props);
+        // console.log("ConditionSelect DidMount:%o", this.props);
         if(!this.state.conditionItem){
-            console.log("ConditionSelect LoadData");
+            console.log("ConditionSelect LoadData:%s", this.state.conditionItem);
             this.getConditionItem();
         }
     };
     componentWillReceiveProps = (nextProps) => {
-        console.log("conditionSelect WillReceiveProps");
+        // console.log("conditionSelect WillReceiveProps");
         // Should be a controlled component.
         if ('value' in nextProps) {
             const value = nextProps.value;
@@ -64,10 +64,10 @@ class ConditionSelect extends React.Component {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("ConditionSelect DidUpdate");
+        // console.log("ConditionSelect DidUpdate");
     };
     componentWillUnmount = () => {
-        console.log("ConditionSelect willUnmount");
+        // console.log("ConditionSelect willUnmount");
     };
 
     /**

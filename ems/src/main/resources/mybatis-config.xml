@@ -74,10 +74,14 @@
     <!-- 4、typeAliases -->
     <typeHandlers>
 
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.CodeValueEnumTypeHandler" javaType="com.ly.ems.model.base.employee.constant.SalaryBankEnum"/>
+
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.base.employee.constant.GenderEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionDatasource"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionType"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.YesNoEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.StatusEnum"/>
+
 
     </typeHandlers>
 

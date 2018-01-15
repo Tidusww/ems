@@ -11,13 +11,13 @@
     </resultMap>
 
     <select id="getJobById" resultMap="BaseJobMap">
-        SELECT j.* FROM ly_job j WHERE j.id = #{id, jdbcType=INTEGER}
+        SELECT j.* FROM ly_job j WHERE id = #{id, jdbcType=INTEGER}
     </select>
 
     <select id="getJobsByConditions" parameterType="com.ly.ems.model.base.job.JobConditions" resultMap="BaseJobMap">
         SELECT j.* FROM ly_job j WHERE 1=1 AND status = 1
-        <if test="jobName != null and jobName != ''"> AND j.job_name like CONCAT('%', #{jobName, jdbcType=VARCHAR}, '%') </if>
-        <if test="isSpec != null"> AND j.is_spec = #{isSpec, javaType=com.ly.ems.model.common.constant.YesNoEnum} </if>
+        <if test="jobName != null and jobName != ''"> AND job_name like CONCAT('%', #{jobName, jdbcType=VARCHAR}, '%') </if>
+        <if test="isSpec != null"> AND is_spec = #{isSpec, javaType=com.ly.ems.model.common.constant.YesNoEnum} </if>
     </select>
 
     <insert id="insertJob" parameterType="com.ly.ems.model.base.job.Job" useGeneratedKeys="true">

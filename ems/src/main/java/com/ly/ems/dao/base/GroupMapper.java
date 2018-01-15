@@ -31,7 +31,6 @@ public interface GroupMapper {
      */
     List<Group> getGroupsByConditions(GroupConditions conditions);
 
-
     /**
      * 新增Group
      * @param group

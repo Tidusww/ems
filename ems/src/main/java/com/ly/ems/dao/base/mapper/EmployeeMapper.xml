@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.base.EmployeeMapper" >
+
+    <resultMap id="BaseEmployeeMap" type="com.ly.ems.model.base.employee.EmployeeDTO">
+        <id column="id" property="id" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getEmployeeById" resultMap="BaseEmployeeMap">
+        SELECT e.* FROM ly_area e WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="getEmployeesByConditions" parameterType="com.ly.ems.model.base.employee.EmployeeConditions" resultMap="BaseEmployeeMap">
+        SELECT e.* FROM ly_employee e WHERE 1=1 AND status = 1
+        <if test="employeeName != null and employeeName != ''"> AND employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+
+    <insert id="insertEmployee" parameterType="com.ly.ems.model.base.employee.Employee" useGeneratedKeys="true">
+        INSERT INTO ly_employee (employee_name, gender, id_card, address, phone, status,
+                                group_id, group_name, job_id, job_name,
+                                salary_bank, salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount,
+                                entry_date, contract_no)
+        VALUES (#{employeeName}, #{gender}, #{idCard}, #{address}, #{phone}, #{status},
+                #{groupId}, #{groupName}, #{jobId}, #{jobName},
+                #{salaryBank}, #{salaryAccount}, #{socialSecurityNo}, #{personalSsAmount}, #{companySsAmount}, #{houseFundAmount},
+                #{entryDate}, #{contractNo})
+    </insert>
+
+    <update id="updateEmployee" parameterType="com.ly.ems.model.base.employee.Employee">
+        UPDATE ly_employee
+        <set >
+            <if test="employee_name != null" >
+                employee_name = #{employeeName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="updateEmployeeStatus" >
+        UPDATE ly_employee
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteEmployee" parameterType="java.lang.Integer" >
+        DELETE FROM ly_employee
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

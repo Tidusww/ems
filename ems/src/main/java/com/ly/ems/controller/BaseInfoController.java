@@ -4,6 +4,9 @@ import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.base.area.Area;
 import com.ly.ems.model.base.area.AreaConditions;
+import com.ly.ems.model.base.employee.Employee;
+import com.ly.ems.model.base.employee.EmployeeConditions;
+import com.ly.ems.model.base.employee.EmployeeDTO;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.base.job.Job;
@@ -34,7 +37,48 @@ public class BaseInfoController extends AbstractBaseController {
     @Autowired
     BaseInfoService baseInfoService;
 
+    /**************************************** 员工 ****************************************/
+    @ResponseBody
+    @RequestMapping(value = "/employee/getEmployees", name = "分页查询员工")
+    public AjaxResult getEmployees(EmployeeConditions conditions) {
+        PageableResult<EmployeeDTO> pageableResult = baseInfoService.getEmployeesByConditions(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/employee/save", method = RequestMethod.POST, name = "保存员工")
+    public AjaxResult saveEmployee(Employee employee) {
+        try{
+            baseInfoService.saveEmployee(employee);
+        }catch (Exception ex){
+            logger.error("保存员工失败", ex);
+            return AjaxResult.fail("保存员工失败");
+        }
+        return AjaxResult.success("保存员工成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/employee/disable", method = RequestMethod.POST, name = "作废员工")
+    public AjaxResult disableEmployee(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableEmployee(id);
+        }catch (Exception ex){
+            logger.error("作废员工失败", ex);
+            return AjaxResult.fail("作废员工失败");
+        }
+        return AjaxResult.success("作废员工成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/employee/delete", method = RequestMethod.POST, name = "删除员工")
+    public AjaxResult deleteEmployee(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteEmployee(id);
+        }catch (Exception ex){
+            logger.error("删除员工失败", ex);
+            return AjaxResult.fail("删除员工失败");
+        }
+        return AjaxResult.success("删除员工成功");
+    }
 
+    /**************************************** 班组 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/group/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
@@ -78,11 +122,7 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除班组成功");
     }
 
-    /**
-     * **************** 地区 ****************
-     * @param conditions
-     * @return
-     */
+    /**************************************** 地区 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/area/getAreas", name = "分页查询地区")
     public AjaxResult getAreas(AreaConditions conditions) {
@@ -128,11 +168,7 @@ public class BaseInfoController extends AbstractBaseController {
 
 
 
-    /**
-     * **************** 工种 ****************
-     * @param conditions
-     * @return
-     */
+    /**************************************** 工种 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/job/getJobs", name = "分页查询工种")
     public AjaxResult getJobs(JobConditions conditions) {

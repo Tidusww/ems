@@ -3,6 +3,10 @@ package com.ly.ems.core.exception;
 /**
  * Created by tidus on 2017/10/31.
  */
+
+/**
+ * 不回滚事务的异常
+ */
 public class EMSBaseException extends RuntimeException {
 
     public EMSBaseException() {

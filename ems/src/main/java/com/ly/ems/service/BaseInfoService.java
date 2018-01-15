@@ -4,6 +4,9 @@ import com.ly.ems.core.datasource.DetermineDataSource;
 import com.ly.ems.core.datasource.MultipleRoutingDataSource;
 import com.ly.ems.model.base.area.Area;
 import com.ly.ems.model.base.area.AreaConditions;
+import com.ly.ems.model.base.employee.Employee;
+import com.ly.ems.model.base.employee.EmployeeConditions;
+import com.ly.ems.model.base.employee.EmployeeDTO;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.base.job.Job;
@@ -18,7 +21,15 @@ import com.ly.ems.model.base.job.Job;
  */
 @DetermineDataSource(MultipleRoutingDataSource.DATA_SOURCE_EMS)
 public interface BaseInfoService {
-
+    /**
+     * **************** 员工 ****************
+     * @param conditions
+     * @return
+     */
+    PageableResult<EmployeeDTO> getEmployeesByConditions(EmployeeConditions conditions);
+    void saveEmployee(Employee employee);
+    void disableEmployee(Integer id);
+    void deleteEmployee(Integer id);
 
     /**
      * **************** 班组 ****************

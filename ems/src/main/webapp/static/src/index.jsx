@@ -14,11 +14,15 @@ const {SubMenu} = Menu;
 const {Header, Content, Footer, Sider} = Layout;
 
 //页面
+import {E} from 'baseInfoManage/employeeManage/EmployeeManage.jsx'
 import {GroupManage} from 'baseInfoManage/groupManage/GroupManage.jsx'
 import {AreaManage} from 'baseInfoManage/areaManage/AreaManage.jsx'
 import {JobManage} from 'baseInfoManage/jobManage/JobManage.jsx'
 
 //菜单组件
+const EmployeeManageComponent = ({match}) => (
+    <EmployeeManage />
+);
 const GroupManageComponent = ({match}) => (
     <GroupManage />
 );
@@ -39,6 +43,7 @@ class App extends React.Component {
         menus: [],
         routeAndComponent: {},
         componentMap: {
+            EmployeeManageComponent: EmployeeManageComponent,
             GroupManageComponent: GroupManageComponent,
             AreaManageComponent: AreaManageComponent,
             JobManageComponent: JobManageComponent

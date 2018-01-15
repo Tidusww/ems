@@ -3,6 +3,9 @@ package com.ly.ems.core.exception;
 /**
  * Created by tidus on 2017/10/31.
  */
+/**
+ * 运行异常
+ */
 public class EMSRuntimeException extends RuntimeException {
 
     public EMSRuntimeException() {

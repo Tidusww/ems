@@ -12,14 +12,14 @@
     </resultMap>
 
     <select id="getGroupById" resultMap="BaseGroupMap">
-        SELECT g.* FROM ly_group g WHERE g.id = #{id, jdbcType=INTEGER}
+        SELECT g.* FROM ly_group g WHERE id = #{id, jdbcType=INTEGER}
     </select>
 
     <select id="getGroupsByConditions" parameterType="com.ly.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
         SELECT g.* FROM ly_group g WHERE 1=1 AND status = 1
-        <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
-        <if test="employeeName != null and employeeName != ''"> AND g.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-        <if test="phone != null and phone != ''"> AND g.phone = #{phone, jdbcType=VARCHAR} </if>
+        <if test="groupName != null and groupName != ''"> AND group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
+        <if test="employeeName != null and employeeName != ''"> AND employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
+        <if test="phone != null and phone != ''"> AND phone = #{phone, jdbcType=VARCHAR} </if>
     </select>
 
     <insert id="insertGroup" parameterType="com.ly.ems.model.base.group.Group" useGeneratedKeys="true">

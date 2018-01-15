@@ -117,6 +117,7 @@
 
 import React from 'react';
 import { Modal, Button, Input, Form, Row, Col } from 'antd';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -124,7 +125,7 @@ class ModalForm extends React.Component {
     static propTypes = {
         title: React.PropTypes.string,
         visible: React.PropTypes.bool,
-        width: React.PropTypes.object,
+        width: React.PropTypes.string,
         formFields: React.PropTypes.array,
         formData: React.PropTypes.object,
         formDataIdKey: React.PropTypes.string,
@@ -146,10 +147,10 @@ class ModalForm extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log("ModalForm DidMount:%o", this.props);
+        // console.log("ModalForm DidMount:%o", this.props);
     };
     componentWillReceiveProps = (nextProps) => {
-        console.log("modalFormWillReceiveProps");
+        // console.log("modalFormWillReceiveProps");
     };
     shouldComponentUpdate = (nextProps, nextState) => {
         if(!this.props.visible && !nextProps.visible){
@@ -162,10 +163,10 @@ class ModalForm extends React.Component {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("ModalForm DidUpdate");
+        // console.log("ModalForm DidUpdate");
     };
     componentWillUnmount = () => {
-        console.log("modalForm will unmount");
+        // console.log("modalForm will unmount");
     };
 
     /**
@@ -263,7 +264,8 @@ class InnerForm extends React.Component {
         let initialValue = "";
         if(itemKey in this.props.formData){
             initialValue = this.props.formData[itemKey];
-            if(initialValue != undefined) {
+            if(initialValue != undefined && !(initialValue instanceof Object)) {
+                //非空且非对象的都统一转为字符串
                 initialValue = initialValue.toString();
             }
         }

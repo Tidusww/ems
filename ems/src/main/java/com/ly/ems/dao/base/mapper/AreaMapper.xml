@@ -14,7 +14,7 @@
 
     <select id="getAreasByConditions" parameterType="com.ly.ems.model.base.area.AreaConditions" resultMap="BaseAreaMap">
         SELECT a.* FROM ly_area a WHERE 1=1 AND status = 1
-        <if test="areaName != null and areaName != ''"> AND j.area_name like CONCAT('%', #{areaName, jdbcType=VARCHAR}, '%') </if>
+        <if test="areaName != null and areaName != ''"> AND area_name like CONCAT('%', #{areaName, jdbcType=VARCHAR}, '%') </if>
     </select>
 
     <insert id="insertArea" parameterType="com.ly.ems.model.base.area.Area" useGeneratedKeys="true">
