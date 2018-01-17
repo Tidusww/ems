@@ -81,6 +81,7 @@
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionType"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.YesNoEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.StatusEnum"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>
 
 
     </typeHandlers>

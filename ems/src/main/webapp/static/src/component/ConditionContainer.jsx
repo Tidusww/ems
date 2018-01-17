@@ -258,7 +258,7 @@ class ConditionContainer extends React.Component {
                     defaultValue: moment('00:00:00', extMap["showTimeFormat"])
                 } : false}
                 onChange={(value, dateString)=>this.onItemChange(item.conditionKey, dateString)}
-                defaultValue={defaultMoment}
+                /* defaultValue={defaultMoment} */
             />
         );
     };

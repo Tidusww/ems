@@ -19,6 +19,8 @@ import {GroupManage} from 'baseInfoManage/groupManage/GroupManage.jsx'
 import {AreaManage} from 'baseInfoManage/areaManage/AreaManage.jsx'
 import {JobManage} from 'baseInfoManage/jobManage/JobManage.jsx'
 
+import {AttendanceManage} from 'attendance/AttendanceManage.jsx'
+
 //菜单组件
 const EmployeeManageComponent = ({match}) => (
     <EmployeeManage />
@@ -31,6 +33,10 @@ const AreaManageComponent = ({match}) => (
 );
 const JobManageComponent = ({match}) => (
     <JobManage />
+);
+
+const AttendanceManageComponent = ({match}) => (
+    <AttendanceManage />
 );
 
 
@@ -46,7 +52,8 @@ class App extends React.Component {
             EmployeeManageComponent: EmployeeManageComponent,
             GroupManageComponent: GroupManageComponent,
             AreaManageComponent: AreaManageComponent,
-            JobManageComponent: JobManageComponent
+            JobManageComponent: JobManageComponent,
+            AttendanceManageComponent: AttendanceManageComponent
         }
     };
     handleRequestMenuList = (result) => {

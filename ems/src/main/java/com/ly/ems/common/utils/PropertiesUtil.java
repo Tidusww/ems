@@ -40,7 +40,6 @@ public class PropertiesUtil {
      * @throws FileNotFoundException if property file doesn't exists
      * @throws IOException           if there is some exception when load from property file
      */
-
     private static String getValue(String key, String filePath) {
         InputStream in = PropertiesUtil.class.getClassLoader().getResourceAsStream(filePath);
         Properties props = new Properties();

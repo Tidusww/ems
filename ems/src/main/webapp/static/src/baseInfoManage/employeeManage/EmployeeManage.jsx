@@ -468,7 +468,7 @@ class EmployeeManage extends React.Component {
 
                 ],
                 item:(
-                    <DatePicker disabled={this.state.modalForm.isSubmitting} />
+                    <DatePicker allowClear={false} disabled={this.state.modalForm.isSubmitting} />
                 )
             },
             {
