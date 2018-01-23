@@ -250,12 +250,12 @@ class InnerForm extends React.Component {
         const formItems = [];
         for(let i = 0; i < formItemsMetadata.length; i++) {
             const meta = formItemsMetadata[i];
-            formItems.push(this.renderFormItem(i, meta["label"], meta["key"], meta["labelSpan"], meta["fieldSpan"], meta["rules"], meta["item"]));
+            formItems.push(this.renderFormItem(i, meta["label"], meta["key"], meta["labelSpan"], meta["fieldSpan"], meta["rules"], meta["item"], meta["colon"]));
         }
         return formItems;
     };
 
-    renderFormItem = (i, itemLabel, itemKey, labelSpan, fieldSpan, rules, item) => {
+    renderFormItem = (i, itemLabel, itemKey, labelSpan, fieldSpan, rules, item, colon) => {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: labelSpan },
@@ -263,10 +263,18 @@ class InnerForm extends React.Component {
         };
         let initialValue = "";
         if(itemKey in this.props.formData){
+
             initialValue = this.props.formData[itemKey];
-            if(initialValue != undefined && !(initialValue instanceof Object)) {
-                //非空且非对象的都统一转为字符串
-                initialValue = initialValue.toString();
+            if (initialValue instanceof Object
+                || initialValue instanceof Array) {
+                //对象和数组的暂不做处理
+
+
+            }else{
+                if(initialValue != undefined) {
+                    //非空且非对象\数组的都统一转为字符串
+                    initialValue = initialValue.toString();
+                }
             }
         }
 
@@ -275,6 +283,7 @@ class InnerForm extends React.Component {
                 <FormItem
                     {...formItemLayout}
                     label={itemLabel}
+                    colon={colon}
                 >
                     {getFieldDecorator(itemKey, {
                         initialValue : initialValue,

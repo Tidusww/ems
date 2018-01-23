@@ -29,7 +29,7 @@ class ConditionSelect extends React.Component {
             conditionItem: undefined,
             isLoading: false,
             failed: false,
-            value: this.props.value || ''
+            value: props.value || ''
         }
     }
 
@@ -76,6 +76,7 @@ class ConditionSelect extends React.Component {
      */
     handleValueChange = (value) => {
         if (!('value' in this.props)) {
+            //如果props中没有value, 说明不受form控制, 所以才需要setState来自己维护state(受form控制时不应setState)
             this.setState({ value });
         }
         this.triggerChange(value);

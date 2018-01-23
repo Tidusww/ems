@@ -143,8 +143,8 @@ class AttendanceManage extends React.Component {
     /**
      * Table相关事件
      */
-    onPageChange = (page, pageSize) => {
-        this.state.dataParam.current = page;
+    onPageChange = (current, pageSize) => {
+        this.state.dataParam.current = current;
         this.state.dataParam.pageSize = pageSize;
         this.doSearch();
     };
@@ -218,13 +218,14 @@ class AttendanceManage extends React.Component {
     render = () => {
         //Table
         const pagination = {
-            showSizeChanger: true,
-            pageSizeOptions: ['50','100','200','500'],
             pageSize: this.state.dataParam.pageSize,
             current: this.state.dataParam.current,
             total: this.state.total,
-            onChange: (page, pageSize) => this.onPageChange(page, pageSize),
-            showTotal: total => `共 ${this.state.total} 条记录`
+            onChange: (current, pageSize) => this.onPageChange(current, pageSize),
+            showTotal: total => `共 ${this.state.total} 条记录`,
+            showSizeChanger: true,
+            pageSizeOptions: ['50','100','200','500'],
+            onShowSizeChange: (current, pageSize) => this.onPageChange(current, pageSize)
         };
         const rowSelection = {
             type: this.configuration.selectionType,
@@ -242,7 +243,6 @@ class AttendanceManage extends React.Component {
                     onItemPressEnter={this.handleItemPressEnter}
                     onButtonClick={this.handleButtonClick}
                 />
-                /*${this.state.dataParam['monthSelect']||''}*/
                 <Table
                     bordered
                     title={()=>`考勤列表`}

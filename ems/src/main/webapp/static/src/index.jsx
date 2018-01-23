@@ -5,8 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 import {Menu, Layout, Icon, Avatar, Dropdown, Button, Spin} from 'antd';
-import moment from 'moment';
+
+//国际化 needs antd-3.1.4
+// import { LocaleProvider } from 'antd';
+// import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
+import moment from 'moment';
 moment.locale('zh-cn');
 
 //Common
@@ -194,6 +198,13 @@ class App extends React.Component {
         );
     }
 }
+
+
+// <LocaleProvider locale={zh_CN}>
+//     <Router>
+//         <App menuUrl={`${_ctx_}/menu/getUserMenus`}/>
+//     </Router>
+// </LocaleProvider>
 
 ReactDOM.render((
     <Router>
