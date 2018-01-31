@@ -39,7 +39,7 @@
             };
             //表单值改变
             handleFormFieldsChange = (props, values) => {
-                console.log("JobManage 表单值改变:props[%o], values[%o]", props, values);
+                console.log(" 表单值改变:props[%o], values[%o]", props, values);
                 //保存正在编辑的数据
                 Object.assign(this.state.modalForm.formData, values);
             };
@@ -57,7 +57,7 @@
                 });
             };
             //Modal取消
-            handleCancel = (doSearch) => {
+            handleCancel = (proxy, doSearch) => {
                 this.setModalFormState({
                     modalVisible: false
                 }, () => {
@@ -117,9 +117,10 @@
 
 import React from 'react';
 import { Modal, Button, Input, Form, Row, Col } from 'antd';
-import moment from 'moment';
 
 const FormItem = Form.Item;
+
+
 
 class ModalForm extends React.Component {
     static propTypes = {
@@ -138,35 +139,38 @@ class ModalForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
     }
 
     /**
      * 生命周期
      */
     componentDidMount = () => {
-        // console.log("ModalForm DidMount:%o", this.props);
+        console.log("ModalForm DidMount:%o", this.props);
     };
     componentWillReceiveProps = (nextProps) => {
-        // console.log("modalFormWillReceiveProps");
+        console.log("modalFormWillReceiveProps");
     };
     shouldComponentUpdate = (nextProps, nextState) => {
-        if(!this.props.visible && !nextProps.visible){
-            //从隐藏状态变为隐藏状态,不需要更新
-            return false;
+        if((this.props.visible && !nextProps.visible) || (!this.props.visible && nextProps.visible)) {
+            //可见状态发生变化才需要更新
+            return true;
         }
-        return true;
+
+        if((this.props.isSubmitting && !nextProps.isSubmitting) || (!this.props.isSubmitting && nextProps.isSubmitting)) {
+            //可见状态发生变化才需要更新
+            return true;
+        }
+
+        return false;
     };
     componentWillUpdate = (nextProps, nextState) => {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        // console.log("ModalForm DidUpdate");
+        console.log("ModalForm DidUpdate");
     };
     componentWillUnmount = () => {
-        // console.log("modalForm will unmount");
+        console.log("modalForm will unmount");
     };
 
     /**
@@ -178,10 +182,6 @@ class ModalForm extends React.Component {
             <Button size="large" loading={this.props.isSubmitting} onClick={this.props.handleCancel} key="cancel">取 消</Button>,
             <Button size="large" loading={this.props.isSubmitting} onClick={this.props.handleSubmit} key="confirm" type="primary" >提 交</Button>
         ];
-
-        const WrappedInnerForm = Form.create({
-            onValuesChange: this.props.handleFormFieldsChange
-        })(InnerForm);
 
         return (
             <Modal
@@ -195,6 +195,7 @@ class ModalForm extends React.Component {
                 {this.props.visible && (
                     <WrappedInnerForm
                         wrappedComponentRef={this.props.saveFormRef}
+                        onValuesChange={this.props.handleFormFieldsChange}
                         formFields={this.props.formFields}
                         formData={this.props.formData}
                         formDataIdKey={this.props.formDataIdKey}
@@ -256,6 +257,7 @@ class InnerForm extends React.Component {
     };
 
     renderFormItem = (i, itemLabel, itemKey, labelSpan, fieldSpan, rules, item, colon) => {
+        //TODO 将FormItem的属性放在对象中
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: labelSpan },
@@ -263,13 +265,13 @@ class InnerForm extends React.Component {
         };
         let initialValue = "";
         if(itemKey in this.props.formData){
-
+            
             initialValue = this.props.formData[itemKey];
             if (initialValue instanceof Object
                 || initialValue instanceof Array) {
                 //对象和数组的暂不做处理
-
-
+                
+                
             }else{
                 if(initialValue != undefined) {
                     //非空且非对象\数组的都统一转为字符串
@@ -312,6 +314,12 @@ class InnerForm extends React.Component {
         );
     }
 }
+//必须放在InnerForm后
+const WrappedInnerForm = Form.create({
+    onValuesChange: (props, values) => {
+        props.onValuesChange(props, values);
+    }
+})(InnerForm);
 
 
 

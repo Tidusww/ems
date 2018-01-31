@@ -19,7 +19,8 @@ const { Option } = Select;
 
 class ConditionSelect extends React.Component {
     static propTypes = {
-        conditionCode: React.PropTypes.string
+        conditionCode: React.PropTypes.string,
+        onChange: React.PropTypes.func
     };
 
     constructor(props) {
@@ -37,15 +38,13 @@ class ConditionSelect extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        // console.log("ConditionSelect DidMount:%o", this.props);
+        console.log("ConditionSelect DidMount:%o", this.props);
         if(!this.state.conditionItem){
-            console.log("ConditionSelect LoadData:%s", this.state.conditionItem);
+            console.log("ConditionSelect LoadData");
             this.getConditionItem();
         }
     };
     componentWillReceiveProps = (nextProps) => {
-        // console.log("conditionSelect WillReceiveProps");
-        // Should be a controlled component.
         if ('value' in nextProps) {
             const value = nextProps.value;
             this.setState({value});
@@ -55,19 +54,24 @@ class ConditionSelect extends React.Component {
         if(this.state.conditionItem != nextState.conditionItem){
             return true;
         }
-        if(this.state.value != nextProps.value){
+        if(this.state.value != nextState.value){
             return true;
         }
+        if((this.props.disabled && !nextProps.disabled) || (!this.props.disabled && nextProps.disabled)) {
+            return true;
+        }
+
+
         return false;
     };
     componentWillUpdate = (nextProps, nextState) => {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        // console.log("ConditionSelect DidUpdate");
+        console.log("ConditionSelect DidUpdate");
     };
     componentWillUnmount = () => {
-        // console.log("ConditionSelect willUnmount");
+        console.log("ConditionSelect willUnmount");
     };
 
     /**
@@ -163,6 +167,7 @@ class ConditionSelect extends React.Component {
                         <Select key={item.conditionCode}
                                 allowClear={this.props.allowClear}
                                 disabled={this.props.disabled}
+                                style={this.props.style}
                                 placeholder={item.conditionPlaceholder}
                                 onChange={this.handleValueChange}
                                 value={this.state.value||undefined}
