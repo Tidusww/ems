@@ -40,7 +40,7 @@
     <!-- securityManager -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
-        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheManager" ref="shiroCacheManager"/>
     </bean>
     <!-- Realm实现 -->
     <bean id="userRealm" class="com.ly.ems.core.shiro.UserRealm">
@@ -50,7 +50,7 @@
         <property name="authenticationCacheName" value="authenticationCache"/>
     </bean>
     <!-- 缓存管理器 使用Ehcache实现 -->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
         <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/>
     </bean>
 

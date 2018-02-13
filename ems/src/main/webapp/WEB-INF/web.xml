@@ -18,6 +18,8 @@
             classpath*:applicationContext.xml
             classpath*:applicationContext-datasource.xml
             classpath*:applicationContext-shiro.xml
+            classpath*:applicationContext-cache.xml
+
         </param-value>
     </context-param>
 

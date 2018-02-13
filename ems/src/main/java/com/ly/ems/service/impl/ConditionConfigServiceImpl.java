@@ -9,6 +9,8 @@ import com.ly.ems.service.ConditionConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.util.Map;
  * Created by tidus on 2017/9/13.
  */
 @Service
+@CacheConfig(cacheNames = "conditionCache",keyGenerator="keyGenerator")
 public class ConditionConfigServiceImpl implements ConditionConfigService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConditionConfigServiceImpl.class);
@@ -29,6 +32,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
     @Autowired
     ConditionConfigMapper conditionConfigMapper;
 
+    @Cacheable
     @Override
     public List<ConditionItemDTO> getConditions(String configCode){
         //获取条件配置
@@ -36,12 +40,14 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         return conditionDTOs;
     }
 
+    @Cacheable
     @Override
     public ConditionItemDTO getSelectItem(String conditionCode) {
         ConditionItemDTO conditionItemDTO = conditionConfigMapper.getConditionItemByCodeAndType(conditionCode, ConditionType.SELECT);
         return conditionItemDTO;
     }
 
+    @Cacheable
     @Override
     public void getConditionDTOKeyValueBySql(ConditionItemDTO conditionItemDTO) {
         String conditionSql = conditionItemDTO.getConditionSql();

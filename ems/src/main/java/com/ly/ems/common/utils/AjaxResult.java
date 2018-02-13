@@ -45,7 +45,7 @@ public class AjaxResult {
 		AjaxResult result = new AjaxResult();
 		result.setCode(CODE_SESSION_EXPIRED);
 		result.setSuccess(false);
-		result.setMsg("登陆已过期, 请重新登陆");
+		result.setMsg("会话已过期, 请重新登录");
 		return result;
 	}
 
