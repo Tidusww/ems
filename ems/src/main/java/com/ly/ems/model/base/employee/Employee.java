@@ -1,6 +1,7 @@
 package com.ly.ems.model.base.employee;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ly.ems.model.BaseModel;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.common.constant.StatusEnum;
@@ -10,16 +11,14 @@ import java.util.Date;
 /**
  * Created by tidus on 2017/11/19.
  */
-public class Employee {
+public class Employee extends BaseModel{
 
 
-    private Integer id;
     private String employeeName;
     private GenderEnum gender;
     private String idCard;
     private String address;
     private String phone;
-    private StatusEnum status;
 
 
     private Integer groupId;
@@ -44,13 +43,6 @@ public class Employee {
     //合同号
     private String contractNo;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getPhone() {
         return phone;
@@ -90,14 +82,6 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
     }
 
     public Integer getGroupId() {
@@ -180,7 +164,6 @@ public class Employee {
         this.houseFundAmount = houseFundAmount;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh" , timezone="GMT+8")
     public Date getEntryDate() {
         return entryDate;
     }

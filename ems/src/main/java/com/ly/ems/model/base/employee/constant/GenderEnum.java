@@ -7,11 +7,9 @@ import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 public enum GenderEnum implements BaseKeyValueEnum {
     /**
      * 性别：
-     * 0: 未知
      * 1: 男
      * 2: 女
      */
-//    UNKNOWN(0, "未知"),
     MALE(1, "男"),
     FEMALE(2, "女");
 

@@ -20,7 +20,7 @@ import java.util.List;
  * Created by tidus on 2017/10/24.
  */
 @Controller
-@RequestMapping(value = "/sync", name = "数据同步管理")
+@RequestMapping(value = "/system", name = "系统设置")
 public class SystemConfigController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SystemConfigController.class);
     @Autowired
@@ -28,7 +28,7 @@ public class SystemConfigController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/conditionCacheRefresh", method = RequestMethod.POST, name = "查询条件缓存刷新")
+    @RequestMapping(value = "/refreshConditionCache", method = RequestMethod.POST, name = "刷新静态条件缓存")
     public AjaxResult refreshConditionCache(HttpServletRequest request, Model model) {
         Cache cache = ehcacheManager.getCache("conditionCache");
         if (cache != null) {

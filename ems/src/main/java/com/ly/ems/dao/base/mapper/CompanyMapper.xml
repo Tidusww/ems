@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.base.AreaMapper" >
+
+    <resultMap id="CompanyMap" type="com.ly.ems.model.base.company.Company">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getById" resultMap="CompanyMap">
+        SELECT * FROM company WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableCondition" resultMap="CompanyMap">
+        SELECT * FROM company WHERE 1=1 AND status = 1
+        <if test="companyName != null and companyName != ''"> AND company_name like CONCAT('%', #{companyName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+
+    <insert id="insert" parameterType="com.ly.ems.model.BaseModel" useGeneratedKeys="true">
+        INSERT INTO company (company_name, status) VALUES (#{companyName}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.ly.ems.model.BaseModel">
+        UPDATE company
+        <set >
+            <if test="companyName != null" >
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateStatus" parameterType="java.lang.Integer" >
+        UPDATE company
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        DELETE FROM company
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

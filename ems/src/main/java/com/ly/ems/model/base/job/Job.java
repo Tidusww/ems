@@ -1,5 +1,6 @@
 package com.ly.ems.model.base.job;
 
+import com.ly.ems.model.BaseModel;
 import com.ly.ems.model.common.constant.StatusEnum;
 import com.ly.ems.model.common.constant.YesNoEnum;
 import com.ly.ems.model.common.constant.YesNoEnum;
@@ -7,21 +8,11 @@ import com.ly.ems.model.common.constant.YesNoEnum;
 /**
  * Created by tidus on 2017/11/18.
  */
-public class Job {
+public class Job extends BaseModel{
 
-    private Integer id;
     private String jobName;
     private YesNoEnum isSpec;
     private Double salary;
-    private StatusEnum status;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getJobName() {
         return jobName;
@@ -45,14 +36,6 @@ public class Job {
 
     public void setSalary(Double salary) {
         this.salary = salary;
-    }
-
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
     }
 
     //用于前端展示

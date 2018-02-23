@@ -12,12 +12,12 @@ public class AreaConditions extends PageableCondition {
     /** 地区名称*/
     private String areaName;
 
-    public String getJobName() {
+    public String getAreaName() {
         return areaName;
     }
 
-    public void setJobName(String jobName) {
-        this.areaName = jobName;
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
 }
