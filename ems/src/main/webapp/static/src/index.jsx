@@ -7,8 +7,8 @@ import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 import {Menu, Layout, Icon, Avatar, Dropdown, Button, Spin} from 'antd';
 
 //国际化 needs antd-3.1.4
-// import { LocaleProvider } from 'antd';
-// import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import { LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
 import moment from 'moment';
 moment.locale('zh-cn');
@@ -22,8 +22,12 @@ import {EmployeeManage} from 'baseInfoManage/employeeManage/EmployeeManage.jsx'
 import {GroupManage} from 'baseInfoManage/groupManage/GroupManage.jsx'
 import {AreaManage} from 'baseInfoManage/areaManage/AreaManage.jsx'
 import {JobManage} from 'baseInfoManage/jobManage/JobManage.jsx'
+import {CompanyManage} from 'baseInfoManage/companyManage/CompanyManage.jsx'
+import {ProjectManage} from 'baseInfoManage/projectManage/ProjectManage.jsx'
 
 import {AttendanceManage} from 'attendance/AttendanceManage.jsx'
+
+import {CacheManage} from 'system/CacheManage.jsx'
 
 //菜单组件
 const EmployeeManageComponent = ({match}) => (
@@ -38,10 +42,22 @@ const AreaManageComponent = ({match}) => (
 const JobManageComponent = ({match}) => (
     <JobManage />
 );
+const CompanyManageComponent = ({match}) => (
+    <CompanyManage />
+);
+const ProjectManageComponent = ({match}) => (
+    <ProjectManage />
+);
+
 
 const AttendanceManageComponent = ({match}) => (
     <AttendanceManage />
 );
+
+const CacheManageComponent = ({match}) => (
+    <CacheManage />
+);
+
 
 
 class App extends React.Component {
@@ -57,7 +73,10 @@ class App extends React.Component {
             GroupManageComponent: GroupManageComponent,
             AreaManageComponent: AreaManageComponent,
             JobManageComponent: JobManageComponent,
-            AttendanceManageComponent: AttendanceManageComponent
+            CompanyManageComponent: CompanyManageComponent,
+            ProjectManageComponent: ProjectManageComponent,
+            AttendanceManageComponent: AttendanceManageComponent,
+            CacheManageComponent: CacheManageComponent
         }
     };
     handleRequestMenuList = (result) => {
@@ -173,8 +192,8 @@ class App extends React.Component {
                         </div>
                         <div className="app-tools-right">
                             <Dropdown overlay={userMenu} placement="bottomRight">
-                                <a className="app-drop-link" href="#">
-                                    <Avatar type="user" className="app-avatar"/>
+                                <a className="app-drop-link" href="javascript:void(0);">
+                                    <Avatar type="user" className="app-avatar">{displayName}</Avatar>
                                     <Icon type="caret-down" className="app-avatar-arrow"/>
                                 </a>
                             </Dropdown>
@@ -207,7 +226,9 @@ class App extends React.Component {
 // </LocaleProvider>
 
 ReactDOM.render((
-    <Router>
-        <App menuUrl={`${_ctx_}/menu/getUserMenus`}/>
-    </Router>
+    <LocaleProvider locale={zh_CN}>
+        <Router>
+            <App menuUrl={`${_ctx_}/menu/getUserMenus`}/>
+        </Router>
+    </LocaleProvider>
 ), document.getElementById('root'));

@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, message, Input } from 'antd';
 const InputGroup = Input.Group;
 
-class SystemConfig extends React.Component {
+class CacheManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,7 +92,7 @@ class SystemConfig extends React.Component {
 
         return (
             <div>
-                <Button style={{margin:10}} type="primary" icon="sync" loading={this.state.isRefreshingConditionCache} onClick={this.refreshConditionCache}> 班级同步 </Button>
+                <Button style={{margin:10}} type="primary" icon="sync" loading={this.state.isRefreshingConditionCache} onClick={this.refreshConditionCache}> 刷新静态条件缓存 </Button>
                 <br />
             </div>
         );
@@ -100,4 +100,4 @@ class SystemConfig extends React.Component {
 }
 
 
-exports.SystemConfig = SystemConfig;
+exports.CacheManage = CacheManage;

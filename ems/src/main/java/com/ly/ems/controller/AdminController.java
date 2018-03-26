@@ -90,9 +90,11 @@ public class AdminController extends AbstractBaseController {
             User authUser = adminService.getUserByUsername(user.getUsername());
             setLoginUser(request, authUser);
 
+            //用户名
+            setSessionAttribute(request, "displayName", user.getUsername());
+
         } catch (AuthenticationException e) {
-            logger.error(e.toString());
-            e.printStackTrace();
+            logger.error("登陆失败", e);
             return AjaxResult.fail(e.getMessage());
         }
 

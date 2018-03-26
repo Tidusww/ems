@@ -1,11 +1,13 @@
 import React from 'react';
-import { Table, message, Modal, Input, InputNumber } from 'antd';
+import moment from 'moment';
+import { Table, message, Modal, Input, DatePicker } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 import { ModalForm } from 'component/ModalForm.jsx'
+import { ConditionSelect } from 'component/ConditionSelect.jsx'
 
 const confirm = Modal.confirm;
 
-class CompanyManage extends React.Component {
+class ProjectManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,24 +33,34 @@ class CompanyManage extends React.Component {
         };
         this.configuration = {
             //提示
-            NOT_SELECT_MSG: "请先选择单位",
+            NOT_SELECT_MSG: "请先选择项目",
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
             //Table相关配置
-            conditionConfigCode: "COMPANY_MANAGE",
+            conditionConfigCode: "PROJECT_MANAGE",
             keyId: "id",
             selectionType: "radio",
-            getUrl: `${_ctx_}/base/company/getCompanies`,
-            saveUrl: `${_ctx_}/base/company/save`,
-            disableUrl: `${_ctx_}/base/company/disable`
+            getUrl: `${_ctx_}/base/project/getProjects`,
+            saveUrl: `${_ctx_}/base/project/save`,
+            disableUrl: `${_ctx_}/base/project/disable`,
 
+            //
+            dateFormat: "YYYY-MM-DD"
         };
         /**
          * Table相关定义
          */
         this.columns = [
-            {title: '单位名称', dataIndex: 'companyName', key: 'companyName', width: 140
+            {title: '所属单位', dataIndex: 'companyName', key: 'companyName', width: 140
+            },
+            {title: '项目名称', dataIndex: 'projectName', key: 'projectName', width: 140
+            },
+            {title: '项目描述', dataIndex: 'companyDesc', key: 'companyDesc', width: 140
+            },
+            {title: '开工日期', dataIndex: 'startDate', key: 'startDate', width: 140
+            },
+            {title: '完工日期', dataIndex: 'endDate', key: 'endDate', width: 140
             }
         ];
 
@@ -99,7 +111,7 @@ class CompanyManage extends React.Component {
             case "insert":
             {
                 this.setModalFormState({
-                    modalTitle: "新增单位",
+                    modalTitle: "新增项目",
                     formData: {},
                     modalVisible: true
                 });
@@ -146,9 +158,18 @@ class CompanyManage extends React.Component {
     };
     //表单值改变
     handleFormFieldsChange = (props, values) => {
-        console.log("CompanyManage 表单值改变:props[%o], values[%o]", props, values);
+        console.log("ProjectManage 表单值改变:props[%o], values[%o]", props, values);
+        
         //保存正在编辑的数据
         Object.assign(this.state.modalForm.formData, values);
+
+        //处理Moment类转为String
+        Object.keys(this.state.modalForm.formData).map(key => {
+            const value = this.state.modalForm.formData[key];
+            if(value instanceof moment) {
+                this.state.modalForm.formData[key] = value.format(this.configuration.dateFormat);
+            }
+        });
     };
     //Modal提交
     handleSubmit = () => {
@@ -182,14 +203,50 @@ class CompanyManage extends React.Component {
     getFormFields = () => {
         return [
             {
-                label: "单位名称", key: "companyName", labelSpan:6, fieldSpan: 16,
+                label: "所属单位", key: "companyId", labelSpan:6, fieldSpan: 16,
                 rules: [
-                    {required: true, message: '请输入单位名称'}
+                    {required: true, message: '请选择所属单位'}
+                ],
+                item:(
+                    <ConditionSelect conditionCode="COMPANY_SELECT" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                )
+            },
+            {
+                label: "项目名称", key: "projectName", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请输入项目名称'}
                 ],
                 item:(
                     <Input disabled={this.state.modalForm.isSubmitting} />
                 )
-            }
+            },
+            {
+                label: "项目描述", key: "projectDesc", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请输入项目描述'}
+                ],
+                item:(
+                    <Input disabled={this.state.modalForm.isSubmitting} />
+                )
+            },
+            {
+                label: "开工日期", key: "startDate", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请选择开工日期'}
+                ],
+                item:(
+                    <DatePicker allowClear={true} disabled={this.state.modalForm.isSubmitting} format={this.configuration.dateFormat} />
+                )
+            },
+            {
+                label: "完工日期", key: "endDate", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请选择完工日期'}
+                ],
+                item:(
+                    <DatePicker allowClear={false} disabled={this.state.modalForm.isSubmitting} format={this.configuration.dateFormat} />
+                )
+            },
         ];
     };
 
@@ -235,7 +292,7 @@ class CompanyManage extends React.Component {
         Object.assign(formData, this.state.selectedRows[0]);
 
         this.setModalFormState({
-            modalTitle: "编辑单位",
+            modalTitle: "编辑项目",
             formData: formData,
             modalVisible: true
         });
@@ -277,7 +334,7 @@ class CompanyManage extends React.Component {
             return;
         }
         confirm({
-            title: '确定作废该单位?',
+            title: '确定作废该项目?',
             content: '',
             okText: '确定',
             okType: 'danger',
@@ -353,7 +410,7 @@ class CompanyManage extends React.Component {
                 />
                 <Table
                     bordered
-                    title={()=>`单位列表`}
+                    title={()=>`项目列表`}
                     rowKey={this.configuration.keyId}
                     loading={this.state.isLoading}
                     dataSource={this.state.dataSource}
@@ -382,4 +439,4 @@ class CompanyManage extends React.Component {
 
 
 
-exports.CompanyManage = CompanyManage;
+exports.ProjectManage = ProjectManage;

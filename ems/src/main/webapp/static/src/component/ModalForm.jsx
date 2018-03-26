@@ -117,6 +117,7 @@
 
 import React from 'react';
 import { Modal, Button, Input, Form, Row, Col } from 'antd';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 
@@ -263,20 +264,30 @@ class InnerForm extends React.Component {
             labelCol: { span: labelSpan },
             wrapperCol: { span: fieldSpan },
         };
+
+        //1. 表单字段值默认值
         let initialValue = "";
         if(itemKey in this.props.formData){
-            
             initialValue = this.props.formData[itemKey];
-            if (initialValue instanceof Object
-                || initialValue instanceof Array) {
-                //对象和数组的暂不做处理
-                
-                
+        }
+
+        //2. 处理表单字段类型
+        if(initialValue instanceof moment || item.props.format != undefined) {
+            //initialValue为moment 或者 控件存在format属性, 则当做日期控件, 单独处理
+            if(initialValue instanceof String && initialValue != ""){
+                //如果外部传入的是非空的日期字符串, 要先转为moment类型
+                initialValue = moment(initialValue, item.props.format);
             }else{
-                if(initialValue != undefined) {
-                    //非空且非对象\数组的都统一转为字符串
-                    initialValue = initialValue.toString();
-                }
+                initialValue = undefined;
+            }
+        }else if (initialValue instanceof Object
+            || initialValue instanceof Array) {
+            //对象和数组的暂不做处理
+
+        }else {
+            if(initialValue != undefined) {
+                //非空且非对象\数组的都统一转为字符串
+                initialValue = initialValue.toString();
             }
         }
 

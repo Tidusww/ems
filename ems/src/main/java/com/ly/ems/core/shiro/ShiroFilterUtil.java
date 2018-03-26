@@ -44,7 +44,7 @@ public class ShiroFilterUtil {
             out = response.getWriter();
             out.println(mapper.writeValueAsString(ajaxResult));
         } catch (Exception e) {
-            LOGGER.error("输出JSON报错。" + e.toString());
+            LOGGER.error("输出JSON报错。", e);
         } finally {
             if (null != out) {
                 out.flush();

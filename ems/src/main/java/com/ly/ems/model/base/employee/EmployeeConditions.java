@@ -1,12 +1,12 @@
 package com.ly.ems.model.base.employee;
 
-import com.ly.ems.core.mybatis.pagehelper.PageableCondition;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 import com.ly.ems.core.springmvc.databinder.ParamName;
 
 /**
  * Created by tidus on 2017/10/31.
  */
-public class EmployeeConditions extends PageableCondition {
+public class EmployeeConditions extends PageableModel {
 
     @ParamName("name")
     private String employeeName;

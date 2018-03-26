@@ -11,15 +11,24 @@
   "author": "zy",
   "license": "ISC",
   "theme": {
-    "primary-color": "#00558B"
+    "primary-color": "#00558B",
+    "layout-header-background": "#404040",
+    "menu-dark-submenu-bg": "#333333",
+    "font-size-base": "12px",
+    "menu-inline-toplevel-item-height": "40px",
+    "menu-item-height": "32px",
+    "modal-mask-bg": "rgba(0, 0, 0, 0.33)",
+    "tabs-title-font-size": "@font-size-lg",
+    "_comment": "从antd2升级到antd3,样式变化较大,故仿照2.0的样式添加一些css变量"
   },
   "entry": {
     "login": "./static/src/login.jsx",
     "index": "./static/src/index.jsx"
   },
   "dependencies": {
-    "antd": "^2.13.11",
-    "moment": "^2.20.1",
+    "antd": "^3.3.0",
+    "jquery": "^2.1.1",
+    "moment": "^2.19.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.2.2"

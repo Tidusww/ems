@@ -1,14 +1,12 @@
 package com.ly.ems.model.base.job;
 
-import com.ly.ems.core.mybatis.pagehelper.PageableCondition;
-import com.ly.ems.model.common.constant.YesNoEnum;
-import com.ly.ems.core.mybatis.pagehelper.PageableCondition;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 import com.ly.ems.model.common.constant.YesNoEnum;
 
 /**
  * Created by tidus on 2017/10/31.
  */
-public class JobConditions extends PageableCondition {
+public class JobConditions extends PageableModel {
 
     /** 工种名称*/
     private String jobName;

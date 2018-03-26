@@ -57,8 +57,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
             this.setConditionItemKeyValues(conditionItemDTO, keyValues);
         }catch (Exception ex){
             //执行Sql出错
-            ex.printStackTrace();
-            LOGGER.error(String.format("查询条件Sql出错, conditionCode:[%s]", conditionItemDTO.getConditionCode()));
+            LOGGER.error(String.format("查询条件Sql出错, conditionCode:[%s]", conditionItemDTO.getConditionCode()), ex);
         }
     }
 
@@ -85,8 +84,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
 
         }catch (Exception ex){
             //枚举出错
-            ex.printStackTrace();
-            LOGGER.error(String.format("查询条件Enum出错, conditionCode:[%s]", conditionItemDTO.getConditionCode()));
+            LOGGER.error(String.format("查询条件Enum出错, conditionCode:[%s]", conditionItemDTO.getConditionCode()), ex);
         }
     }
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.base.ProjectMapper" >
+
+    <resultMap id="BaseMap" type="com.ly.ems.model.BaseModel">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="ProjectMap" type="com.ly.ems.model.base.project.Project" extends="BaseMap">
+        <result column="company_id" property="companyId" jdbcType="INTEGER" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+        <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
+        <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getById" resultMap="ProjectMap">
+        SELECT * FROM ly_project WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="ProjectMap">
+        SELECT * FROM ly_project WHERE 1=1 AND status = 1
+        <if test="projectName != null and projectName != ''"> AND project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+
+
+    <insert id="insert" parameterType="com.ly.ems.model.BaseModel" useGeneratedKeys="true">
+        INSERT INTO ly_project (company_id, company_name, project_name, project_desc, start_date, end_date, status) VALUES (#{companyId}, #{companyName}, #{projectName}, #{projectDesc}, #{startDate}, #{endDate}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.ly.ems.model.BaseModel">
+        UPDATE ly_project
+        <set >
+            <if test="companyId != null" >
+                company_id = #{companyId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null" >
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectName != null" >
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectDesc != null" >
+                project_desc = #{projectDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null" >
+                start_date = #{startDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endDate != null" >
+                end_date = #{endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateStatus" parameterType="java.lang.Integer" >
+        UPDATE ly_project
+        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        DELETE FROM ly_project
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

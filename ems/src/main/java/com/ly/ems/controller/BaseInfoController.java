@@ -4,6 +4,8 @@ import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.base.area.Area;
 import com.ly.ems.model.base.area.AreaConditions;
+import com.ly.ems.model.base.company.Company;
+import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
 import com.ly.ems.model.base.employee.EmployeeDTO;
@@ -11,6 +13,8 @@ import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
+import com.ly.ems.model.base.project.Project;
+import com.ly.ems.model.base.project.ProjectConditions;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.BaseInfoService;
 import com.ly.ems.model.base.group.GroupConditions;
@@ -91,8 +95,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.saveGroup(group);
         }catch (Exception ex){
-            logger.error("保存班组失败");
-            ex.printStackTrace();
+            logger.error("保存班组失败", ex);
             return AjaxResult.fail("保存班组失败");
         }
         return AjaxResult.success("保存班组成功");
@@ -103,8 +106,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.disableGroup(id);
         }catch (Exception ex){
-            logger.error("作废班组失败");
-            ex.printStackTrace();
+            logger.error("作废班组失败", ex);
             return AjaxResult.fail("作废班组失败");
         }
         return AjaxResult.success("作废班组成功");
@@ -115,8 +117,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.deleteGroup(id);
         }catch (Exception ex){
-            logger.error("删除班组失败");
-            ex.printStackTrace();
+            logger.error("删除班组失败", ex);
             return AjaxResult.fail("删除班组失败");
         }
         return AjaxResult.success("删除班组成功");
@@ -135,8 +136,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.saveArea(area);
         }catch (Exception ex){
-            logger.error("保存地区失败");
-            ex.printStackTrace();
+            logger.error("保存地区失败", ex);
             return AjaxResult.fail("保存地区失败");
         }
         return AjaxResult.success("保存地区成功");
@@ -147,8 +147,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.disableArea(id);
         }catch (Exception ex){
-            logger.error("作废地区失败");
-            ex.printStackTrace();
+            logger.error("作废地区失败", ex);
             return AjaxResult.fail("作废地区失败");
         }
         return AjaxResult.success("作废地区成功");
@@ -159,8 +158,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.deleteArea(id);
         }catch (Exception ex){
-            logger.error("删除地区失败");
-            ex.printStackTrace();
+            logger.error("删除地区失败", ex);
             return AjaxResult.fail("删除地区失败");
         }
         return AjaxResult.success("删除地区成功");
@@ -181,8 +179,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.saveJob(job);
         }catch (Exception ex){
-            logger.error("保存工种失败");
-            ex.printStackTrace();
+            logger.error("保存工种失败", ex);
             return AjaxResult.fail("保存工种失败");
         }
         return AjaxResult.success("保存工种成功");
@@ -193,8 +190,7 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.disableJob(id);
         }catch (Exception ex){
-            logger.error("作废工种失败");
-            ex.printStackTrace();
+            logger.error("作废工种失败", ex);
             return AjaxResult.fail("作废工种失败");
         }
         return AjaxResult.success("作废工种成功");
@@ -205,10 +201,91 @@ public class BaseInfoController extends AbstractBaseController {
         try{
             baseInfoService.deleteJob(id);
         }catch (Exception ex){
-            logger.error("删除工种失败");
-            ex.printStackTrace();
+            logger.error("删除工种失败", ex);
             return AjaxResult.fail("删除工种失败");
         }
         return AjaxResult.success("删除工种成功");
+    }
+
+    /**************************************** 单位 ****************************************/
+    @ResponseBody
+    @RequestMapping(value = "/company/getCompanies", name = "分页查询单位")
+    public AjaxResult getCompanies(CompanyConditions conditions) {
+        PageableResult<Company> pageableResult = baseInfoService.getCompaniesByConditions(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/company/save", method = RequestMethod.POST, name = "保存单位")
+    public AjaxResult saveCompany(Company company) {
+        try{
+            baseInfoService.saveCompany(company);
+        }catch (Exception ex){
+            logger.error("保存单位失败", ex);
+            return AjaxResult.fail("保存单位失败");
+        }
+        return AjaxResult.success("保存单位成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/company/disable", method = RequestMethod.POST, name = "作废单位")
+    public AjaxResult disableCompany(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableCompany(id);
+        }catch (Exception ex){
+            logger.error("作废单位失败", ex);
+            return AjaxResult.fail("作废单位失败");
+        }
+        return AjaxResult.success("作废单位成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/company/delete", method = RequestMethod.POST, name = "删除单位")
+    public AjaxResult deleteCompany(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteCompany(id);
+        }catch (Exception ex){
+            logger.error("删除单位失败", ex);
+            return AjaxResult.fail("删除单位失败");
+        }
+        return AjaxResult.success("删除单位成功");
+    }
+
+    /**************************************** 项目 ****************************************/
+    @ResponseBody
+    @RequestMapping(value = "/project/getProjects", name = "分页查询项目")
+    public AjaxResult getProjects(ProjectConditions conditions) {
+        PageableResult<Project> pageableResult = baseInfoService.getProjectsByConditions(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/project/save", method = RequestMethod.POST, name = "保存项目")
+    public AjaxResult saveProject(Project project) {
+        try{
+            baseInfoService.saveProject(project);
+        }catch (Exception ex){
+            logger.error("保存项目失败", ex);
+            return AjaxResult.fail("保存项目失败");
+        }
+        return AjaxResult.success("保存项目成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/project/disable", method = RequestMethod.POST, name = "作废项目")
+    public AjaxResult disableProject(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.disableCompany(id);
+        }catch (Exception ex){
+            logger.error("作废项目失败", ex);
+            return AjaxResult.fail("作废项目失败");
+        }
+        return AjaxResult.success("作废项目成功");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/project/delete", method = RequestMethod.POST, name = "删除项目")
+    public AjaxResult deleteProject(@RequestParam(name = "id") Integer id) {
+        try{
+            baseInfoService.deleteCompany(id);
+        }catch (Exception ex){
+            logger.error("删除项目失败", ex);
+            return AjaxResult.fail("删除项目失败");
+        }
+        return AjaxResult.success("删除项目成功");
     }
 }

@@ -11,7 +11,7 @@
         SELECT * FROM ${table} WHERE id = #{id, jdbcType=INTEGER}
     </select>
 
-    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableCondition" resultMap="BaseMap">
+    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="BaseMap">
         SELECT * FROM ${table} WHERE 1=1 AND status = 1
         <if test="colName != null and colName != ''"> AND col_name like CONCAT('%', #{colName, jdbcType=VARCHAR}, '%') </if>
     </select>

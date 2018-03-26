@@ -116,10 +116,7 @@ class EmployeeManage extends React.Component {
             {
                 this.setModalFormState({
                     modalTitle: "新增员工",
-                    formData: {
-                        entryDate: moment().format(this.configuration.dateFormat),
-                        entryDateMoment: moment()
-                    },
+                    formData: {},
                     modalVisible: true
                 });
                 break;
@@ -167,16 +164,17 @@ class EmployeeManage extends React.Component {
     handleFormFieldsChange = (props, values) => {
         console.log("EmployeeManage 表单值改变:props[%o], values[%o]", props, values);
 
-        for(let key in values){
-            if(key == "entryDateMoment"){
-                //针对时间类型的做处理
-                this.state.modalForm.formData.entryDate = values[key].format(this.configuration.dateFormat);
-            }
-        }
-
         //保存正在编辑的数据
-        //TODO setState
         Object.assign(this.state.modalForm.formData, values);
+
+        //处理Moment类转为String
+        Object.keys(this.state.modalForm.formData).map(key => {
+            const value = this.state.modalForm.formData[key];
+            if(value instanceof moment) {
+                this.state.modalForm.formData[key] = value.format(this.configuration.dateFormat);
+            }
+        });
+
     };
     //Modal提交
     handleSubmit = () => {
@@ -247,9 +245,6 @@ class EmployeeManage extends React.Component {
         let formData = {};
         Object.assign(formData, this.state.selectedRows[0]);
 
-        //针对时间字段做处理
-        formData.entryDateMoment = moment(formData.entryDate)
-
         this.setModalFormState({
             modalTitle: "编辑员工",
             formData: formData,
@@ -258,10 +253,6 @@ class EmployeeManage extends React.Component {
     };
     doSave = () => {
         const that = this;
-
-        //针对时间字段做处理
-        delete this.state.modalForm.formData.entryDateMoment;
-
 
         $.ajax({
             url: this.configuration.saveUrl,
@@ -463,12 +454,12 @@ class EmployeeManage extends React.Component {
 
 
             {
-                label: "入职日期", key: "entryDateMoment", labelSpan:6, fieldSpan: 16,
+                label: "入职日期", key: "entryDate", labelSpan:6, fieldSpan: 16,
                 rules: [
 
                 ],
                 item:(
-                    <DatePicker allowClear={false} disabled={this.state.modalForm.isSubmitting} />
+                    <DatePicker allowClear={true} disabled={this.state.modalForm.isSubmitting} format={this.configuration.dateFormat}/>
                 )
             },
             {

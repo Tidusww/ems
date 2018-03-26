@@ -1,6 +1,6 @@
 package com.ly.ems.model.attendance;
 
-import com.ly.ems.core.mybatis.pagehelper.PageableCondition;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 import com.ly.ems.core.springmvc.databinder.ParamName;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by tidus on 2017/10/31.
  */
-public class AttendanceConditions extends PageableCondition {
+public class AttendanceConditions extends PageableModel {
 
     /** 考勤月份 例如:201801*/
     @ParamName("monthSelect")

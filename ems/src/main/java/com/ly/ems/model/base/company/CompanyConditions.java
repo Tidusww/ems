@@ -1,13 +1,13 @@
 package com.ly.ems.model.base.company;
 
-import com.ly.ems.model.BaseModel;
-import com.ly.ems.model.common.constant.StatusEnum;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 
 /**
- * Created by tidus on 2017/11/18.
+ * Created by tidus on 2017/10/31.
  */
-public class Company extends BaseModel{
+public class CompanyConditions extends PageableModel {
 
+    /** 公司名称*/
     private String companyName;
 
     public String getCompanyName() {
@@ -17,6 +17,5 @@ public class Company extends BaseModel{
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-
 
 }

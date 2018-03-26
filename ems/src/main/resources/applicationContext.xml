@@ -22,7 +22,7 @@
 
     <!-- 扫描service，并由spring的bean容器管理 -->
     <context:component-scan base-package="com.ly.ems">
-        <!-- 将springmvc的注解剔除，由spring-mvc自行扫描 -->
+        <!-- 将springmvc Controller的注解剔除，由spring-mvc自行扫描 -->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
