@@ -16,11 +16,14 @@
         <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
+    <resultMap id="ProjectDTOMap" type="com.ly.ems.model.base.project.ProjectDTO" extends="ProjectMap">
+    </resultMap>
+
     <select id="getById" resultMap="ProjectMap">
         SELECT * FROM ly_project WHERE id = #{id, jdbcType=INTEGER}
     </select>
 
-    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="ProjectMap">
+    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="ProjectDTOMap">
         SELECT * FROM ly_project WHERE 1=1 AND status = 1
         <if test="projectName != null and projectName != ''"> AND project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
     </select>

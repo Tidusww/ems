@@ -15,6 +15,7 @@ import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectDTO;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.BaseInfoService;
 import com.ly.ems.model.base.group.GroupConditions;
@@ -252,7 +253,7 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/project/getProjects", name = "分页查询项目")
     public AjaxResult getProjects(ProjectConditions conditions) {
-        PageableResult<Project> pageableResult = baseInfoService.getProjectsByConditions(conditions);
+        PageableResult<ProjectDTO> pageableResult = baseInfoService.getProjectsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody

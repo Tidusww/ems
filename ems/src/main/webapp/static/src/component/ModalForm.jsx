@@ -274,10 +274,11 @@ class InnerForm extends React.Component {
         //2. 处理表单字段类型
         if(initialValue instanceof moment || item.props.format != undefined) {
             //initialValue为moment 或者 控件存在format属性, 则当做日期控件, 单独处理
-            if(initialValue instanceof String && initialValue != ""){
+            if (typeof(initialValue) == 'string' && initialValue != "") {
                 //如果外部传入的是非空的日期字符串, 要先转为moment类型
                 initialValue = moment(initialValue, item.props.format);
-            }else{
+            } else if (!(initialValue instanceof moment)) {
+                //既不是字符串也不是moment, 就不管了
                 initialValue = undefined;
             }
         }else if (initialValue instanceof Object

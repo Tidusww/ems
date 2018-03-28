@@ -16,6 +16,7 @@ import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectDTO;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.common.constant.StatusEnum;
 import com.ly.ems.service.BaseInfoService;
@@ -238,12 +239,12 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      * @return
      */
     @Override
-    public PageableResult<Project> getProjectsByConditions(ProjectConditions conditions) {
+    public PageableResult<ProjectDTO> getProjectsByConditions(ProjectConditions conditions) {
 
-        List<Project> resultList = projectMapper.getByConditions(conditions);
-        PageInfo<Project> pageInfo = new PageInfo(resultList);
+        List<ProjectDTO> resultList = projectMapper.getByConditions(conditions);
+        PageInfo<ProjectDTO> pageInfo = new PageInfo(resultList);
 
-        return new PageableResult<Project>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+        return new PageableResult<ProjectDTO>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
     @Override

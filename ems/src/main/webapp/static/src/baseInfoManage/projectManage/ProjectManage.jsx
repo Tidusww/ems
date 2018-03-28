@@ -56,7 +56,7 @@ class ProjectManage extends React.Component {
             },
             {title: '项目名称', dataIndex: 'projectName', key: 'projectName', width: 140
             },
-            {title: '项目描述', dataIndex: 'companyDesc', key: 'companyDesc', width: 140
+            {title: '项目描述', dataIndex: 'projectDesc', key: 'projectDesc', width: 140
             },
             {title: '开工日期', dataIndex: 'startDate', key: 'startDate', width: 140
             },

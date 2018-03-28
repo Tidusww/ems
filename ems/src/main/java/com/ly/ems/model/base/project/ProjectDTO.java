@@ -10,8 +10,6 @@ import java.util.Date;
  */
 public class ProjectDTO extends Project {
 
-
-
     @Override
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh" , timezone="GMT+8")
     public Date getStartDate() {

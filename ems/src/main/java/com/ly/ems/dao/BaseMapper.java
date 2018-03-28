@@ -21,13 +21,6 @@ public interface BaseMapper<Model extends BaseModel, Condition extends PageableM
     Model getById(@Param("id") Integer id);
 
     /**
-     * 条件查询(可分页)
-     * @param conditions
-     * @return
-     */
-    List<Model> getByConditions(Condition conditions);
-
-    /**
      * 新增
      * @param
      */

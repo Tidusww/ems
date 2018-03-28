@@ -15,6 +15,7 @@ import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectDTO;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.core.datasource.DetermineDataSource;
 import com.ly.ems.model.base.job.Job;
@@ -80,7 +81,7 @@ public interface BaseInfoService {
      * @param conditions
      * @return
      */
-    PageableResult<Project> getProjectsByConditions(ProjectConditions conditions);
+    PageableResult<ProjectDTO> getProjectsByConditions(ProjectConditions conditions);
     void saveProject(Project job);
     void disableProject(Integer id);
     void deleteProject(Integer id);
