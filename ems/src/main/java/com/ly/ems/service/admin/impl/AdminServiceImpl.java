@@ -1,4 +1,4 @@
-package com.ly.ems.service.impl;
+package com.ly.ems.service.admin.impl;
 
 import com.ly.ems.dao.admin.AdminMapper;
 import com.ly.ems.dao.admin.MenuMapper;
@@ -7,9 +7,7 @@ import com.ly.ems.model.admin.Permission;
 import com.ly.ems.model.admin.Role;
 import com.ly.ems.model.admin.User;
 import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.service.AdminService;
-import com.ly.ems.dao.admin.MenuMapper;
-import com.ly.ems.model.admin.User;
+import com.ly.ems.service.admin.AdminService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

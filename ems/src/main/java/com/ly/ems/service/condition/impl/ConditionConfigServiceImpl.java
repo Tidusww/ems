@@ -1,11 +1,11 @@
-package com.ly.ems.service.impl;
+package com.ly.ems.service.condition.impl;
 
 import com.ly.ems.core.mybatis.BaseCodeValueEnum;
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import com.ly.ems.dao.condition.ConditionConfigMapper;
 import com.ly.ems.model.condition.ConditionItemDTO;
 import com.ly.ems.model.condition.constants.ConditionType;
-import com.ly.ems.service.ConditionConfigService;
+import com.ly.ems.service.condition.ConditionConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

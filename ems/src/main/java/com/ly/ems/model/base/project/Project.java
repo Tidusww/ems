@@ -1,5 +1,6 @@
 package com.ly.ems.model.base.project;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 
 import java.util.Date;
@@ -49,18 +50,18 @@ public class Project extends PageableModel {
         this.projectName = projectName;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh" , timezone="GMT+8")
     public Date getStartDate() {
         return startDate;
     }
-
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh" , timezone="GMT+8")
     public Date getEndDate() {
         return endDate;
     }
-
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }

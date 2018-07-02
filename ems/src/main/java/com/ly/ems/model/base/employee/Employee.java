@@ -1,17 +1,14 @@
 package com.ly.ems.model.base.employee;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ly.ems.model.BaseModel;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
-
 import java.util.Date;
 
 /**
  * Created by tidus on 2017/11/19.
  */
-public class Employee extends BaseModel{
+public class Employee extends PageableModel {
 
 
     private String employeeName;

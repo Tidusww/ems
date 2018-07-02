@@ -20,7 +20,6 @@ const {Header, Content, Footer, Sider} = Layout;
 //页面
 import {EmployeeManage} from 'baseInfoManage/employeeManage/EmployeeManage.jsx'
 import {GroupManage} from 'baseInfoManage/groupManage/GroupManage.jsx'
-import {AreaManage} from 'baseInfoManage/areaManage/AreaManage.jsx'
 import {JobManage} from 'baseInfoManage/jobManage/JobManage.jsx'
 import {CompanyManage} from 'baseInfoManage/companyManage/CompanyManage.jsx'
 import {ProjectManage} from 'baseInfoManage/projectManage/ProjectManage.jsx'
@@ -67,17 +66,7 @@ class App extends React.Component {
         loading: false,
         failed: false,
         menus: [],
-        routeAndComponent: {},
-        componentMap: {
-            EmployeeManageComponent: EmployeeManageComponent,
-            GroupManageComponent: GroupManageComponent,
-            AreaManageComponent: AreaManageComponent,
-            JobManageComponent: JobManageComponent,
-            CompanyManageComponent: CompanyManageComponent,
-            ProjectManageComponent: ProjectManageComponent,
-            AttendanceManageComponent: AttendanceManageComponent,
-            CacheManageComponent: CacheManageComponent
-        }
+        routeAndComponent: {}
     };
     handleRequestMenuList = (result) => {
         if (result.success) {
@@ -205,12 +194,12 @@ class App extends React.Component {
                         {this.state.routeAndComponent ?
                             (Object.keys(this.state.routeAndComponent).map(path => {
                                     return <Route key={path} exact path={`${_ctx_}` + path}
-                                                  component={this.state.componentMap[this.state.routeAndComponent[path]]}></Route>
+                                                  component={eval(this.state.routeAndComponent[path])}></Route>
                                 })
                             ) : (null)}
                     </Content>
                     <Footer className="app-footer">
-                        {`Copyright © ${_companyName_}版权所有 2017-2017. All rights reserved.`}
+                        {`Copyright © ${_companyName_}版权所有 2017-2018. All rights reserved.`}
                     </Footer>
                 </Layout>
             </Layout>

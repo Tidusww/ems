@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ly.ems.core.mybatis.dao.impl.AbstractBaseDao" >
+<mapper namespace="com.ly.ems.core.mybatis.dao.BaseDao" >
 
-    <resultMap id="BaseMap" type="com.ly.ems.model.BaseModel">
+    <!-- BaseModel -->
+    <resultMap id="BaseMap" type="com.ly.ems.core.mybatis.model.BaseModel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <select id="getById" resultMap="BaseMap">
@@ -20,4 +23,24 @@
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 
+
+    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="BaseMap">
+        SELECT * FROM ${table} WHERE 1=1 AND status = 1
+        <if test="colName != null and colName != ''"> AND col_name like CONCAT('%', #{colName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+    <insert id="insert" parameterType="com.ly.ems.core.mybatis.model.BaseModel" useGeneratedKeys="true">
+        INSERT INTO ${table} (col_name, status) VALUES (#{colName}, #{status})
+    </insert>
+    <update id="update" parameterType="com.ly.ems.core.mybatis.model.BaseModel">
+        UPDATE ${table}
+        <set >
+            <if test="colName != null" >
+                col_name = #{colName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
 </mapper>

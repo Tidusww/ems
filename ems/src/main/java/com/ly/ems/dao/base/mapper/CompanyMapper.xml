@@ -2,9 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ly.ems.dao.base.CompanyMapper" >
 
-    <resultMap id="BaseMap" type="com.ly.ems.model.BaseModel">
+    <resultMap id="BaseMap" type="com.ly.ems.core.mybatis.model.BaseModel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <resultMap id="CompanyMap" type="com.ly.ems.model.base.company.Company" extends="BaseMap">
@@ -29,11 +31,11 @@
         <if test="companyName != null and companyName != ''"> AND company_name like CONCAT('%', #{companyName, jdbcType=VARCHAR}, '%') </if>
     </select>
 
-    <insert id="insert" parameterType="com.ly.ems.model.BaseModel" useGeneratedKeys="true">
+    <insert id="insert" parameterType="com.ly.ems.core.mybatis.model.BaseModel" useGeneratedKeys="true">
         INSERT INTO ly_company (company_name, status) VALUES (#{companyName}, #{status})
     </insert>
 
-    <update id="update" parameterType="com.ly.ems.model.BaseModel">
+    <update id="update" parameterType="com.ly.ems.core.mybatis.model.BaseModel">
         UPDATE ly_company
         <set >
             <if test="companyName != null" >

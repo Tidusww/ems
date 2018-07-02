@@ -2,8 +2,6 @@ package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
-import com.ly.ems.model.base.area.Area;
-import com.ly.ems.model.base.area.AreaConditions;
 import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
@@ -15,12 +13,8 @@ import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
-import com.ly.ems.model.base.project.ProjectDTO;
 import com.ly.ems.model.common.PageableResult;
-import com.ly.ems.service.BaseInfoService;
-import com.ly.ems.model.base.group.GroupConditions;
-import com.ly.ems.model.base.job.Job;
-import com.ly.ems.service.BaseInfoService;
+import com.ly.ems.service.base.BaseInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +36,7 @@ public class BaseInfoController extends AbstractBaseController {
     @Autowired
     BaseInfoService baseInfoService;
 
-    /**************************************** 员工 ****************************************/
+    /**************************************** 1.员工 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/employee/getEmployees", name = "分页查询员工")
     public AjaxResult getEmployees(EmployeeConditions conditions) {
@@ -83,7 +77,7 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除员工成功");
     }
 
-    /**************************************** 班组 ****************************************/
+    /**************************************** 2.班组 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/group/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
@@ -124,50 +118,10 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除班组成功");
     }
 
-    /**************************************** 地区 ****************************************/
-    @ResponseBody
-    @RequestMapping(value = "/area/getAreas", name = "分页查询地区")
-    public AjaxResult getAreas(AreaConditions conditions) {
-        PageableResult<Area> pageableResult = baseInfoService.getAreasByConditions(conditions);
-        return AjaxResult.success(pageableResult);
-    }
-    @ResponseBody
-    @RequestMapping(value = "/area/save", method = RequestMethod.POST, name = "保存地区")
-    public AjaxResult saveArea(Area area) {
-        try{
-            baseInfoService.saveArea(area);
-        }catch (Exception ex){
-            logger.error("保存地区失败", ex);
-            return AjaxResult.fail("保存地区失败");
-        }
-        return AjaxResult.success("保存地区成功");
-    }
-    @ResponseBody
-    @RequestMapping(value = "/area/disable", method = RequestMethod.POST, name = "作废地区")
-    public AjaxResult disableArea(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableArea(id);
-        }catch (Exception ex){
-            logger.error("作废地区失败", ex);
-            return AjaxResult.fail("作废地区失败");
-        }
-        return AjaxResult.success("作废地区成功");
-    }
-    @ResponseBody
-    @RequestMapping(value = "/area/delete", method = RequestMethod.POST, name = "删除地区")
-    public AjaxResult deleteArea(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteArea(id);
-        }catch (Exception ex){
-            logger.error("删除地区失败", ex);
-            return AjaxResult.fail("删除地区失败");
-        }
-        return AjaxResult.success("删除地区成功");
-    }
 
 
 
-    /**************************************** 工种 ****************************************/
+    /**************************************** 3.工种 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/job/getJobs", name = "分页查询工种")
     public AjaxResult getJobs(JobConditions conditions) {
@@ -208,7 +162,7 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除工种成功");
     }
 
-    /**************************************** 单位 ****************************************/
+    /**************************************** 4.单位 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/company/getCompanies", name = "分页查询单位")
     public AjaxResult getCompanies(CompanyConditions conditions) {
@@ -249,11 +203,11 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除单位成功");
     }
 
-    /**************************************** 项目 ****************************************/
+    /**************************************** 5.项目 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/project/getProjects", name = "分页查询项目")
     public AjaxResult getProjects(ProjectConditions conditions) {
-        PageableResult<ProjectDTO> pageableResult = baseInfoService.getProjectsByConditions(conditions);
+        PageableResult<Project> pageableResult = baseInfoService.getProjectsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody

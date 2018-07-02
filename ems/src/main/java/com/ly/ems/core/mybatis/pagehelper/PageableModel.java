@@ -1,12 +1,12 @@
 package com.ly.ems.core.mybatis.pagehelper;
 
-import com.ly.ems.model.BaseModel;
+import com.ly.ems.core.mybatis.model.BaseModel;
 
 /**
  * Created by tidus on 2017/10/31.
  * 需要分页的Model
  */
-public class PageableModel extends BaseModel{
+public class PageableModel extends BaseModel {
 
 	public int current;
 	public int pageSize;

@@ -1,16 +1,16 @@
 package com.ly.ems.model.base.job;
 
-import com.ly.ems.model.BaseModel;
-import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.model.common.constant.YesNoEnum;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 import com.ly.ems.model.common.constant.YesNoEnum;
 
 /**
  * Created by tidus on 2017/11/18.
  */
-public class Job extends BaseModel{
+public class Job extends PageableModel{
 
+    /** 工种名称*/
     private String jobName;
+    /** 是否特殊工种*/
     private YesNoEnum isSpec;
     private Double salary;
 

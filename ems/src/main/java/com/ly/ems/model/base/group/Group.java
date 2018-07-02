@@ -1,13 +1,11 @@
 package com.ly.ems.model.base.group;
 
-import com.ly.ems.model.BaseModel;
-import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 
 /**
  * Created by tidus on 2017/11/18.
  */
-public class Group extends BaseModel{
+public class Group extends PageableModel {
 
     private String groupName;
     private Integer employeeId;

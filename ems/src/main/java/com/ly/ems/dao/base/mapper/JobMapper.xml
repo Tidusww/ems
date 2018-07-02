@@ -8,6 +8,8 @@
         <result column="is_spec" property="isSpec" jdbcType="INTEGER" />
         <result column="salary" property="salary" jdbcType="DECIMAL" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <select id="getJobById" resultMap="BaseJobMap">

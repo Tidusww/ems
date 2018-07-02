@@ -2,28 +2,17 @@ package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
-import com.ly.ems.model.attendance.Attendance;
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceDTO;
-import com.ly.ems.model.base.area.Area;
-import com.ly.ems.model.base.area.AreaConditions;
 import com.ly.ems.model.base.employee.Employee;
-import com.ly.ems.model.base.employee.EmployeeConditions;
-import com.ly.ems.model.base.employee.EmployeeDTO;
-import com.ly.ems.model.base.group.Group;
-import com.ly.ems.model.base.group.GroupConditions;
-import com.ly.ems.model.base.job.Job;
-import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.common.PageableResult;
-import com.ly.ems.service.AttendanceService;
-import com.ly.ems.service.BaseInfoService;
+import com.ly.ems.service.attendance.AttendanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**

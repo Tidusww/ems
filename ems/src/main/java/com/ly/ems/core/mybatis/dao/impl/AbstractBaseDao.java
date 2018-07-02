@@ -1,7 +1,7 @@
 package com.ly.ems.core.mybatis.dao.impl;
 
+import com.ly.ems.core.mybatis.model.BaseModel;
 import com.ly.ems.core.mybatis.pagehelper.PageableModel;
-import com.ly.ems.model.BaseModel;
 import com.ly.ems.model.common.constant.StatusEnum;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Created by tidus on 2018/3/12.
  */
+@Deprecated
 public abstract class AbstractBaseDao<Model extends BaseModel, Condition extends PageableModel> extends SqlSessionDaoSupport /*implements BaseDao<Model, Condition>*/ {
 
     /* 必须: 使用spring中配置的SessionFactory */

@@ -2,7 +2,7 @@ package com.ly.ems.core.shiro;
 
 import com.ly.ems.model.admin.Permission;
 import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.service.AdminService;
+import com.ly.ems.service.admin.AdminService;
 import org.apache.shiro.config.Ini;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;

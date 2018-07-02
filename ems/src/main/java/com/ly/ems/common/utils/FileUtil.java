@@ -1,12 +1,16 @@
 package com.ly.ems.common.utils;
 
+import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.model.common.constant.FileTypeEnum;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.jxls.reader.ReaderBuilder;
 import org.jxls.reader.XLSReadStatus;
 import org.jxls.reader.XLSReader;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
@@ -92,11 +96,11 @@ public class FileUtil {
      * @return timestamp_uuid.png
      */
     public static String getFileUniqueName(String name) {
-        UUID uuid = UUID.fromString(name);
+        String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
         Long current = new Long(System.currentTimeMillis());
         String suffix = getSuffix(name);
 
-        String uniqueName = current.toString() + "_" + uuid.toString();
+        String uniqueName = current.toString() + "_" + uuid;
         if (!StringUtils.isEmpty(suffix)) {
             uniqueName = uniqueName + suffix;
         }
@@ -131,102 +135,143 @@ public class FileUtil {
 
     /**
      * 下载文件
-     * @param filePath  下载路径
-     * @param fileName  保存的文件名
+     *
+     * @param filePath
+     *            下载路径
+     * @param fileName
+     *            保存的文件名
      * @param request
      * @param response
-     * @throws EMSRuntimeException
+     * @throws EMSBusinessException
      * @throws IOException
      */
-    public static void downloadFile(String filePath, String fileName, HttpServletRequest request, HttpServletResponse response) throws EMSRuntimeException, IOException {
-        //0. prepare
-        if(StringUtils.isEmpty(filePath)){
-            throw new EMSRuntimeException("下载路径为空");
+    public static void downloadFile(String filePath, String fileName, HttpServletRequest request,
+                                    HttpServletResponse response) throws EMSBusinessException, IOException {
+        // 0. prepare
+        if (StringUtils.isEmpty(filePath)) {
+            throw new EMSBusinessException("下载路径为空");
         }
         String downloadPath = request.getSession().getServletContext().getRealPath(filePath);
         File downloadFile = new File(downloadPath);
-        if(!downloadFile.exists()){
-            throw new EMSRuntimeException("下载文件不存在:"+filePath);
+        if (!downloadFile.exists()) {
+            throw new EMSBusinessException("下载文件不存在:" + filePath);
         }
-        if(StringUtils.isEmpty(fileName)){
-            fileName = "未命名文件"+getSuffix(filePath);
+        if (StringUtils.isEmpty(fileName)) {
+            fileName = "未命名文件" + getSuffix(filePath);
         }
 
-        //1. 输出
-        FileInputStream inputStream = null;
-        ServletOutputStream outputStream = null;
-        try {
-            String finalFileName = getFileName(request, fileName);
-
-            String headerKey = "Content-Disposition";
-            String headerValue = String.format("attachment; filename=\"%s\"", finalFileName);
-            response.addHeader(headerKey, headerValue);
-            response.setContentType("application/vnd.msexcel");
-
-            inputStream = new FileInputStream(downloadPath);
-            response.addHeader("Content-Length", String.valueOf(inputStream.getChannel().size()));
-
-            byte[] b = new byte[100];
-            outputStream = response.getOutputStream();
-            while (inputStream.read(b) != -1) {
-                outputStream.write(b);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EMSRuntimeException("输出文件出错");
-        } finally {
-            if(inputStream != null){
-                inputStream.close();
-            }
-            if(outputStream != null){
-                outputStream.close();
-            }
-        }
+        // 1. 输出
+        outputFile(filePath, fileName);
     }
-
 
     /**
      * 导出excel
-     * @param templetPath 模板路径
-     * @param beanParams 数据
-     * @param fileName 下载文件名
+     *
+     * @param templetPath
+     *            模板路径
+     * @param beanParams
+     *            数据
+     * @param fileName
+     *            下载文件名
      * @param request
      * @param response
-     * @throws EMSRuntimeException,IOException
+     * @throws EMSBusinessException,IOException
      */
-    public static void downloadExcel(String templetPath, Map beanParams, String fileName, HttpServletRequest request, HttpServletResponse response) throws EMSRuntimeException, IOException {
-        //0. prepare
-        if(StringUtils.isEmpty(templetPath)){
-            throw new EMSRuntimeException("模板路径为空");
+    public static void downloadExcel(String templetPath, Map beanParams, String fileName, HttpServletRequest request,
+                                     HttpServletResponse response) throws EMSBusinessException, IOException {
+        // 0. prepare
+        if (StringUtils.isEmpty(templetPath)) {
+            throw new EMSBusinessException("模板路径为空");
         }
         String srcFilePath = request.getSession().getServletContext().getRealPath(templetPath);
         File srcFile = new File(srcFilePath);
-        if(!srcFile.exists()){
-            throw new EMSRuntimeException("模板文件不存在: "+srcFilePath);
+        if (!srcFile.exists()) {
+            throw new EMSBusinessException("模板文件不存在: " + srcFilePath);
         }
-        if(StringUtils.isEmpty(fileName)){
+        if (StringUtils.isEmpty(fileName)) {
             fileName = "未命名文件.xlsx";
         }
 
-        //1. 生成
+        // 1. 生成
         XLSTransformer transformer = new XLSTransformer();
-        final String DOWNLOAD_EXCEL_TEMP_FILE_PATH = "/templet/"+getFileUniqueName("temp.xlsx");
+        final String DOWNLOAD_EXCEL_TEMP_FILE_PATH = "/export/" + getFileUniqueName("temp.xlsx");
         String destFilePath = request.getSession().getServletContext().getRealPath(DOWNLOAD_EXCEL_TEMP_FILE_PATH);
         try {
             File tempFile = new File(destFilePath);
-            if(!tempFile.exists()){
+            if (!tempFile.exists()) {
                 tempFile.createNewFile();
             }
+            long s = System.currentTimeMillis();
             transformer.transformXLS(srcFilePath, beanParams, destFilePath);
+            System.out.println("导出耗时" + (System.currentTimeMillis() - s));
         } catch (Exception e) {
-            e.printStackTrace();
             deleteFile(request, DOWNLOAD_EXCEL_TEMP_FILE_PATH);
-            throw new EMSRuntimeException("生成Excel出错");
+            throw new EMSBusinessException("生成Excel出错");
+        }
+
+        // 2. 输出
+        outputFile(DOWNLOAD_EXCEL_TEMP_FILE_PATH, fileName);
+    }
+
+    /**
+     * 根据workbook导出excel
+     *
+     * @param workbook
+     *            excel workbook
+     * @param fileName
+     *            下载文件名
+     * @throws EMSBusinessException,IOException
+     */
+    public static void downloadExcel(Workbook workbook, String fileName) throws EMSBusinessException, IOException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+
+        if (StringUtils.isEmpty(fileName)) {
+            fileName = "未命名文件.xlsx";
+        }
+        // 0. prepare
+        if (workbook == null) {
+            throw new EMSBusinessException("excel工作簿为空");
         }
 
 
-        //2. 输出
+        // 1. 输出到本地临时文件
+        final String DOWNLOAD_EXCEL_TEMP_FILE_PATH = generateFile(workbook, request,"temp.xlsx");
+
+        // 2. 输出
+        outputFile(DOWNLOAD_EXCEL_TEMP_FILE_PATH, fileName);
+    }
+
+    public static String generateFile(Workbook workbook, HttpServletRequest request,String fileName) {
+        String DOWNLOAD_EXCEL_TEMP_FILE_PATH = "/export/" + getFileUniqueName(fileName);
+        String destFilePath = request.getSession().getServletContext().getRealPath(DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+
+        try {
+            File tempFile = new File(destFilePath);
+            if (!tempFile.exists()) {
+                tempFile.createNewFile();
+            }
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(destFilePath));
+            workbook.write(os);
+            os.flush();
+            os.close();
+
+        } catch (Exception e) {
+            deleteFile(request, DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+            throw new EMSBusinessException("生成Excel出错");
+        }
+        return DOWNLOAD_EXCEL_TEMP_FILE_PATH;
+    }
+
+    /**
+     * 输出文件
+     */
+    public static void outputFile(String downloadFilePath, String fileName) throws EMSBusinessException, IOException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getResponse();
+
         FileInputStream inputStream = null;
         ServletOutputStream outputStream = null;
         try {
@@ -237,7 +282,7 @@ public class FileUtil {
             response.addHeader(headerKey, headerValue);
             response.setContentType("application/vnd.msexcel");
 
-            String downloadPath = request.getSession().getServletContext().getRealPath(DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+            String downloadPath = request.getSession().getServletContext().getRealPath(downloadFilePath);
             inputStream = new FileInputStream(downloadPath);
             response.addHeader("Content-Length", String.valueOf(inputStream.getChannel().size()));
 
@@ -248,17 +293,55 @@ public class FileUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new EMSRuntimeException("输出Excel出错");
+            throw new EMSBusinessException("输出Excel出错");
         } finally {
-            if(inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
-            if(outputStream != null){
+            if (outputStream != null) {
                 outputStream.close();
             }
-            deleteFile(request, DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+            //先别删除
+            //deleteFile(request, downloadFilePath);
         }
+    }
+
+    /**
+     * 根据模板和数据生成excel并返回
+     *
+     * @param templetPath
+     *            模板路径
+     * @param beanParams
+     *            数据
+     * @throws EMSBusinessException,IOException
+     */
+    public static Workbook generateExcel(String templetPath, Map beanParams) throws EMSBusinessException, IOException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+
+        // 0. prepare
+        if (StringUtils.isEmpty(templetPath)) {
+            throw new EMSBusinessException("模板路径为空");
+        }
+        String srcFilePath = request.getSession().getServletContext().getRealPath(templetPath);
+        File srcFile = new File(srcFilePath);
+        if (!srcFile.exists()) {
+            throw new EMSBusinessException("模板文件不存在: " + srcFilePath);
+        }
+
+        // 1. 生成workbook
+        Workbook workbook;
+        XLSTransformer transformer = new XLSTransformer();
+        try {
+            BufferedInputStream is = new BufferedInputStream(new FileInputStream(srcFilePath));
+            workbook = transformer.transformXLS(is, beanParams);
+            is.close();
+        } catch (Exception e) {
+            throw new EMSBusinessException("生成Excel出错");
+        }
+
+        return workbook;
+
     }
 
     /**

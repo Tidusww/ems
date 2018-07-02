@@ -1,8 +1,6 @@
 package com.ly.ems.model.base.project;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ly.ems.model.common.constant.StatusEnum;
-
 import java.util.Date;
 
 /**

@@ -1,10 +1,8 @@
-package com.ly.ems.service.impl;
+package com.ly.ems.service.base.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.dao.base.*;
-import com.ly.ems.model.base.area.Area;
-import com.ly.ems.model.base.area.AreaConditions;
 import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
@@ -16,11 +14,9 @@ import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
-import com.ly.ems.model.base.project.ProjectDTO;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.service.BaseInfoService;
-import org.apache.commons.lang3.StringUtils;
+import com.ly.ems.service.base.BaseInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +34,6 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     @Autowired
     GroupMapper groupMapper;
-
-    @Autowired
-    AreaMapper areaMapper;
 
     @Autowired
     JobMapper jobMapper;
@@ -130,41 +123,6 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     }
 
 
-    /**
-     * 地区
-     * @param conditions
-     * @return
-     */
-    @Override
-    public PageableResult<Area> getAreasByConditions(AreaConditions conditions) {
-
-        List<Area> resultList = areaMapper.getAreasByConditions(conditions);
-        PageInfo<Area> pageInfo = new PageInfo(resultList);
-
-        return new PageableResult<Area>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
-
-    }
-
-    @Override
-    public void saveArea(Area area) {
-        if (area.getId() == null) {
-            area.setStatus(StatusEnum.ACTIVED);
-            areaMapper.insertArea(area);
-        } else {
-            areaMapper.updateArea(area);
-        }
-    }
-
-    @Override
-    public void disableArea(Integer id) {
-        areaMapper.updateAreaStatus(id, StatusEnum.DISABLED);
-    }
-
-    @Override
-    public void deleteArea(Integer id) {
-        areaMapper.deleteArea(id);
-    }
-
 
     /**
      * 工种
@@ -239,12 +197,12 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      * @return
      */
     @Override
-    public PageableResult<ProjectDTO> getProjectsByConditions(ProjectConditions conditions) {
+    public PageableResult<Project> getProjectsByConditions(ProjectConditions conditions) {
 
-        List<ProjectDTO> resultList = projectMapper.getByConditions(conditions);
-        PageInfo<ProjectDTO> pageInfo = new PageInfo(resultList);
+        List<Project> resultList = projectMapper.getByConditions(conditions);
+        PageInfo<Project> pageInfo = new PageInfo(resultList);
 
-        return new PageableResult<ProjectDTO>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+        return new PageableResult<Project>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
     @Override

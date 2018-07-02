@@ -1,12 +1,11 @@
 package com.ly.ems.model.base.company;
 
-import com.ly.ems.model.BaseModel;
-import com.ly.ems.model.common.constant.StatusEnum;
+import com.ly.ems.core.mybatis.pagehelper.PageableModel;
 
 /**
  * Created by tidus on 2017/11/18.
  */
-public class Company extends BaseModel{
+public class Company extends PageableModel {
 
     private String companyName;
 

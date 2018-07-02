@@ -1,4 +1,4 @@
-package com.ly.ems.service;
+package com.ly.ems.service.condition;
 import com.ly.ems.core.datasource.DetermineDataSource;
 import com.ly.ems.core.datasource.MultipleRoutingDataSource;
 import com.ly.ems.model.condition.ConditionItemDTO;

@@ -1,11 +1,7 @@
 package com.ly.ems.dao.base;
 
-import com.ly.ems.model.base.area.Area;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
-import com.ly.ems.model.base.group.GroupConditions;
-import com.ly.ems.model.base.job.Job;
-import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.common.constant.StatusEnum;
 import org.apache.ibatis.annotations.Param;
 

@@ -9,6 +9,8 @@
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <select id="getGroupById" resultMap="BaseGroupMap">

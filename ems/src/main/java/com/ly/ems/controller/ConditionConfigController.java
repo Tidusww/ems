@@ -5,8 +5,7 @@ import com.ly.ems.core.datasource.MultipleRoutingDataSource;
 import com.ly.ems.model.condition.ConditionItemDTO;
 import com.ly.ems.model.condition.constants.ConditionDatasource;
 import com.ly.ems.model.condition.constants.ConditionType;
-import com.ly.ems.service.ConditionConfigService;
-import com.ly.ems.service.ConditionConfigService;
+import com.ly.ems.service.condition.ConditionConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tidus on 2017/9/13.
