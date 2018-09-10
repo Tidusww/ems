@@ -55,6 +55,20 @@ const CommonHelper = {
         }
     
         return extMap;
+    },
+    setModalFormState : (context, newState, callback) => {
+        const { modalForm } = context.state;
+        const newModalForm = Object.assign({}, modalForm, newState);
+        context.setState({
+            modalForm: newModalForm
+        }, callback || (()=>{}));
+    },
+    setModalTableState : (context, newState, callback) => {
+        const { modalTable } = context.state;
+        const newModalTable = Object.assign({}, modalTable, newState);
+        context.setState({
+            modalTable: newModalTable
+        }, callback || (()=>{}));
     }
 };
 

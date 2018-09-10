@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ly.ems.dao.base.GroupMapper" >
 
-    <resultMap id="BaseGroupMap" type="com.ly.ems.model.base.group.Group">
+    <resultMap id="BaseGroupMap" type="com.ly.ems.model.base.group.GroupDTO">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="group_name" property="groupName" jdbcType="VARCHAR" />
         <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
@@ -14,14 +14,20 @@
     </resultMap>
 
     <select id="getGroupById" resultMap="BaseGroupMap">
-        SELECT g.* FROM ly_group g WHERE id = #{id, jdbcType=INTEGER}
+        SELECT g.*, e.employee_name, e.phone
+        FROM ly_group g
+        LEFT JOIN ly_employee e on e.id = g.employee_id
+        WHERE g.id = #{id, jdbcType=INTEGER}
     </select>
 
     <select id="getGroupsByConditions" parameterType="com.ly.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
-        SELECT g.* FROM ly_group g WHERE 1=1 AND status = 1
-        <if test="groupName != null and groupName != ''"> AND group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
-        <if test="employeeName != null and employeeName != ''"> AND employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-        <if test="phone != null and phone != ''"> AND phone = #{phone, jdbcType=VARCHAR} </if>
+        SELECT g.*, e.employee_name, e.phone
+        FROM ly_group g
+        LEFT JOIN ly_employee e on e.id = g.employee_id
+        WHERE 1=1 AND g.status = 1
+        <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
+        <if test="employeeName != null and employeeName != ''"> AND e.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
+        <if test="phone != null and phone != ''"> AND e.phone = #{phone, jdbcType=VARCHAR} </if>
     </select>
 
     <insert id="insertGroup" parameterType="com.ly.ems.model.base.group.Group" useGeneratedKeys="true">
@@ -33,12 +39,6 @@
             <if test="employeeId != null" >
                 employee_id,
             </if>
-            <if test="employeeName != null" >
-                employee_name,
-            </if>
-            <if test="phone != null" >
-                phone,
-            </if>
             <if test="status != null" >
                 status,
             </if>
@@ -49,12 +49,6 @@
             </if>
             <if test="employeeId != null" >
                 #{employeeId},
-            </if>
-            <if test="employeeName != null" >
-                #{employeeName},
-            </if>
-            <if test="phone != null" >
-                #{phone},
             </if>
             <if test="status != null" >
                 #{status},
@@ -70,12 +64,6 @@
             </if>
             <if test="employeeId != null" >
                 employee_id = #{employeeId,jdbcType=INTEGER},
-            </if>
-            <if test="employeeName != null" >
-                employee_name = #{employeeName,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null" >
-                phone = #{phone,jdbcType=VARCHAR},
             </if>
             <if test="status != null" >
                 status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},

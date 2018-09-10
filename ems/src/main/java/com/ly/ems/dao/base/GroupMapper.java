@@ -1,5 +1,6 @@
 package com.ly.ems.dao.base;
 
+import com.ly.ems.core.mybatis.dao.BaseDao;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.common.constant.StatusEnum;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by tidus on 2017/11/19.
  */
-public interface GroupMapper {
+public interface GroupMapper  extends BaseDao<Group, GroupConditions> {
 
     /**
      * 根据id查找job

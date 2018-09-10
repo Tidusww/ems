@@ -176,4 +176,6 @@ public class Employee extends PageableModel {
     public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
     }
+
+
 }

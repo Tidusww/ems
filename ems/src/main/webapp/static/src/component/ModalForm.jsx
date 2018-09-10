@@ -252,23 +252,23 @@ class InnerForm extends React.Component {
         const formItems = [];
         for(let i = 0; i < formItemsMetadata.length; i++) {
             const meta = formItemsMetadata[i];
-            formItems.push(this.renderFormItem(i, meta["label"], meta["key"], meta["labelSpan"], meta["fieldSpan"], meta["rules"], meta["item"], meta["colon"]));
+            formItems.push(this.renderFormItem(i, meta));
         }
         return formItems;
     };
 
-    renderFormItem = (i, itemLabel, itemKey, labelSpan, fieldSpan, rules, item, colon) => {
-        //TODO 将FormItem的属性放在对象中
+    renderFormItem = (i, meta) => {
+        const { label, key, labelSpan, fieldSpan, rules, item, colon } = meta;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: labelSpan },
-            wrapperCol: { span: fieldSpan },
+            wrapperCol: { span: fieldSpan }
         };
 
         //1. 表单字段值默认值
         let initialValue = "";
-        if(itemKey in this.props.formData){
-            initialValue = this.props.formData[itemKey];
+        if(key in this.props.formData){
+            initialValue = this.props.formData[key];
         }
 
         //2. 处理表单字段类型
@@ -296,10 +296,10 @@ class InnerForm extends React.Component {
             <Col key={i} span={24}>
                 <FormItem
                     {...formItemLayout}
-                    label={itemLabel}
+                    label={label}
                     colon={colon}
                 >
-                    {getFieldDecorator(itemKey, {
+                    {getFieldDecorator(key, {
                         initialValue : initialValue,
                         rules: rules
                     })(

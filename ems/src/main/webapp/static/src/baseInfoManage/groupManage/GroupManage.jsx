@@ -1,8 +1,10 @@
 import React from 'react';
-import { Table, message, Modal, Input, InputNumber } from 'antd';
-import { ConditionContainer } from 'component/ConditionContainer.jsx';
-import { ModalForm } from 'component/ModalForm.jsx'
-
+import {Table, message, Modal, Input, InputNumber} from 'antd';
+import {CommonHelper} from 'core/Common.jsx';
+import {ConditionContainer} from 'component/ConditionContainer.jsx';
+import {ModalForm} from 'component/ModalForm.jsx'
+import {ModalTable} from 'component/ModalTable.jsx'
+const Search = Input.Search;
 const confirm = Modal.confirm;
 
 class GroupManage extends React.Component {
@@ -27,6 +29,13 @@ class GroupManage extends React.Component {
                 formData: {},
                 formDataIdKey: "id",
                 isSubmitting: false
+            },
+            modalTable: {
+                visible: false,
+                conditionCode: `EMPLOYEE_MANAGE`,
+                searchUrl: `${_ctx_}/base/employee/getEmployees`,
+                keyId: "id",
+                multiSelect: false
             }
         };
         this.configuration = {
@@ -48,11 +57,14 @@ class GroupManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
+            {
+                title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
             },
-            {title: '班组组长', dataIndex: 'employeeName', key: 'employeeName', width: 100
+            {
+                title: '班组组长', dataIndex: 'employeeName', key: 'employeeName', width: 100
             },
-            {title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
+            {
+                title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
             },
 
         ];
@@ -120,6 +132,11 @@ class GroupManage extends React.Component {
                 this.handleDisable();
                 break;
             }
+            case "employeeSelect":
+            {
+                this.employeeSelect();
+                break;
+            }
         }
     };
 
@@ -139,11 +156,12 @@ class GroupManage extends React.Component {
      * ModalForm相关
      */
     setModalFormState = (newState, callback) => {
-        const { modalForm } = this.state;
+        const {modalForm} = this.state;
         const newModalForm = Object.assign({}, modalForm, newState);
         this.setState({
             modalForm: newModalForm
-        }, callback || (()=>{}));
+        }, callback || (()=> {
+            }));
     };
     //引用Form
     saveFormRef = (form) => {
@@ -170,14 +188,14 @@ class GroupManage extends React.Component {
     };
     //Modal取消
     handleCancel = (doSearch) => {
-        this.setModalFormState({
+        CommonHelper.setModalFormState(this, {
             modalVisible: false
         }, () => {
             this.state.modalForm.modalTitle = "";
             this.state.modalForm.isSubmitting = false;
             this.state.modalForm.formData = {};
 
-            if(doSearch){
+            if (doSearch) {
                 this.state.dataParam.current = 1;
                 this.doSearch();
             }
@@ -187,15 +205,97 @@ class GroupManage extends React.Component {
     getFormFields = () => {
         return [
             {
-                label: "班组名称", key: "groupName", labelSpan:6, fieldSpan: 16,
+                label: "班组名称", key: "groupName", labelSpan: 6, fieldSpan: 16,
                 rules: [
                     {required: true, message: '请输入班组名称'}
                 ],
-                item:(
-                    <Input disabled={this.state.modalForm.isSubmitting} />
+                item: (
+                    <Input disabled={this.state.modalForm.isSubmitting}/>
                 )
             }
         ];
+    };
+
+    /**
+     * ModalTable
+     */
+    getEmployeeTableFields = () => {
+        return [
+            {
+                title: '员工姓名', dataIndex: 'employeeName', key: 'employeeName', width: 140
+            },
+            {
+                title: '身份证', dataIndex: 'idCard', key: 'idCard', width: 140
+            },
+            {
+                title: '性别', dataIndex: 'gender', key: 'gender', width: 140
+            },
+            {
+                title: '班组', dataIndex: 'groupName', key: 'groupName', width: 140
+            },
+            {
+                title: '工种', dataIndex: 'jobName', key: 'jobName', width: 140
+            },
+            {
+                title: '入职时间', dataIndex: 'entryDate', key: 'entryDate', width: 140
+            }
+        ];
+    };
+    /**
+     * 设置班组长
+     */
+    employeeSelect = () => {
+        if (this.state.selectedRows.length <= 0) {
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        CommonHelper.setModalTableState(this, {
+            visible: true
+        });
+    };
+    handleModalTableConfirm = (selectedRowKeys, selectedRows) => {
+        message.info("点了确定");
+        console.log("selectedRowKeys:%o", selectedRowKeys);
+        console.log("selectedRows:%o", selectedRows);
+        const selectedGroup = this.state.selectedRows[0];
+
+        console.log("selectedGroup:%o", selectedGroup);
+        selectedGroup.employeeId = selectedRowKeys[0];
+        console.log("selectedGroup:%o", selectedGroup);
+
+        $.ajax({
+            url: this.configuration.saveUrl,
+            type: 'POST',
+            data: selectedGroup,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                if (result.success) {
+                    this.saveEmployeeSuccess(result);
+                } else {
+                    this.saveEmployeeFail(result);
+                }
+            },
+            error: (result) => {
+                this.saveEmployeeFail(result);
+            }
+        });
+
+    };
+    saveEmployeeSuccess = (result) => {
+        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
+        this.handleModalTableCancel(true);
+    };
+    saveEmployeeFail = (result) => {
+        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
+    };
+    handleModalTableCancel = (doSearch) => {
+        CommonHelper.setModalTableState(this, {visible: false}, ()=> {
+            if (doSearch) {
+                this.state.dataParam.current = 1;
+                this.doSearch();
+            }
+        })
     };
 
     /**
@@ -231,7 +331,7 @@ class GroupManage extends React.Component {
     };
 
     handleUpdate = () => {
-        if(this.state.selectedRows.length <= 0){
+        if (this.state.selectedRows.length <= 0) {
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
@@ -265,18 +365,18 @@ class GroupManage extends React.Component {
         });
     };
     saveSuccess = (result) => {
-        message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
+        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
         this.handleCancel(true);
     };
     saveFail = (result) => {
-        message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
         this.setModalFormState({
             isSubmitting: false
         });
     };
 
     handleDisable = () => {
-        if(this.state.selectedRows.length <= 0){
+        if (this.state.selectedRows.length <= 0) {
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
@@ -313,12 +413,12 @@ class GroupManage extends React.Component {
         });
     };
     disableSuccess = (result) => {
-        message.success(result.msg||this.configuration.OPERATION_SUCCESS_MSG);
+        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
         this.state.dataParam.current = 1;
         this.doSearch();
     };
     disableFail = (result) => {
-        message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
     };
 
     /**
@@ -377,11 +477,23 @@ class GroupManage extends React.Component {
                     handleCancel={()=>{this.handleCancel(false)}}
                 >
                 </ModalForm>
+                <ModalTable
+                    title="选择员工"
+                    visible={this.state.modalTable.visible}
+                    width="80%"
+                    conditionConfigCode="EMPLOYEE_MANAGE"
+                    searchUrl={`${_ctx_}/base/employee/getEmployees`}
+                    keyId="id"
+                    column={this.getEmployeeTableFields()}
+                    multiSelect={false}
+                    handleConfirm={this.handleModalTableConfirm}
+                    handleCancel={this.handleModalTableCancel}
+                >
+                </ModalTable>
             </div>
         );
     }
 }
-
 
 
 exports.GroupManage = GroupManage;

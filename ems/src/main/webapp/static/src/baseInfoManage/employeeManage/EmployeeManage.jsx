@@ -97,7 +97,7 @@ class EmployeeManage extends React.Component {
      */
     conditionDidLoad = () => {
         this.doSearch();
-    }
+    };
     handleItemChange = (conditionKey, value) => {
         this.state.dataParam[conditionKey] = value;
     };

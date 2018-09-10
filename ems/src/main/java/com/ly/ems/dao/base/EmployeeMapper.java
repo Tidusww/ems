@@ -30,30 +30,30 @@ public interface EmployeeMapper {
     List<EmployeeDTO> getEmployeesByConditions(EmployeeConditions conditions);
 
     /**
-     * 新增Area
+     * 新增Employee
      *
-     * @param area
+     * @param employee
      */
     //TODO
-    void insertEmployee(Employee area);
+    void insertEmployee(Employee employee);
 
     /**
-     * 修改Area
+     * 修改Employee
      *
-     * @param area
+     * @param employee
      */
     //TODO
-    void updateEmployee(Employee area);
+    void updateEmployee(Employee employee);
 
     /**
-     * 修改Area状态
+     * 修改Employee状态
      *
      * @param id
      */
     void updateEmployeeStatus(@Param("id") Integer id, @Param("status") StatusEnum statusEnum);
 
     /**
-     * 删除Area
+     * 删除Employee
      *
      * @param id
      */

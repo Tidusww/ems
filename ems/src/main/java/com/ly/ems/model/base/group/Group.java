@@ -9,8 +9,6 @@ public class Group extends PageableModel {
 
     private String groupName;
     private Integer employeeId;
-    private String employeeName;
-    private String phone;
 
 
     public String getGroupName() {
@@ -23,26 +21,6 @@ public class Group extends PageableModel {
 
     public Integer getEmployeeId() {
         return employeeId;
-    }
-
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
 }

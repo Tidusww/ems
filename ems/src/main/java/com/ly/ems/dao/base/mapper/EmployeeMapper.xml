@@ -29,7 +29,7 @@
     <update id="updateEmployee" parameterType="com.ly.ems.model.base.employee.Employee">
         UPDATE ly_employee
         <set >
-            <if test="employee_name != null" >
+            <if test="employeeName != null" >
                 employee_name = #{employeeName,jdbcType=VARCHAR},
             </if>
         </set>
