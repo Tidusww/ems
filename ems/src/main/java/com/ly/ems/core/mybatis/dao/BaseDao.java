@@ -2,6 +2,7 @@ package com.ly.ems.core.mybatis.dao;
 
 import com.ly.ems.core.mybatis.model.BaseModel;
 import com.ly.ems.core.mybatis.pagehelper.PageableModel;
+import com.ly.ems.model.common.constant.EnableEnum;
 import com.ly.ems.model.common.constant.StatusEnum;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,7 +40,7 @@ public interface BaseDao<Model extends BaseModel, Condition extends BaseModel> {
      * 修改 状态
      * @param id
      */
-    void updateStatus(@Param("id") Integer id, @Param("status") StatusEnum statusEnum);
+    void updateEnable(@Param("id") Integer id, @Param("enable") EnableEnum enableEnum);
     /**
      * 删除
      * @param id

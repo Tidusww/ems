@@ -38,7 +38,7 @@ public class PermissionLoader implements FactoryBean<Ini.Section> {
         }
 
         //动态加载数据库中的权限配置
-        List<Permission> perms = adminService.getAllPermissions(StatusEnum.ACTIVED);
+        List<Permission> perms = adminService.getAllPermissions(StatusEnum.ACTIVE);
         if (perms != null) {
             for (Permission p : perms) {
                 filterChains.add(new PermissionFilterChain(p.getPermissionUrlPattern(), p.generatePerms()));

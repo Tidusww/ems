@@ -60,7 +60,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthenticationException("用户名或密码错误");
         }
 
-        if (user.getStatus() != StatusEnum.ACTIVED) {
+        if (user.getStatus() != StatusEnum.ACTIVE) {
             throw new AuthenticationException(String.format("账号状态无效：%s", user.getStatus().toString()));
         }
 

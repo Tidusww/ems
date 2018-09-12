@@ -1,25 +1,22 @@
 package com.ly.ems.model.common.constant;
 
 
-import com.ly.ems.core.mybatis.BaseKeyValueEnum;
-import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 
-public enum StatusEnum implements BaseKeyValueEnum {
+public enum EnableEnum implements BaseKeyValueEnum {
     /**
      * 状态：
-     * 0: 未知
-     * 1: 有效
-     * 2: 无效
+     * 0: 禁用
+     * 1: 启用
      */
-    UNKNOWN(0, "未知"),
-    ACTIVE(1, "有效"),
-    DISABLED(2, "无效");
+    DISABLED(0, "禁用"),
+    ENABLED(1, "启用");
 
     private Integer key;
     private String value;
 
-    StatusEnum(Integer key, String value) {
+    EnableEnum(Integer key, String value) {
         this.key = key;
         this.value = value;
     }

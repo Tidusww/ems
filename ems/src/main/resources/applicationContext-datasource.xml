@@ -87,7 +87,7 @@
         </property>
      </bean>
     <!-- spring与mybatis整合配置，扫描所有dao -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer"
           p:basePackage="com.ly.ems.dao,
                          com.ly.ems.core.mybatis.dao"
           p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
