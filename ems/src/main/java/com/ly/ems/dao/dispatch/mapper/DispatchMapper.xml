@@ -5,7 +5,7 @@
     <!-- BaseModel -->
     <resultMap id="BaseMap" type="com.ly.ems.core.mybatis.model.BaseModel">
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="enable" property="enable" jdbcType="INTEGER" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     </resultMap>
@@ -30,17 +30,17 @@
     </delete>
     <update id="updateStatus" parameterType="java.lang.Integer" >
         UPDATE ly_dispatch_rel
-        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
+        SET enable = #{enable,javaType=com.ly.ems.model.common.constant.StatusEnum}
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.model.BaseModel" resultMap="DispatchMap">
-        SELECT * FROM ly_dispatch_rel WHERE 1=1 AND status = 1
+        SELECT * FROM ly_dispatch_rel WHERE 1=1 AND enable = 1
         <if test="companyName != null and companyName != ''"> AND company_name like CONCAT('%', #{companyName, jdbcType=VARCHAR}, '%') </if>
     </select>
 
     <insert id="insert" parameterType="com.ly.ems.core.mybatis.model.BaseModel" useGeneratedKeys="true">
-        INSERT INTO ly_dispatch_rel (group_id, group_name, company_id, company_name, project_id, project_name, start_date, end_date, status) VALUES (#{groupId}, #{groupName}, #{companyId}, #{companyName}, #{projectId}, #{projectName}, #{start_date}, #{end_date}, #{status})
+        INSERT INTO ly_dispatch_rel (group_id, group_name, company_id, company_name, project_id, project_name, start_date, end_date, enable) VALUES (#{groupId}, #{groupName}, #{companyId}, #{companyName}, #{projectId}, #{projectName}, #{start_date}, #{end_date}, #{enable})
     </insert>
 
     <update id="update" parameterType="com.ly.ems.core.mybatis.model.BaseModel">
@@ -70,8 +70,8 @@
             <if test="endDate != null" >
                 end_date = #{endDate,jdbcType=TIMESTAMP},
             </if>
-            <if test="status != null" >
-                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
+            <if test="enable != null" >
+                enable = #{enable,javaType=com.ly.ems.model.common.constant.StatusEnum},
             </if>
         </set>
         WHERE id = #{id, jdbcType=INTEGER}

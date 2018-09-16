@@ -6,7 +6,17 @@ import java.util.Date;
 /**
  * Created by tidus on 2018/2/23.
  */
-public class ProjectDTO extends Project {
+public class ProjectVo extends Project {
+
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     @Override
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh" , timezone="GMT+8")

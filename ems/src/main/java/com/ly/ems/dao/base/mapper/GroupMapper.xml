@@ -1,85 +1,73 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ly.ems.dao.base.GroupMapper" >
-
-    <resultMap id="BaseGroupMap" type="com.ly.ems.model.base.group.GroupDTO">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="group_name" property="groupName" jdbcType="VARCHAR" />
-        <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
-        <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
-        <result column="phone" property="phone" jdbcType="VARCHAR" />
-        <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    </resultMap>
-
-    <select id="getGroupById" resultMap="BaseGroupMap">
-        SELECT g.*, e.employee_name, e.phone
-        FROM ly_group g
-        LEFT JOIN ly_employee e on e.id = g.employee_id
-        WHERE g.id = #{id, jdbcType=INTEGER}
-    </select>
-
-    <select id="getGroupsByConditions" parameterType="com.ly.ems.model.base.group.GroupConditions" resultMap="BaseGroupMap">
-        SELECT g.*, e.employee_name, e.phone
-        FROM ly_group g
-        LEFT JOIN ly_employee e on e.id = g.employee_id
-        WHERE 1=1 AND g.status = 1
-        <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
-        <if test="employeeName != null and employeeName != ''"> AND e.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-        <if test="phone != null and phone != ''"> AND e.phone = #{phone, jdbcType=VARCHAR} </if>
-    </select>
-
-    <insert id="insertGroup" parameterType="com.ly.ems.model.base.group.Group" useGeneratedKeys="true">
-        INSERT INTO ly_group
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="groupName != null" >
-                group_name,
-            </if>
-            <if test="employeeId != null" >
-                employee_id,
-            </if>
-            <if test="status != null" >
-                status,
-            </if>
-        </trim>
-        <trim prefix="VALUES (" suffix=")" suffixOverrides="," >
-            <if test="groupName != null" >
-                #{groupName},
-            </if>
-            <if test="employeeId != null" >
-                #{employeeId},
-            </if>
-            <if test="status != null" >
-                #{status},
-            </if>
-        </trim>
-    </insert>
-
-    <update id="updateGroup" parameterType="com.ly.ems.model.base.group.Group">
-        UPDATE ly_group
-        <set >
-            <if test="groupName != null" >
-                group_name = #{groupName,jdbcType=VARCHAR},
-            </if>
-            <if test="employeeId != null" >
-                employee_id = #{employeeId,jdbcType=INTEGER},
-            </if>
-            <if test="status != null" >
-                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
-            </if>
-        </set>
-        WHERE id = #{id, jdbcType=INTEGER}
-    </update>
-
-    <delete id="updateGroupStatus" >
-        UPDATE ly_group
-        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <delete id="deleteGroup" parameterType="java.lang.Integer" >
-        DELETE FROM ly_group
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.base.mapper.GroupMapper">
+  <resultMap id="BaseResultMap" type="com.ly.ems.model.base.group.Group">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, group_name, employee_id, status, enable, create_date, update_date, update_user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ly.ems.model.base.group.GroupExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ly_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

@@ -2,10 +2,6 @@ package com.ly.ems.dao.attendance;
 
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceDTO;
-import com.ly.ems.model.base.employee.Employee;
-import com.ly.ems.model.base.employee.EmployeeConditions;
-import com.ly.ems.model.base.employee.EmployeeDTO;
-import com.ly.ems.model.common.constant.StatusEnum;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -7,7 +7,7 @@
     </resultMap>
 
     <select id="getAttendancesByConditions" resultMap="BaseAttendanceMap">
-        SELECT a.* FROM ${attendanceTableName} a WHERE 1=1 AND status = 1
+        SELECT a.* FROM ${attendanceTableName} a WHERE 1=1 AND enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''"> AND employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%') </if>
         <if test="conditions.groupId != null and conditions.groupId != ''"> AND group_id = #{conditions.groupId, jdbcType=VARCHAR} </if>
         <if test="conditions.jobId != null and conditions.jobId != ''"> AND job_id = #{conditions.jobId, jdbcType=VARCHAR} </if>

@@ -4,9 +4,7 @@ import com.ly.ems.core.datasource.MultipleRoutingDataSource;
 import com.ly.ems.model.attendance.Attendance;
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceDTO;
-import com.ly.ems.model.base.employee.EmployeeDTO;
 import com.ly.ems.model.common.PageableResult;
-import com.ly.ems.model.condition.ConditionItemDTO;
 
 import java.util.List;
 

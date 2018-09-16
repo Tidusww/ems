@@ -1,52 +1,72 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ly.ems.dao.base.CompanyMapper" >
-
-    <resultMap id="BaseMap" type="com.ly.ems.core.mybatis.model.BaseModel">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    </resultMap>
-
-    <resultMap id="CompanyMap" type="com.ly.ems.model.base.company.Company" extends="BaseMap">
-        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
-    </resultMap>
-
-    <select id="getById" resultMap="CompanyMap">
-        SELECT * FROM ly_company WHERE id = #{id, jdbcType=INTEGER}
-    </select>
-    <delete id="delete" parameterType="java.lang.Integer" >
-        DELETE FROM ly_company
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
-    <update id="updateStatus" parameterType="java.lang.Integer" >
-        UPDATE ly_company
-        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
-        WHERE id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <select id="getByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="CompanyMap">
-        SELECT * FROM ly_company WHERE 1=1 AND status = 1
-        <if test="companyName != null and companyName != ''"> AND company_name like CONCAT('%', #{companyName, jdbcType=VARCHAR}, '%') </if>
-    </select>
-
-    <insert id="insert" parameterType="com.ly.ems.core.mybatis.model.BaseModel" useGeneratedKeys="true">
-        INSERT INTO ly_company (company_name, status) VALUES (#{companyName}, #{status})
-    </insert>
-
-    <update id="update" parameterType="com.ly.ems.core.mybatis.model.BaseModel">
-        UPDATE ly_company
-        <set >
-            <if test="companyName != null" >
-                company_name = #{companyName,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null" >
-                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
-            </if>
-        </set>
-        WHERE id = #{id, jdbcType=INTEGER}
-    </update>
-
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.base.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.ly.ems.model.base.company.Company">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, company_name, status, enable, create_date, update_date, update_user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ly.ems.model.base.company.CompanyExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ly_company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

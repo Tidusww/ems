@@ -1,49 +1,88 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ly.ems.dao.base.EmployeeMapper" >
-
-    <resultMap id="BaseEmployeeMap" type="com.ly.ems.model.base.employee.EmployeeDTO">
-        <id column="id" property="id" jdbcType="INTEGER" />
-    </resultMap>
-
-    <select id="getEmployeeById" resultMap="BaseEmployeeMap">
-        SELECT e.* FROM ly_area e WHERE id = #{id, jdbcType=INTEGER}
-    </select>
-
-    <select id="getEmployeesByConditions" parameterType="com.ly.ems.model.base.employee.EmployeeConditions" resultMap="BaseEmployeeMap">
-        SELECT e.* FROM ly_employee e WHERE 1=1 AND status = 1
-        <if test="employeeName != null and employeeName != ''"> AND employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-    </select>
-
-    <insert id="insertEmployee" parameterType="com.ly.ems.model.base.employee.Employee" useGeneratedKeys="true">
-        INSERT INTO ly_employee (employee_name, gender, id_card, address, phone, status,
-                                group_id, group_name, job_id, job_name,
-                                salary_bank, salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount,
-                                entry_date, contract_no)
-        VALUES (#{employeeName}, #{gender}, #{idCard}, #{address}, #{phone}, #{status},
-                #{groupId}, #{groupName}, #{jobId}, #{jobName},
-                #{salaryBank}, #{salaryAccount}, #{socialSecurityNo}, #{personalSsAmount}, #{companySsAmount}, #{houseFundAmount},
-                #{entryDate}, #{contractNo})
-    </insert>
-
-    <update id="updateEmployee" parameterType="com.ly.ems.model.base.employee.Employee">
-        UPDATE ly_employee
-        <set >
-            <if test="employeeName != null" >
-                employee_name = #{employeeName,jdbcType=VARCHAR},
-            </if>
-        </set>
-        WHERE id = #{id, jdbcType=INTEGER}
-    </update>
-
-    <delete id="updateEmployeeStatus" >
-        UPDATE ly_employee
-        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <delete id="deleteEmployee" parameterType="java.lang.Integer" >
-        DELETE FROM ly_employee
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.base.mapper.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.ly.ems.model.base.employee.Employee">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="job_id" jdbcType="INTEGER" property="jobId" />
+    <result column="salary_bank" jdbcType="VARCHAR" property="salaryBank" />
+    <result column="salary_account" jdbcType="VARCHAR" property="salaryAccount" />
+    <result column="social_security_no" jdbcType="VARCHAR" property="socialSecurityNo" />
+    <result column="personal_ss_amount" jdbcType="DECIMAL" property="personalSsAmount" />
+    <result column="company_ss_amount" jdbcType="DECIMAL" property="companySsAmount" />
+    <result column="house_fund_amount" jdbcType="DECIMAL" property="houseFundAmount" />
+    <result column="entry_date" jdbcType="TIMESTAMP" property="entryDate" />
+    <result column="contract_no" jdbcType="VARCHAR" property="contractNo" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, employee_name, gender, id_card, address, phone, group_id, job_id, salary_bank, 
+    salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount, 
+    entry_date, contract_no, status, enable, create_date, update_date, update_user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ly.ems.model.base.employee.EmployeeExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ly_employee
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

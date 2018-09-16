@@ -10,8 +10,26 @@ import java.util.Date;
 /**
  * Created by tidus on 2017/11/19.
  */
-public class EmployeeDTO extends Employee{
+public class EmployeeVo extends Employee{
 
+    private String groupName;
+    private String jobName;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
 
     public String getGenderValue() {
         if(super.getGender() == null) {

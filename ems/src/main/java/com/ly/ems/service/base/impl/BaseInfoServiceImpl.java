@@ -1,26 +1,30 @@
 package com.ly.ems.service.base.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.dao.base.*;
+import com.ly.ems.dao.base.mapper.*;
 import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
-import com.ly.ems.model.base.employee.EmployeeDTO;
+import com.ly.ems.model.base.employee.EmployeeVo;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
+import com.ly.ems.model.base.group.GroupVo;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
-import com.ly.ems.model.common.constant.StatusEnum;
+import com.ly.ems.model.common.constant.EnableEnum;
 import com.ly.ems.service.base.BaseInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,17 +34,27 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseInfoServiceImpl.class);
 
     @Autowired
+    ExtendEmployeeMapper extendEmployeeMapper;
+    @Autowired
     EmployeeMapper employeeMapper;
 
+    @Autowired
+    ExtendGroupMapper extendGroupMapper;
     @Autowired
     GroupMapper groupMapper;
 
     @Autowired
+    ExtendJobMapper extendJobMapper;
+    @Autowired
     JobMapper jobMapper;
 
     @Autowired
+    ExtendCompanyMapper extendCompanyMapper;
+    @Autowired
     CompanyMapper companyMapper;
 
+    @Autowired
+    ExtendProjectMapper extendProjectMapper;
     @Autowired
     ProjectMapper projectMapper;
 
@@ -50,40 +64,36 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      * @return
      */
     @Override
-    public PageableResult<EmployeeDTO> getEmployeesByConditions(EmployeeConditions conditions) {
+    public PageableResult<EmployeeVo> getEmployeesByConditions(EmployeeConditions conditions) {
 
-        List<EmployeeDTO> resultList = employeeMapper.getEmployeesByConditions(conditions);
-        PageInfo<EmployeeDTO> pageInfo = new PageInfo(resultList);
+        List<EmployeeVo> resultList = extendEmployeeMapper.selectByConditions(conditions);
+        PageInfo<EmployeeVo> pageInfo = new PageInfo(resultList);
 
-        return new PageableResult<EmployeeDTO>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+        return new PageableResult<EmployeeVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
     }
 
     @Override
     public void saveEmployee(Employee employee) {
         if (employee.getId() == null) {
-            if (employee.getGroupId() != null) {
-                Group group = groupMapper.getGroupById(employee.getGroupId());
-                employee.setGroupName(group.getGroupName());
-            }
-            if (employee.getJobId() != null) {
-                Job job = jobMapper.getJobById(employee.getJobId());
-                employee.setJobName(job.getJobName());
-            }
-            employee.setStatus(StatusEnum.ACTIVED);
-            employeeMapper.insertEmployee(employee);
+            employee.setEnable(EnableEnum.ENABLED);
+            employeeMapper.insertSelective(employee);
         } else {
-            employeeMapper.updateEmployee(employee);
+            employeeMapper.updateByPrimaryKeySelective(employee);
         }
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void disableEmployee(Integer id) {
-        employeeMapper.updateEmployeeStatus(id, StatusEnum.DISABLED);
+        Employee employee = new Employee();
+        employee.setId(id);
+        employee.setEnable(EnableEnum.DISABLED);
+        employeeMapper.updateByPrimaryKeySelective(employee);
     }
 
     @Override
     public void deleteEmployee(Integer id) {
-        employeeMapper.deleteEmployee(id);
+        employeeMapper.deleteByPrimaryKey(id);
     }
 
 
@@ -93,33 +103,37 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      * @return
      */
     @Override
-    public PageableResult<Group> getGroupsByConditions(GroupConditions conditions) {
+    public PageableResult<GroupVo> getGroupsByConditions(GroupConditions conditions) {
 
-        List<Group> resultList = groupMapper.getGroupsByConditions(conditions);
-        PageInfo<Group> pageInfo = new PageInfo(resultList);
+        List<GroupVo> resultList = extendGroupMapper.selectByConditions(conditions);
+        PageInfo<GroupVo> pageInfo = new PageInfo(resultList);
 
-        return new PageableResult<Group>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+        return new PageableResult<GroupVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
 
     @Override
     public void saveGroup(Group group) {
         if (group.getId() == null) {
-            group.setStatus(StatusEnum.ACTIVED);
-            groupMapper.insertGroup(group);
+            group.setEnable(EnableEnum.ENABLED);
+            groupMapper.insertSelective(group);
         } else {
-            groupMapper.updateGroup(group);
+            groupMapper.updateByPrimaryKeySelective(group);
         }
     }
 
     @Override
     public void disableGroup(Integer id) {
-        groupMapper.updateGroupStatus(id, StatusEnum.DISABLED);
+
+        Group group = new Group();
+        group.setId(id);
+        group.setEnable(EnableEnum.DISABLED);
+        groupMapper.updateByPrimaryKeySelective(group);
     }
 
     @Override
     public void deleteGroup(Integer id) {
-        groupMapper.deleteGroup(id);
+        groupMapper.deleteByPrimaryKey(id);
     }
 
 
@@ -132,7 +146,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public PageableResult<Job> getJobsByConditions(JobConditions conditions) {
 
-        List<Job> resultList = jobMapper.getJobsByConditions(conditions);
+        List<Job> resultList = extendJobMapper.selectByConditions(conditions);
         PageInfo<Job> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<Job>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -142,21 +156,21 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public void saveJob(Job job) {
         if (job.getId() == null) {
-            job.setStatus(StatusEnum.ACTIVED);
-            jobMapper.insertJob(job);
+            job.setEnable(EnableEnum.DISABLED);
+            jobMapper.insertSelective(job);
         } else {
-            jobMapper.updateJob(job);
+            jobMapper.updateByPrimaryKeySelective(job);
         }
     }
 
     @Override
     public void disableJob(Integer id) {
-        jobMapper.updateJobStatus(id, StatusEnum.DISABLED);
+//        extendJobMapper.updateJobStatus(id, EnableEnum.DISABLED);
     }
 
     @Override
     public void deleteJob(Integer id) {
-        jobMapper.deleteJob(id);
+        jobMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -167,7 +181,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public PageableResult<Company> getCompaniesByConditions(CompanyConditions conditions) {
 
-        List<Company> resultList = companyMapper.getByConditions(conditions);
+        List<Company> resultList = extendCompanyMapper.selectByConditions(conditions);
         PageInfo<Company> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<Company>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -176,19 +190,21 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public void saveCompany(Company company) {
         if (company.getId() == null) {
-            company.setStatus(StatusEnum.ACTIVED);
-            companyMapper.insert(company);
+            company.setEnable(EnableEnum.ENABLED);
+            companyMapper.insertSelective(company);
         } else {
-            companyMapper.update(company);
+            companyMapper.updateByPrimaryKeySelective(company);
         }
     }
     @Override
     public void disableCompany(Integer id) {
-        companyMapper.updateStatus(id, StatusEnum.DISABLED);
+        Company company = new Company();
+        company.setEnable(EnableEnum.DISABLED);
+        companyMapper.updateByPrimaryKeySelective(company);
     }
     @Override
     public void deleteCompany(Integer id) {
-        companyMapper.delete(id);
+        companyMapper.deleteByPrimaryKey(id);
     }
 
     /**
@@ -197,36 +213,32 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      * @return
      */
     @Override
-    public PageableResult<Project> getProjectsByConditions(ProjectConditions conditions) {
+    public PageableResult<ProjectVo> getProjectsByConditions(ProjectConditions conditions) {
 
-        List<Project> resultList = projectMapper.getByConditions(conditions);
-        PageInfo<Project> pageInfo = new PageInfo(resultList);
+        List<ProjectVo> resultList = extendProjectMapper.selectByConditions(conditions);
+        PageInfo<ProjectVo> pageInfo = new PageInfo(resultList);
 
-        return new PageableResult<Project>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+        return new PageableResult<ProjectVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
     @Override
     public void saveProject(Project project) {
-        //保存单位名称
-        Company company = companyMapper.getById(project.getCompanyId());
-        if(company == null){
-            throw new EMSBusinessException("所选单位不存在,请确认!");
-        }
-        project.setCompanyName(company.getCompanyName());
-
         if (project.getId() == null) {
-            project.setStatus(StatusEnum.ACTIVED);
-            projectMapper.insert(project);
+            project.setEnable(EnableEnum.ENABLED);
+            projectMapper.insertSelective(project);
         } else {
-            projectMapper.update(project);
+            projectMapper.updateByPrimaryKeySelective(project);
         }
     }
     @Override
     public void disableProject(Integer id) {
-        projectMapper.updateStatus(id, StatusEnum.DISABLED);
+        Project project = new Project();
+        project.setId(id);
+        project.setEnable(EnableEnum.DISABLED);
+        projectMapper.updateByPrimaryKeySelective(project);
     }
     @Override
     public void deleteProject(Integer id) {
-        projectMapper.delete(id);
+        projectMapper.deleteByPrimaryKey(id);
     }
 }

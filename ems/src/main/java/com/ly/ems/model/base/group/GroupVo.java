@@ -3,7 +3,7 @@ package com.ly.ems.model.base.group;
 /**
  * Created by tidus on 2018/9/10.
  */
-public class GroupDTO extends Group {
+public class GroupVo extends Group {
     private String employeeName;
     private String phone;
 

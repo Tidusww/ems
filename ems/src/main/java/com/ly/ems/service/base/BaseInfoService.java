@@ -6,13 +6,15 @@ import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
-import com.ly.ems.model.base.employee.EmployeeDTO;
+import com.ly.ems.model.base.employee.EmployeeVo;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
+import com.ly.ems.model.base.group.GroupVo;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
 /**
  * 基础信息
@@ -25,7 +27,7 @@ public interface BaseInfoService {
      * @param conditions
      * @return
      */
-    PageableResult<EmployeeDTO> getEmployeesByConditions(EmployeeConditions conditions);
+    PageableResult<EmployeeVo> getEmployeesByConditions(EmployeeConditions conditions);
     void saveEmployee(Employee employee);
     void disableEmployee(Integer id);
     void deleteEmployee(Integer id);
@@ -35,7 +37,7 @@ public interface BaseInfoService {
      * @param conditions
      * @return
      */
-    PageableResult<Group> getGroupsByConditions(GroupConditions conditions);
+    PageableResult<GroupVo> getGroupsByConditions(GroupConditions conditions);
     void saveGroup(Group group);
     void disableGroup(Integer id);
     void deleteGroup(Integer id);
@@ -66,7 +68,7 @@ public interface BaseInfoService {
      * @param conditions
      * @return
      */
-    PageableResult<Project> getProjectsByConditions(ProjectConditions conditions);
+    PageableResult<ProjectVo> getProjectsByConditions(ProjectConditions conditions);
     void saveProject(Project job);
     void disableProject(Integer id);
     void deleteProject(Integer id);

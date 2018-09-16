@@ -1,58 +1,74 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ly.ems.dao.base.JobMapper" >
-
-    <resultMap id="BaseJobMap" type="com.ly.ems.model.base.job.Job">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="job_name" property="jobName" jdbcType="VARCHAR" />
-        <result column="is_spec" property="isSpec" jdbcType="INTEGER" />
-        <result column="salary" property="salary" jdbcType="DECIMAL" />
-        <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    </resultMap>
-
-    <select id="getJobById" resultMap="BaseJobMap">
-        SELECT j.* FROM ly_job j WHERE id = #{id, jdbcType=INTEGER}
-    </select>
-
-    <select id="getJobsByConditions" parameterType="com.ly.ems.model.base.job.JobConditions" resultMap="BaseJobMap">
-        SELECT j.* FROM ly_job j WHERE 1=1 AND status = 1
-        <if test="jobName != null and jobName != ''"> AND job_name like CONCAT('%', #{jobName, jdbcType=VARCHAR}, '%') </if>
-        <if test="isSpec != null"> AND is_spec = #{isSpec, javaType=com.ly.ems.model.common.constant.YesNoEnum} </if>
-    </select>
-
-    <insert id="insertJob" parameterType="com.ly.ems.model.base.job.Job" useGeneratedKeys="true">
-        INSERT INTO ly_job (job_name, is_spec, salary, status) VALUES (#{jobName}, #{isSpec}, #{salary}, #{status})
-    </insert>
-
-    <update id="updateJob" parameterType="com.ly.ems.model.base.job.Job">
-        UPDATE ly_job
-        <set >
-            <if test="jobName != null" >
-                job_name = #{jobName,jdbcType=VARCHAR},
-            </if>
-            <if test="isSpec != null" >
-                is_spec = #{isSpec,javaType=com.ly.ems.model.common.constant.YesNoEnum},
-            </if>
-            <if test="salary != null" >
-                salary = #{salary,jdbcType=DECIMAL},
-            </if>
-            <if test="status != null" >
-                status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum},
-            </if>
-        </set>
-        WHERE id = #{id, jdbcType=INTEGER}
-    </update>
-
-    <delete id="updateJobStatus" >
-        UPDATE ly_job
-        SET status = #{status,javaType=com.ly.ems.model.common.constant.StatusEnum}
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <delete id="deleteJob" parameterType="java.lang.Integer" >
-        DELETE FROM ly_job
-        WHERE id = #{id,jdbcType=INTEGER}
-    </delete>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.base.mapper.JobMapper">
+  <resultMap id="BaseResultMap" type="com.ly.ems.model.base.job.Job">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="is_spec" jdbcType="BIT" property="isSpec" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, job_name, is_spec, salary, status, enable, create_date, update_date, update_user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ly.ems.model.base.job.JobExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ly_job
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

@@ -6,13 +6,15 @@ import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
-import com.ly.ems.model.base.employee.EmployeeDTO;
+import com.ly.ems.model.base.employee.EmployeeVo;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
+import com.ly.ems.model.base.group.GroupVo;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.job.JobConditions;
 import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
+import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.base.BaseInfoService;
 import org.slf4j.Logger;
@@ -40,7 +42,7 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/employee/getEmployees", name = "分页查询员工")
     public AjaxResult getEmployees(EmployeeConditions conditions) {
-        PageableResult<EmployeeDTO> pageableResult = baseInfoService.getEmployeesByConditions(conditions);
+        PageableResult<EmployeeVo> pageableResult = baseInfoService.getEmployeesByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
@@ -81,7 +83,7 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/group/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
-        PageableResult<Group> pageableResult = baseInfoService.getGroupsByConditions(conditions);
+        PageableResult<GroupVo> pageableResult = baseInfoService.getGroupsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
@@ -207,7 +209,7 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/project/getProjects", name = "分页查询项目")
     public AjaxResult getProjects(ProjectConditions conditions) {
-        PageableResult<Project> pageableResult = baseInfoService.getProjectsByConditions(conditions);
+        PageableResult<ProjectVo> pageableResult = baseInfoService.getProjectsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody

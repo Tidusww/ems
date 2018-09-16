@@ -70,7 +70,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="multipleDataSource"
           p:configLocation="classpath:mybatis-config.xml"
-          p:mapperLocations="classpath:com/ly/ems/**/mapper/*.xml">
+          p:mapperLocations="classpath:com/ly/ems/dao/**/*.xml">
         <property name="plugins">
             <array>
                 <bean class="com.github.pagehelper.PageInterceptor">
@@ -88,8 +88,7 @@
      </bean>
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer"
-          p:basePackage="com.ly.ems.dao,
-                         com.ly.ems.core.mybatis.dao"
+          p:basePackage="com.ly.ems.dao"
           p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
 
 

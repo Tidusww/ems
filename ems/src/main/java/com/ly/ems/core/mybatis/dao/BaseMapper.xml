@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.core.mybatis.dao.ConditionMapper" >
+
+    <select id="selectByConditions" parameterType="com.ly.ems.core.mybatis.pagehelper.PageableModel" resultMap="BaseMap">
+        SELECT * FROM ${table} WHERE 1=1 AND enable = 1
+        <if test="colName != null and colName != ''"> AND col_name like CONCAT('%', #{colName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+    <insert id="insert" parameterType="com.ly.ems.core.mybatis.model.BaseModel" useGeneratedKeys="true">
+        INSERT INTO ${table} (col_name, enable) VALUES (#{colName}, #{enable})
+    </insert>
+    <update id="update" parameterType="com.ly.ems.core.mybatis.model.BaseModel">
+        UPDATE ${table}
+        <set >
+            <if test="colName != null" >
+                col_name = #{colName,jdbcType=VARCHAR},
+            </if>
+            <if test="enable != null" >
+                enable = #{enable,javaType=com.ly.ems.model.common.constant.EnableEnum},
+            </if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+</mapper>

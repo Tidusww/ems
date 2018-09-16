@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.base.ExtendProjectMapper" >
+
+    <resultMap id="ProjectVoMap" type="com.ly.ems.model.base.project.ProjectVo" extends="com.ly.ems.dao.base.mapper.ProjectMapper.BaseResultMap">
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectByConditions" parameterType="com.ly.ems.model.base.project.ProjectConditions" resultMap="ProjectVoMap">
+        SELECT * FROM ly_project p
+        WHERE 1=1 AND p.enable = 1
+        <if test="projectName != null and projectName != ''"> AND p.project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+
+
+</mapper>
