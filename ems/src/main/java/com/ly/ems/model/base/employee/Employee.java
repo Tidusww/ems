@@ -1,9 +1,9 @@
 package com.ly.ems.model.base.employee;
 
+import com.ly.ems.model.base.employee.constant.EmployeeStatusEnum;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
@@ -109,7 +109,7 @@ public class Employee {
      * 状态, 0：未知，1：有效， 2：无效
      */
     @Column(name = "`status`")
-    private StatusEnum status;
+    private EmployeeStatusEnum status;
 
     /**
      * 启用状态, 0：禁用，1：启用
@@ -424,7 +424,7 @@ public class Employee {
      *
      * @return status - 状态, 0：未知，1：有效， 2：无效
      */
-    public StatusEnum getStatus() {
+    public EmployeeStatusEnum getStatus() {
         return status;
     }
 
@@ -433,7 +433,7 @@ public class Employee {
      *
      * @param status 状态, 0：未知，1：有效， 2：无效
      */
-    public void setStatus(StatusEnum status) {
+    public void setStatus(EmployeeStatusEnum status) {
         this.status = status;
     }
 

@@ -1,7 +1,6 @@
 package com.ly.ems.model.base.group;
 
 import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -294,66 +293,6 @@ public class GroupExample {
 
         public Criteria andEmployeeIdNotBetween(Integer value1, Integer value2) {
             addCriterion("employee_id not between", value1, value2, "employeeId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(StatusEnum value) {
-            addCriterion("status =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(StatusEnum value) {
-            addCriterion("status <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(StatusEnum value) {
-            addCriterion("status >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(StatusEnum value) {
-            addCriterion("status >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(StatusEnum value) {
-            addCriterion("status <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(StatusEnum value) {
-            addCriterion("status <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<StatusEnum> values) {
-            addCriterion("status in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<StatusEnum> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(StatusEnum value1, StatusEnum value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(StatusEnum value1, StatusEnum value2) {
-            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

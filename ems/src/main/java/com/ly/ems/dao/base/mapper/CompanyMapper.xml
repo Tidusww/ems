@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="company_name" jdbcType="VARCHAR" property="companyName" />
-    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="enable" jdbcType="BIT" property="enable" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
@@ -49,7 +48,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, company_name, status, enable, create_date, update_date, update_user_id
+    id, company_name, enable, create_date, update_date, update_user_id
   </sql>
   <select id="selectByExample" parameterType="com.ly.ems.model.base.company.CompanyExample" resultMap="BaseResultMap">
     <!--

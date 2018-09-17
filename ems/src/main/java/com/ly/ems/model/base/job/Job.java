@@ -1,7 +1,6 @@
 package com.ly.ems.model.base.job;
 
 import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
 import com.ly.ems.model.common.constant.YesNoEnum;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,12 +30,6 @@ public class Job {
      */
     @Column(name = "`salary`")
     private BigDecimal salary;
-
-    /**
-     * 状态, 0：未知，1：有效， 2：无效
-     */
-    @Column(name = "`status`")
-    private StatusEnum status;
 
     /**
      * 启用状态, 0：禁用，1：启用
@@ -128,24 +121,6 @@ public class Job {
      */
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
-    }
-
-    /**
-     * 获取状态, 0：未知，1：有效， 2：无效
-     *
-     * @return status - 状态, 0：未知，1：有效， 2：无效
-     */
-    public StatusEnum getStatus() {
-        return status;
-    }
-
-    /**
-     * 设置状态, 0：未知，1：有效， 2：无效
-     *
-     * @param status 状态, 0：未知，1：有效， 2：无效
-     */
-    public void setStatus(StatusEnum status) {
-        this.status = status;
     }
 
     /**

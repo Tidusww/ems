@@ -1,9 +1,9 @@
 package com.ly.ems.model.base.employee;
 
+import com.ly.ems.model.base.employee.constant.EmployeeStatusEnum;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1160,52 +1160,52 @@ public class EmployeeExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(StatusEnum value) {
+        public Criteria andStatusEqualTo(EmployeeStatusEnum value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(StatusEnum value) {
+        public Criteria andStatusNotEqualTo(EmployeeStatusEnum value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(StatusEnum value) {
+        public Criteria andStatusGreaterThan(EmployeeStatusEnum value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(StatusEnum value) {
+        public Criteria andStatusGreaterThanOrEqualTo(EmployeeStatusEnum value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(StatusEnum value) {
+        public Criteria andStatusLessThan(EmployeeStatusEnum value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(StatusEnum value) {
+        public Criteria andStatusLessThanOrEqualTo(EmployeeStatusEnum value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<StatusEnum> values) {
+        public Criteria andStatusIn(List<EmployeeStatusEnum> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<StatusEnum> values) {
+        public Criteria andStatusNotIn(List<EmployeeStatusEnum> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(StatusEnum value1, StatusEnum value2) {
+        public Criteria andStatusBetween(EmployeeStatusEnum value1, EmployeeStatusEnum value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(StatusEnum value1, StatusEnum value2) {
+        public Criteria andStatusNotBetween(EmployeeStatusEnum value1, EmployeeStatusEnum value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

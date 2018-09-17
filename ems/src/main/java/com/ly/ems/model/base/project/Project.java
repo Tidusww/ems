@@ -1,7 +1,7 @@
 package com.ly.ems.model.base.project;
 
+import com.ly.ems.model.base.project.constant.ProjectStatusEnum;
 import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -46,7 +46,7 @@ public class Project {
      * 状态, 0：未知，1：有效， 2：无效
      */
     @Column(name = "`status`")
-    private StatusEnum status;
+    private ProjectStatusEnum status;
 
     /**
      * 启用状态, 0：禁用，1：启用
@@ -181,7 +181,7 @@ public class Project {
      *
      * @return status - 状态, 0：未知，1：有效， 2：无效
      */
-    public StatusEnum getStatus() {
+    public ProjectStatusEnum getStatus() {
         return status;
     }
 
@@ -190,7 +190,7 @@ public class Project {
      *
      * @param status 状态, 0：未知，1：有效， 2：无效
      */
-    public void setStatus(StatusEnum status) {
+    public void setStatus(ProjectStatusEnum status) {
         this.status = status;
     }
 

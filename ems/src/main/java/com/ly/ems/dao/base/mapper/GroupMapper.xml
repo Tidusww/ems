@@ -8,7 +8,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="enable" jdbcType="BIT" property="enable" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
@@ -50,7 +49,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, group_name, employee_id, status, enable, create_date, update_date, update_user_id
+    id, group_name, employee_id, enable, create_date, update_date, update_user_id
   </sql>
   <select id="selectByExample" parameterType="com.ly.ems.model.base.group.GroupExample" resultMap="BaseResultMap">
     <!--
