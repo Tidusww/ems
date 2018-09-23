@@ -19,6 +19,8 @@ import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.common.constant.EnableEnum;
 import com.ly.ems.service.base.BaseInfoService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +147,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
      */
     @Override
     public PageableResult<Job> getJobsByConditions(JobConditions conditions) {
-
+    this.currentUser();
         List<Job> resultList = extendJobMapper.selectByConditions(conditions);
         PageInfo<Job> pageInfo = new PageInfo(resultList);
 
@@ -156,7 +158,8 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public void saveJob(Job job) {
         if (job.getId() == null) {
-            job.setEnable(EnableEnum.DISABLED);
+            job.setEnable(EnableEnum.ENABLED);
+
             jobMapper.insertSelective(job);
         } else {
             jobMapper.updateByPrimaryKeySelective(job);
@@ -240,5 +243,11 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public void deleteProject(Integer id) {
         projectMapper.deleteByPrimaryKey(id);
+    }
+
+    private String currentUser() {
+
+        Subject currentUser = SecurityUtils.getSubject();
+        return "";
     }
 }

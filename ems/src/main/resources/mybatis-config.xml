@@ -79,7 +79,10 @@
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.StatusEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.common.constant.EnableEnum"/>
 
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.base.employee.constant.EmployeeStatusEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.base.employee.constant.GenderEnum"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.CodeValueEnumTypeHandler" javaType="com.ly.ems.model.base.employee.constant.SalaryBankEnum"/>
+        <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.base.project.constant.ProjectStatusEnum"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionDatasource"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.condition.constants.ConditionType"/>
         <typeHandler handler="com.ly.ems.core.mybatis.typehandler.KeyValueEnumTypeHandler" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>

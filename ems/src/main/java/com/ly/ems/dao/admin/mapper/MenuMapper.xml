@@ -20,5 +20,6 @@
         WHERE u.username = #{username, jdbcType=VARCHAR}
           AND m.parent_menu_id = #{parentMenuId, jdbcType=INTEGER}
           AND u.status = 1 AND m.status = 1
+          ORDER BY m.order
     </select>
 </mapper>

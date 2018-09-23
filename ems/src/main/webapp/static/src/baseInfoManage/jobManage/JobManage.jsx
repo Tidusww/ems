@@ -207,7 +207,7 @@ class JobManage extends React.Component {
                 )
             },
             {
-                label: "是否特殊工种", key: "isSpec", labelSpan:6, fieldSpan: 16,
+                label: "是否特殊工种", key: "isSpecValue", labelSpan:6, fieldSpan: 16,
                 rules: [
                     {required: true, message: '请选择是否特殊工种'}
                 ],

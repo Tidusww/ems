@@ -8,7 +8,9 @@
 
 
     <select id="selectByConditions" parameterType="com.ly.ems.model.base.project.ProjectConditions" resultMap="ProjectVoMap">
-        SELECT * FROM ly_project p
+        SELECT p.*, c.company_name
+        FROM ly_project p
+        LEFT JOIN ly_company c ON p.company_id = c.id
         WHERE 1=1 AND p.enable = 1
         <if test="projectName != null and projectName != ''"> AND p.project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
     </select>

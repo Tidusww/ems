@@ -1,6 +1,6 @@
 package com.ly.ems.service.dispatch.impl;
 
-import com.ly.ems.dao.dispatch.DispatchMapper;
+import com.ly.ems.dao.dispatch.DispatchRelMapper;
 import com.ly.ems.service.dispatch.DispatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ public class DispatchServiceImpl implements DispatchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DispatchServiceImpl.class);
 
     @Autowired
-    DispatchMapper dispatchMapper;
+    DispatchRelMapper dispatchRelMapper;
 
 
 
