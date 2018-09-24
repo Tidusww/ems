@@ -19,6 +19,7 @@ import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.common.constant.EnableEnum;
 import com.ly.ems.service.base.BaseInfoService;
+import com.ly.ems.service.dispatch.DispatchService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -34,6 +35,9 @@ import java.util.List;
 @Service
 public class BaseInfoServiceImpl implements BaseInfoService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseInfoServiceImpl.class);
+
+    @Autowired
+    DispatchService dispatchService;
 
     @Autowired
     ExtendEmployeeMapper extendEmployeeMapper;
@@ -115,12 +119,16 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     }
 
     @Override
-    public void saveGroup(Group group) {
+    public void saveGroup(Group group, Integer projectId) {
         if (group.getId() == null) {
             group.setEnable(EnableEnum.ENABLED);
             groupMapper.insertSelective(group);
         } else {
             groupMapper.updateByPrimaryKeySelective(group);
+        }
+
+        if(projectId != null) {
+            dispatchService.dispatchGroupToProjectByProjectId(group, projectId);
         }
     }
 
@@ -168,7 +176,10 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     @Override
     public void disableJob(Integer id) {
-//        extendJobMapper.updateJobStatus(id, EnableEnum.DISABLED);
+        Job job = new Job();
+        job.setId(id);
+        job.setEnable(EnableEnum.DISABLED);
+        jobMapper.updateByPrimaryKeySelective(job);
     }
 
     @Override

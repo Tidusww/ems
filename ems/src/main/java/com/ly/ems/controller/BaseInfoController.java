@@ -88,9 +88,9 @@ public class BaseInfoController extends AbstractBaseController {
     }
     @ResponseBody
     @RequestMapping(value = "/group/save", method = RequestMethod.POST, name = "保存班组")
-    public AjaxResult saveGroup(Group group) {
+    public AjaxResult saveGroup(Group group, Integer projectId) {
         try{
-            baseInfoService.saveGroup(group);
+            baseInfoService.saveGroup(group, projectId);
         }catch (Exception ex){
             logger.error("保存班组失败", ex);
             return AjaxResult.fail("保存班组失败");

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.dispatch.ExtendDispatchRelMapper" >
+
+    <resultMap id="DispatchVoMap" type="com.ly.ems.model.dispatch.DispatchRelVo" extends="com.ly.ems.dao.dispatch.DispatchRelMapper.BaseResultMap">
+        <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectByConditions" parameterType="com.ly.ems.model.dispatch.DispatchRelCondition" resultMap="DispatchVoMap">
+        SELECT dr.*, c.company_name
+        FROM ly_dispatch_rel dr
+        LEFT JOIN ly_company c ON p.company_id = c.id
+        WHERE 1=1 AND p.enable = 1
+        <if test="projectName != null and projectName != ''"> AND p.project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
+    </select>
+
+
+</mapper>

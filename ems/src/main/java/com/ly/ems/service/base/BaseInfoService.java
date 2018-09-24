@@ -38,7 +38,7 @@ public interface BaseInfoService {
      * @return
      */
     PageableResult<GroupVo> getGroupsByConditions(GroupConditions conditions);
-    void saveGroup(Group group);
+    void saveGroup(Group group, Integer projectId);
     void disableGroup(Integer id);
     void deleteGroup(Integer id);
 

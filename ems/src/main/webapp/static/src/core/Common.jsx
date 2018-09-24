@@ -63,12 +63,19 @@ const CommonHelper = {
             modalForm: newModalForm
         }, callback || (()=>{}));
     },
-    setModalTableState : (context, newState, callback) => {
-        const { modalTable } = context.state;
-        const newModalTable = Object.assign({}, modalTable, newState);
-        context.setState({
-            modalTable: newModalTable
-        }, callback || (()=>{}));
+    // setModalTableState : (context, newState, callback) => {
+    //     const { modalTable } = context.state;
+    //     const newModalTable = Object.assign({}, modalTable, newState);
+    //     context.setState({
+    //         modalTable: newModalTable
+    //     }, callback || (()=>{}));
+    // },
+    setModalTableState : (context, oldTargetStateName, newTargetState, callback) => {
+        const oldTargetState = context.state[oldTargetStateName];
+        const finalNewTargetState = Object.assign({}, oldTargetState, newTargetState);
+        const newState = {};
+        newState[oldTargetStateName] = finalNewTargetState;
+        context.setState(newState, callback || (()=>{}));
     }
 };
 

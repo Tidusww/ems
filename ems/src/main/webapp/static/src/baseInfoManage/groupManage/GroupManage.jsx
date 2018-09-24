@@ -30,10 +30,19 @@ class GroupManage extends React.Component {
                 formDataIdKey: "id",
                 isSubmitting: false
             },
-            modalTable: {
+            employeeTable: {
+                title: '选择员工',
                 visible: false,
                 conditionCode: `EMPLOYEE_MANAGE`,
                 searchUrl: `${_ctx_}/base/employee/getEmployees`,
+                keyId: "id",
+                multiSelect: false
+            },
+            projectTable: {
+                title: '选择项目',
+                visible: false,
+                conditionCode: `PROJECT_MANAGE`,
+                searchUrl: `${_ctx_}/base/project/getProjects`,
                 keyId: "id",
                 multiSelect: false
             }
@@ -137,6 +146,11 @@ class GroupManage extends React.Component {
                 this.employeeSelect();
                 break;
             }
+            case "dispatchProject":
+            {
+                this.dispatchProject();
+                break;
+            }
         }
     };
 
@@ -217,7 +231,7 @@ class GroupManage extends React.Component {
     };
 
     /**
-     * ModalTable
+     * EmployeeTable
      */
     getEmployeeTableFields = () => {
         return [
@@ -249,19 +263,13 @@ class GroupManage extends React.Component {
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
-        CommonHelper.setModalTableState(this, {
+        CommonHelper.setModalTableState(this, 'employeeTable', {
             visible: true
         });
     };
-    handleModalTableConfirm = (selectedRowKeys, selectedRows) => {
-        message.info("点了确定");
-        console.log("selectedRowKeys:%o", selectedRowKeys);
-        console.log("selectedRows:%o", selectedRows);
+    handleEmployeeTableConfirm = (selectedRowKeys, selectedRows) => {
         const selectedGroup = this.state.selectedRows[0];
-
-        console.log("selectedGroup:%o", selectedGroup);
         selectedGroup.employeeId = selectedRowKeys[0];
-        console.log("selectedGroup:%o", selectedGroup);
 
         $.ajax({
             url: this.configuration.saveUrl,
@@ -284,13 +292,82 @@ class GroupManage extends React.Component {
     };
     saveEmployeeSuccess = (result) => {
         message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
-        this.handleModalTableCancel(true);
+        this.handleEmployeeTableCancel(true);
     };
     saveEmployeeFail = (result) => {
         message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
     };
-    handleModalTableCancel = (doSearch) => {
-        CommonHelper.setModalTableState(this, {visible: false}, ()=> {
+    handleEmployeeTableCancel = (doSearch) => {
+        CommonHelper.setModalTableState(this, 'employeeTable', {visible: false}, ()=> {
+            if (doSearch) {
+                this.state.dataParam.current = 1;
+                this.doSearch();
+            }
+        })
+    };
+
+
+    /**
+     * ProjectTable
+     */
+    getProjectTableFields = () => {
+        return [
+            {title: '所属单位', dataIndex: 'companyName', key: 'companyName', width: 140
+            },
+            {title: '项目名称', dataIndex: 'projectName', key: 'projectName', width: 140
+            },
+            {title: '项目描述', dataIndex: 'projectDesc', key: 'projectDesc', width: 140
+            },
+            {title: '开工日期', dataIndex: 'startDate', key: 'startDate', width: 140
+            },
+            {title: '完工日期', dataIndex: 'endDate', key: 'endDate', width: 140
+            }
+        ];
+    };
+    /**
+     * 派遣项目
+     */
+    dispatchProject = () => {
+        if (this.state.selectedRows.length <= 0) {
+            message.info(this.configuration.NOT_SELECT_MSG);
+            return;
+        }
+        CommonHelper.setModalTableState(this, 'projectTable', {
+            visible: true
+        });
+    };
+    handleProjectTableConfirm = (selectedRowKeys, selectedRows) => {
+        const selectedGroup = this.state.selectedRows[0];
+        selectedGroup.projectId = selectedRowKeys[0];
+
+        $.ajax({
+            url: this.configuration.saveUrl,
+            type: 'POST',
+            data: selectedGroup,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                if (result.success) {
+                    this.saveProjectSuccess(result);
+                } else {
+                    this.saveProjectFail(result);
+                }
+            },
+            error: (result) => {
+                this.saveProjectFail(result);
+            }
+        });
+
+    };
+    saveProjectSuccess = (result) => {
+        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
+        this.handleProjectTableCancel(true);
+    };
+    saveProjectFail = (result) => {
+        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
+    };
+    handleProjectTableCancel = (doSearch) => {
+        CommonHelper.setModalTableState(this, 'projectTable', {visible: false}, ()=> {
             if (doSearch) {
                 this.state.dataParam.current = 1;
                 this.doSearch();
@@ -478,16 +555,29 @@ class GroupManage extends React.Component {
                 >
                 </ModalForm>
                 <ModalTable
-                    title="选择员工"
-                    visible={this.state.modalTable.visible}
+                    title={this.state.employeeTable.title}
+                    visible={this.state.employeeTable.visible}
                     width="80%"
-                    conditionConfigCode="EMPLOYEE_MANAGE"
-                    searchUrl={`${_ctx_}/base/employee/getEmployees`}
-                    keyId="id"
+                    conditionConfigCode={this.state.employeeTable.conditionCode}
+                    searchUrl={this.state.employeeTable.searchUrl}
+                    keyId={this.state.employeeTable.keyId}
                     column={this.getEmployeeTableFields()}
-                    multiSelect={false}
-                    handleConfirm={this.handleModalTableConfirm}
-                    handleCancel={this.handleModalTableCancel}
+                    multiSelect={this.state.employeeTable.multiSelect}
+                    handleConfirm={this.handleEmployeeTableConfirm}
+                    handleCancel={this.handleEmployeeTableCancel}
+                >
+                </ModalTable>
+                <ModalTable
+                    title={this.state.projectTable.title}
+                    visible={this.state.projectTable.visible}
+                    width="80%"
+                    conditionConfigCode={this.state.projectTable.conditionCode}
+                    searchUrl={this.state.projectTable.searchUrl}
+                    keyId={this.state.projectTable.keyId}
+                    column={this.getProjectTableFields()}
+                    multiSelect={this.state.projectTable.multiSelect}
+                    handleConfirm={this.handleProjectTableConfirm}
+                    handleCancel={this.handleProjectTableCancel}
                 >
                 </ModalTable>
             </div>
