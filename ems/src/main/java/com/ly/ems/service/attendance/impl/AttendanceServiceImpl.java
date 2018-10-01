@@ -115,7 +115,8 @@ public class AttendanceServiceImpl implements AttendanceService {
                 Attendance attendance = this.generateAttendanceForEmployeeRamdonly(employeeVo, attendanceMonth);
                 attendanceList.add(attendance);
             }
-
+            String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
+            extendAttendanceMapper.batchInsert(attendanceTableName, attendanceList);
         }
 
 
@@ -160,19 +161,16 @@ public class AttendanceServiceImpl implements AttendanceService {
             // 是否强制上班日
             if (holidayService.isForceWorkingDate(nowDate)) {
                 attendanceMap.put(keyString, AttendanceStatusEnum.ATTENDANCE);
-                continue;
             }
 
             // 是否节假日
             if (holidayService.isHoliday(nowDate)) {
                 attendanceMap.put(keyString, AttendanceStatusEnum.VACATION);
-                continue;
             }
 
             // 周一到周五正常出勤
             if (1 <= weekDay && weekDay <= 5) {
                 attendanceMap.put(keyString, AttendanceStatusEnum.ATTENDANCE);
-                continue;
             }
 
             // 周六
@@ -181,7 +179,6 @@ public class AttendanceServiceImpl implements AttendanceService {
                 attendanceMap.put(keyString,
                         RandomUtil.lottery(AttendanceConstant.OVERTIME_PROBABILITY) ?
                                 AttendanceStatusEnum.OVERTIME : AttendanceStatusEnum.VACATION);
-                continue;
             }
 
             // 周日
@@ -204,7 +201,6 @@ public class AttendanceServiceImpl implements AttendanceService {
                                         AttendanceStatusEnum.OVERTIME : AttendanceStatusEnum.VACATION);
                     }
                 }
-                continue;
             }
 
             nowDate = DateUtil.nextDay(nowDate);

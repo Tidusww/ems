@@ -33,7 +33,7 @@ class AttendanceManage extends React.Component {
             selectionType: "radio",
             getUrl: `${_ctx_}/attendance/get`,
             saveUrl: `${_ctx_}/attendance/save`,
-            disableUrl: `${_ctx_}/attendance/generate`,
+            generateUrl: `${_ctx_}/attendance/generate`,
 
 
         };
@@ -137,6 +137,10 @@ class AttendanceManage extends React.Component {
                 this.doSearch();
                 break;
             }
+            case 'generateAttendance':
+            {
+                this.generateAttendanceInfo();
+            }
         }
     };
 
@@ -180,27 +184,54 @@ class AttendanceManage extends React.Component {
         this.clearSelection();
         this.setState({isLoading: true});
 
-        const _this = this;
         $.ajax({
             url: this.configuration.getUrl,
             type: 'GET',
             data: this.state.dataParam,
             async: true,
             dataType: "json",
-            success: function (result) {
-                _this.setState({isLoading: false});
+            success: (result) => {
+                this.setState({isLoading: false});
                 if (result.success) {
                     const data = result.data;
-                    _this.setState({dataSource: data.dataSource, total: data.total});
+                    this.setState({dataSource: data.dataSource, total: data.total});
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);
                 }
             },
-            error: function (result) {
-                _this.setState({isLoading: false});
+            error: (result) => {
+                this.setState({isLoading: false});
                 console.log("请求出错" + result);
-                message.error(_this.configuration.OPERATION_FAILED_MSG, 3);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
+    };
+
+    /**
+     * 生成考勤数据
+     */
+    generateAttendanceInfo = () => {
+        $.ajax({
+            url: this.configuration.generateUrl,
+            type: 'POST',
+            data: this.state.dataParam,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                this.setState({isLoading: false});
+                if (result.success) {
+                    const data = result.data;
+                    this.setState({dataSource: data.dataSource, total: data.total});
+                } else {
+                    console.log("请求出错");
+                    message.error(result.msg, 3);
+                }
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                console.log("请求出错" + result);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
             }
         });
     };

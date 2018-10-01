@@ -42,10 +42,7 @@ public class AttendanceController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/generate", method = RequestMethod.POST, name = "生成考勤信息")
     public AjaxResult generateAttendances(AttendanceConditions conditions) {
-
-
-
-
+        attendanceService.generateAttendances(conditions);
         return AjaxResult.success("生成考勤信息成功");
     }
 
