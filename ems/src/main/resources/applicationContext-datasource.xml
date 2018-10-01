@@ -68,7 +68,7 @@
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
-          p:dataSource-ref="multipleDataSource"
+          p:dataSource-ref="dataSourceEms"
           p:configLocation="classpath:mybatis-config.xml"
           p:mapperLocations="classpath:com/ly/ems/dao/**/*.xml">
         <property name="plugins">
@@ -93,20 +93,20 @@
 
 
     <!-- 配置dataSource 数据源切换 -->
-    <bean id="determineDataSourceAspect" class="com.ly.ems.core.datasource.DetermineDataSourceAspect"/>
-    <aop:config>
-        <aop:aspect id="ddsAspect" ref="determineDataSourceAspect">
-            <aop:pointcut id="ddsPointCut" expression="execution(* com.ly.ems.service..*.*(..))"/>
-            <aop:before pointcut-ref="ddsPointCut" method="before"/>
-            <aop:after pointcut-ref="ddsPointCut" method="after"/>
-        </aop:aspect>
-    </aop:config>
+    <!--<bean id="determineDataSourceAspect" class="com.ly.ems.core.datasource.DetermineDataSourceAspect"/>-->
+    <!--<aop:config>-->
+        <!--<aop:aspect id="ddsAspect" ref="determineDataSourceAspect">-->
+            <!--<aop:pointcut id="ddsPointCut" expression="execution(* com.ly.ems.service..*.*(..))"/>-->
+            <!--<aop:before pointcut-ref="ddsPointCut" method="before"/>-->
+            <!--<aop:after pointcut-ref="ddsPointCut" method="after"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
 
 
     <!-- 对dataSource 数据源进行事务管理 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="multipleDataSource"/>
+          p:dataSource-ref="dataSourceEms"/>
     <!-- 事务策略 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
