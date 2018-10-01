@@ -39,6 +39,9 @@
     <result column="attendance_status_30" jdbcType="TINYINT" property="attendanceStatus30" />
     <result column="attendance_status_31" jdbcType="TINYINT" property="attendanceStatus31" />
     <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -51,6 +54,7 @@
     attendance_status_17, attendance_status_18, attendance_status_19, attendance_status_20, 
     attendance_status_21, attendance_status_22, attendance_status_23, attendance_status_24, 
     attendance_status_25, attendance_status_26, attendance_status_27, attendance_status_28, 
-    attendance_status_29, attendance_status_30, attendance_status_31, enable
+    attendance_status_29, attendance_status_30, attendance_status_31, enable, create_date, 
+    update_date, update_user_id
   </sql>
 </mapper>
