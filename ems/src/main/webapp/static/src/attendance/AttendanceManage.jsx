@@ -47,7 +47,7 @@ class AttendanceManage extends React.Component {
             },
             {title: '工种', dataIndex: 'jobName', key: 'jobName', width: 100
             },
-            {title: '1号', dataIndex: 'attendanceStatus1', key: 'attendanceStatus1', width: 50, render: (text, record, index) => {
+            {title: '1号', dataIndex: 'attendanceStatus1', key: 'attendanceStatus1', width: 60, render: (text, record, index) => {
                 let propName = 'attendanceStatus1';
                 let valuePropName = 'attendanceStatusValue1';
                 let checked = text == 1;
@@ -60,36 +60,186 @@ class AttendanceManage extends React.Component {
                         </Checkbox>
                     </div>
                 )
-            }},{title: '2号', dataIndex: 'attendanceStatus2', key: 'attendanceStatus2', width: 50
-            },{title: '3号', dataIndex: 'attendanceStatus3', key: 'attendanceStatus3', width: 50
-            },{title: '4号', dataIndex: 'attendanceStatus4', key: 'attendanceStatus4', width: 50
-            },{title: '5号', dataIndex: 'attendanceStatus5', key: 'attendanceStatus5', width: 50
-            },{title: '6号', dataIndex: 'attendanceStatus6', key: 'attendanceStatus6', width: 50
-            },{title: '7号', dataIndex: 'attendanceStatus7', key: 'attendanceStatus7', width: 50
-            },{title: '8号', dataIndex: 'attendanceStatus8', key: 'attendanceStatus8', width: 50
-            },{title: '9号', dataIndex: 'attendanceStatus9', key: 'attendanceStatus9', width: 50
-            },{title: '10号', dataIndex: 'attendanceStatus10', key: 'attendanceStatus10', width: 50
-            },{title: '11号', dataIndex: 'attendanceStatus11', key: 'attendanceStatus11', width: 50
-            },{title: '12号', dataIndex: 'attendanceStatus12', key: 'attendanceStatus12', width: 50
-            },{title: '13号', dataIndex: 'attendanceStatus13', key: 'attendanceStatus13', width: 50
-            },{title: '14号', dataIndex: 'attendanceStatus14', key: 'attendanceStatus14', width: 50
-            },{title: '15号', dataIndex: 'attendanceStatus15', key: 'attendanceStatus15', width: 50
-            },{title: '16号', dataIndex: 'attendanceStatus16', key: 'attendanceStatus16', width: 50
-            },{title: '17号', dataIndex: 'attendanceStatus17', key: 'attendanceStatus17', width: 50
-            },{title: '18号', dataIndex: 'attendanceStatus18', key: 'attendanceStatus18', width: 50
-            },{title: '19号', dataIndex: 'attendanceStatus19', key: 'attendanceStatus19', width: 50
-            },{title: '20号', dataIndex: 'attendanceStatus20', key: 'attendanceStatus20', width: 50
-            },{title: '21号', dataIndex: 'attendanceStatus21', key: 'attendanceStatus21', width: 50
-            },{title: '22号', dataIndex: 'attendanceStatus22', key: 'attendanceStatus22', width: 50
-            },{title: '23号', dataIndex: 'attendanceStatus23', key: 'attendanceStatus23', width: 50
-            },{title: '24号', dataIndex: 'attendanceStatus24', key: 'attendanceStatus24', width: 50
-            },{title: '25号', dataIndex: 'attendanceStatus25', key: 'attendanceStatus25', width: 50
-            },{title: '26号', dataIndex: 'attendanceStatus26', key: 'attendanceStatus26', width: 50
-            },{title: '27号', dataIndex: 'attendanceStatus27', key: 'attendanceStatus27', width: 50
-            },{title: '28号', dataIndex: 'attendanceStatus28', key: 'attendanceStatus28', width: 50
-            },{title: '29号', dataIndex: 'attendanceStatus29', key: 'attendanceStatus29', width: 50
-            },{title: '30号', dataIndex: 'attendanceStatus30', key: 'attendanceStatus30', width: 50
-            },{title: '31号', dataIndex: 'attendanceStatus31', key: 'attendanceStatus31', width: 50
+            }},{title: '2号', dataIndex: 'attendanceStatus2', key: 'attendanceStatus2', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus2';
+                    const valuePropName = 'attendanceStatusValue2';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '3号', dataIndex: 'attendanceStatus3', key: 'attendanceStatus3', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus3';
+                    const valuePropName = 'attendanceStatusValue3';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '4号', dataIndex: 'attendanceStatus4', key: 'attendanceStatus4', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus4';
+                    const valuePropName = 'attendanceStatusValue4';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '5号', dataIndex: 'attendanceStatus5', key: 'attendanceStatus5', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus5';
+                    const valuePropName = 'attendanceStatusValue5';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '6号', dataIndex: 'attendanceStatus6', key: 'attendanceStatus6', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus6';
+                    const valuePropName = 'attendanceStatusValue6';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '7号', dataIndex: 'attendanceStatus7', key: 'attendanceStatus7', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus7';
+                    const valuePropName = 'attendanceStatusValue7';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '8号', dataIndex: 'attendanceStatus8', key: 'attendanceStatus8', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus8';
+                    const valuePropName = 'attendanceStatusValue8';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '9号', dataIndex: 'attendanceStatus9', key: 'attendanceStatus9', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus9';
+                    const valuePropName = 'attendanceStatusValue9';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '10号', dataIndex: 'attendanceStatus10', key: 'attendanceStatus10', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus10';
+                    const valuePropName = 'attendanceStatusValue10';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '11号', dataIndex: 'attendanceStatus11', key: 'attendanceStatus11', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus11';
+                    const valuePropName = 'attendanceStatusValue11';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '12号', dataIndex: 'attendanceStatus12', key: 'attendanceStatus12', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus12';
+                    const valuePropName = 'attendanceStatusValue12';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '13号', dataIndex: 'attendanceStatus13', key: 'attendanceStatus13', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus13';
+                    const valuePropName = 'attendanceStatusValue13';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '14号', dataIndex: 'attendanceStatus14', key: 'attendanceStatus14', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus14';
+                    const valuePropName = 'attendanceStatusValue14';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '15号', dataIndex: 'attendanceStatus15', key: 'attendanceStatus15', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus15';
+                    const valuePropName = 'attendanceStatusValue15';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '16号', dataIndex: 'attendanceStatus16', key: 'attendanceStatus16', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus16';
+                    const valuePropName = 'attendanceStatusValue16';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '17号', dataIndex: 'attendanceStatus17', key: 'attendanceStatus17', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus17';
+                    const valuePropName = 'attendanceStatusValue17';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '18号', dataIndex: 'attendanceStatus18', key: 'attendanceStatus18', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus18';
+                    const valuePropName = 'attendanceStatusValue18';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '19号', dataIndex: 'attendanceStatus19', key: 'attendanceStatus19', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus19';
+                    const valuePropName = 'attendanceStatusValue19';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '20号', dataIndex: 'attendanceStatus20', key: 'attendanceStatus20', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus20';
+                    const valuePropName = 'attendanceStatusValue20';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '21号', dataIndex: 'attendanceStatus21', key: 'attendanceStatus21', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus21';
+                    const valuePropName = 'attendanceStatusValue21';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '22号', dataIndex: 'attendanceStatus22', key: 'attendanceStatus22', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus22';
+                    const valuePropName = 'attendanceStatusValue22';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '23号', dataIndex: 'attendanceStatus23', key: 'attendanceStatus23', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus23';
+                    const valuePropName = 'attendanceStatusValue23';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '24号', dataIndex: 'attendanceStatus24', key: 'attendanceStatus24', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus24';
+                    const valuePropName = 'attendanceStatusValue24';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '25号', dataIndex: 'attendanceStatus25', key: 'attendanceStatus25', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus25';
+                    const valuePropName = 'attendanceStatusValue25';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '26号', dataIndex: 'attendanceStatus26', key: 'attendanceStatus26', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus26';
+                    const valuePropName = 'attendanceStatusValue26';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '27号', dataIndex: 'attendanceStatus27', key: 'attendanceStatus27', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus27';
+                    const valuePropName = 'attendanceStatusValue27';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '28号', dataIndex: 'attendanceStatus28', key: 'attendanceStatus28', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus28';
+                    const valuePropName = 'attendanceStatusValue28';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '29号', dataIndex: 'attendanceStatus29', key: 'attendanceStatus29', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus29';
+                    const valuePropName = 'attendanceStatusValue29';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '30号', dataIndex: 'attendanceStatus30', key: 'attendanceStatus30', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus30';
+                    const valuePropName = 'attendanceStatusValue30';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
+            },{title: '31号', dataIndex: 'attendanceStatus31', key: 'attendanceStatus31', width: 60,
+                render: (text, record, index) => {
+                    const propName = 'attendanceStatus31';
+                    const valuePropName = 'attendanceStatusValue31';
+                    return this.attendanceStatusRender(record, propName, valuePropName);
+                }
             },
         ];
 
@@ -156,26 +306,6 @@ class AttendanceManage extends React.Component {
         this.setState({selectedRowKeys, selectedRows});
     };
 
-    /**
-     * 出勤checkbox变化
-     * @param row       行,从0开始
-     * @param propName      出勤名, e.g:attendanceStatus1
-     * @param valuePropName 出勤值名, e.g:attendanceStatusValue1
-     * @param newValue  新值, e.g:true
-     * @param id        出勤记录的id
-     */
-    onAttendanceStatusChange = (row, propName, valuePropName, newValue, id) => {
-        console.log(`第${row}行 ${propName}-${valuePropName}, 出勤数据变为${newValue}, id:${id}`);
-        let dataSource = this.state.dataSource.slice();
-        for(let i=0; i<dataSource.length; i++){
-            let attendanceRecord = dataSource[i];
-            if(attendanceRecord.id == id){
-                attendanceRecord[propName] = newValue ? 1 : 0;
-                attendanceRecord[valuePropName] = newValue ? '出勤' : '缺勤';
-            }
-        }
-        this.setState(dataSource);
-    };
 
     /**
      *  增删查改
@@ -236,7 +366,41 @@ class AttendanceManage extends React.Component {
         });
     };
 
+    attendanceStatusRender = (record, propName, valuePropName) => {
+        const text = record[propName];
+        const value = record[valuePropName];
+        let color = '#000000';
+        if(text == 1) {
+            color = '#FF0000';
+        }
+        console.log(value);
+        return (
+            <div className="common-flex-center">
+                <span style={{color: color}}>{value}</span>
+            </div>
+        )
+    };
 
+    /**
+     * 出勤checkbox变化
+     * @param row       行,从0开始
+     * @param propName      出勤名, e.g:attendanceStatus1
+     * @param valuePropName 出勤值名, e.g:attendanceStatusValue1
+     * @param newValue  新值, e.g:true
+     * @param id        出勤记录的id
+     */
+    onAttendanceStatusChange = (row, propName, valuePropName, newValue, id) => {
+        console.log(`第${row}行 ${propName}-${valuePropName}, 出勤数据变为${newValue}, id:${id}`);
+        let dataSource = this.state.dataSource.slice();
+        for(let i=0; i<dataSource.length; i++){
+            let attendanceRecord = dataSource[i];
+            if(attendanceRecord.id == id){
+                attendanceRecord[propName] = newValue ? 1 : 0;
+                attendanceRecord[valuePropName] = newValue ? '出勤' : '缺勤';
+            }
+        }
+        this.setState(dataSource);
+    };
     /**
      * helper method
      */
@@ -283,7 +447,7 @@ class AttendanceManage extends React.Component {
                     columns={this.columns}
                     pagination={pagination}
                     rowSelection={rowSelection}
-                    scroll={{x: 1850}}//列的总宽度+62(有选择框)
+                    scroll={{x: 2222}}//列的总宽度+62(有选择框)
                 />
             </div>
         );

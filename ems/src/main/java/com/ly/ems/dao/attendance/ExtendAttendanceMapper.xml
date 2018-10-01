@@ -8,9 +8,16 @@
     </resultMap>
 
     <select id="getAttendancesByConditions" resultMap="AttendanceVoMap">
-        SELECT a.* FROM ${attendanceTableName} a WHERE 1=1 AND enable = 1
+        SELECT * FROM (
+            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
+            FROM ${attendanceTableName} a
+            LEFT JOIN ly_employee e ON a.employee_id = e.id
+            LEFT JOIN ly_group g ON e.group_id = g.id
+            LEFT JOIN ly_job j ON e.job_id = j.id
+        ) a
+        WHERE 1=1 AND a.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">
-            AND employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
+            AND a.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
         </if>
         <if test="conditions.groupId != null and conditions.groupId != ''">
             AND group_id = #{conditions.groupId, jdbcType=VARCHAR}
@@ -51,7 +58,7 @@
             ,#{item.attendanceStatus20},#{item.attendanceStatus21},#{item.attendanceStatus22},#{item.attendanceStatus23}
             ,#{item.attendanceStatus24},#{item.attendanceStatus25},#{item.attendanceStatus26},#{item.attendanceStatus27}
             ,#{item.attendanceStatus28},#{item.attendanceStatus29},#{item.attendanceStatus30},#{item.attendanceStatus31}
-            ,#{item.enable}
+            ,#{item.enable})
         </foreach>
     </insert>
 </mapper>
