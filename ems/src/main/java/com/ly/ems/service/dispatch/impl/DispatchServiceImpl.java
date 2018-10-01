@@ -1,9 +1,12 @@
 package com.ly.ems.service.dispatch.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.ly.ems.dao.base.ExtendEmployeeMapper;
 import com.ly.ems.dao.base.mapper.ProjectMapper;
 import com.ly.ems.dao.dispatch.DispatchRelMapper;
 import com.ly.ems.dao.dispatch.ExtendDispatchRelMapper;
+import com.ly.ems.model.base.employee.Employee;
+import com.ly.ems.model.base.employee.EmployeeVo;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.job.Job;
 import com.ly.ems.model.base.project.Project;
@@ -18,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +31,8 @@ import java.util.List;
 public class DispatchServiceImpl implements DispatchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DispatchServiceImpl.class);
 
+
+
     @Autowired
     ProjectMapper projectMapper;
 
@@ -35,6 +41,9 @@ public class DispatchServiceImpl implements DispatchService {
 
     @Autowired
     ExtendDispatchRelMapper extendDispatchRelMapper;
+
+    @Autowired
+    ExtendEmployeeMapper extendEmployeeMapper;
 
     /**
      * 查询派遣关系
@@ -47,8 +56,6 @@ public class DispatchServiceImpl implements DispatchService {
         PageInfo<DispatchRelVo> pageInfo = new PageInfo(resultList);
         return new PageableResult<DispatchRelVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
     }
-
-
 
     /**
      * 派遣班组到项目中，将现有派遣关系置为关系无效，再插入新
@@ -81,7 +88,6 @@ public class DispatchServiceImpl implements DispatchService {
         dispatchRelMapper.insertSelective(insertDispatchRel);
 
     }
-
 
 
 }

@@ -24,6 +24,7 @@ import {JobManage} from 'baseInfoManage/jobManage/JobManage.jsx'
 import {CompanyManage} from 'baseInfoManage/companyManage/CompanyManage.jsx'
 import {ProjectManage} from 'baseInfoManage/projectManage/ProjectManage.jsx'
 
+import {DispatchManage} from 'dispatch/DispatchManage.jsx'
 import {AttendanceManage} from 'attendance/AttendanceManage.jsx'
 
 import {CacheManage} from 'system/CacheManage.jsx'
@@ -48,6 +49,9 @@ const ProjectManageComponent = ({match}) => (
     <ProjectManage />
 );
 
+const DispatchManageComponent = ({match}) => (
+    <DispatchManage />
+);
 
 const AttendanceManageComponent = ({match}) => (
     <AttendanceManage />

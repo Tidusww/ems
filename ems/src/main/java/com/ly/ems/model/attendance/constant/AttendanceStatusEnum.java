@@ -9,13 +9,17 @@ import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 public enum AttendanceStatusEnum implements BaseKeyValueEnum {
     /**
      * 性别：
+     * -1: 休假
      * 0: 缺勤
      * 1: 出勤
-     * 2: 请假
+     * 2: 加班
+     * 3: 请假
      */
+    VACATION(-1, "休假"),
     ABSENCE(0, "缺勤"),
     ATTENDANCE(1, "出勤"),
-    LEAVE(2, "请假");
+    OVERTIME(2, "加班"),
+    LEAVE(3, "请假");
 
 
     private Integer key;

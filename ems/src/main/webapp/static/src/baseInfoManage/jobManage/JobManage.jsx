@@ -135,6 +135,15 @@ class JobManage extends React.Component {
     onSelectionChange = (selectedRowKeys, selectedRows) => {
         this.setState({selectedRowKeys, selectedRows});
     };
+    selectRow = (record) => {
+        const selectedRowKeys = [...this.state.selectedRowKeys];
+        if (selectedRowKeys.indexOf(record.id) >= 0) {
+            selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
+        } else {
+            selectedRowKeys.push(record.id);
+        }
+        this.setState({ selectedRowKeys });
+    };
 
 
     /**
@@ -384,6 +393,11 @@ class JobManage extends React.Component {
                     columns={this.columns}
                     pagination={pagination}
                     rowSelection={rowSelection}
+                    onRow={(record) => ({
+                        onClick: () => {
+                            this.selectRow(record);
+                        },
+                    })}
                 />
                 <ModalForm
                     title={this.state.modalForm.modalTitle}

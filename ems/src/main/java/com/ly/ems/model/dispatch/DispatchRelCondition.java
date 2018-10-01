@@ -3,7 +3,7 @@ package com.ly.ems.model.dispatch;
 /**
  * Created by tidus on 2018/9/23.
  */
-public class DispatchRelCondition extends DispatchRel {
+public class DispatchRelCondition extends DispatchRelVo {
 
     public Integer current;
     public Integer pageSize;

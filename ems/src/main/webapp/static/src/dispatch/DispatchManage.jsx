@@ -5,7 +5,7 @@ import {ModalForm} from 'component/ModalForm.jsx'
 
 const confirm = Modal.confirm;
 
-class CompanyManage extends React.Component {
+class DispatchManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,17 +31,17 @@ class CompanyManage extends React.Component {
         };
         this.configuration = {
             //提示
-            NOT_SELECT_MSG: "请先选择单位",
+            NOT_SELECT_MSG: "请先选择分派记录",
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
             //Table相关配置
-            conditionConfigCode: "COMPANY_MANAGE",
+            conditionConfigCode: "DISPATCH_MANAGE",
             keyId: "id",
             selectionType: "radio",
-            getUrl: `${_ctx_}/base/company/getCompanies`,
-            saveUrl: `${_ctx_}/base/company/save`,
-            disableUrl: `${_ctx_}/base/company/disable`
+            getUrl: `${_ctx_}/dispatch/list`,
+            saveUrl: `${_ctx_}/dispatch`,
+            disableUrl: `${_ctx_}/dispatch`
 
         };
         /**
@@ -49,8 +49,18 @@ class CompanyManage extends React.Component {
          */
         this.columns = [
             {
+                title: '班组名称', dataIndex: 'groupName', key: 'groupName', width: 140
+            }, {
                 title: '单位名称', dataIndex: 'companyName', key: 'companyName', width: 140
-            }
+            }, {
+                title: '项目名称', dataIndex: 'projectName', key: 'projectName', width: 140
+            }, {
+                title: '开始时间', dataIndex: 'startDate', key: 'startDate', width: 140
+            }, {
+                title: '结束时间', dataIndex: 'endDate', key: 'endDate', width: 140
+            }, {
+                title: '状态', dataIndex: 'enable', key: 'enable', width: 140
+            },
         ];
 
     }
@@ -82,7 +92,7 @@ class CompanyManage extends React.Component {
      */
     conditionDidLoad = () => {
         this.doSearch();
-    }
+    };
     handleItemChange = (conditionKey, value) => {
         this.state.dataParam[conditionKey] = value;
     };
@@ -95,25 +105,6 @@ class CompanyManage extends React.Component {
             {
                 this.state.dataParam.current = 1;
                 this.doSearch();
-                break;
-            }
-            case "insert":
-            {
-                this.setModalFormState({
-                    modalTitle: "新增单位",
-                    formData: {},
-                    modalVisible: true
-                });
-                break;
-            }
-            case "update":
-            {
-                this.handleUpdate();
-                break;
-            }
-            case "disable":
-            {
-                this.handleDisable();
                 break;
             }
         }
@@ -137,71 +128,7 @@ class CompanyManage extends React.Component {
         } else {
             selectedRowKeys.push(record.id);
         }
-        this.setState({ selectedRowKeys });
-    };
-
-    /**
-     * ModalForm相关
-     */
-    setModalFormState = (newState, callback) => {
-        const {modalForm} = this.state;
-        const newModalForm = Object.assign({}, modalForm, newState);
-        this.setState({
-            modalForm: newModalForm
-        }, callback || (()=> {
-            }));
-    };
-    //引用Form
-    saveFormRef = (form) => {
-        this.state.modalForm.form = form;
-    };
-    //表单值改变
-    handleFormFieldsChange = (props, values) => {
-        console.log("CompanyManage 表单值改变:props[%o], values[%o]", props, values);
-        //保存正在编辑的数据
-        Object.assign(this.state.modalForm.formData, values);
-    };
-    //Modal提交
-    handleSubmit = () => {
-        const form = this.state.modalForm.form.props.form;
-        form.validateFields((err, values) => {
-            if (!err) {
-                this.setModalFormState({
-                    isSubmitting: true
-                }, () => {
-                    this.doSave();
-                });
-            }
-        });
-    };
-    //Modal取消
-    handleCancel = (doSearch) => {
-        this.setModalFormState({
-            modalVisible: false
-        }, () => {
-            this.state.modalForm.modalTitle = "";
-            this.state.modalForm.isSubmitting = false;
-            this.state.modalForm.formData = {};
-
-            if (doSearch) {
-                this.state.dataParam.current = 1;
-                this.doSearch();
-            }
-        });
-    };
-    //表单字段
-    getFormFields = () => {
-        return [
-            {
-                label: "单位名称", key: "companyName", labelSpan: 6, fieldSpan: 16,
-                rules: [
-                    {required: true, message: '请输入单位名称'}
-                ],
-                item: (
-                    <Input disabled={this.state.modalForm.isSubmitting}/>
-                )
-            }
-        ];
+        this.setState({selectedRowKeys});
     };
 
 
@@ -234,51 +161,6 @@ class CompanyManage extends React.Component {
                 console.log("请求出错" + result);
                 message.error(_this.configuration.OPERATION_FAILED_MSG, 3);
             }
-        });
-    };
-
-    handleUpdate = () => {
-        if (this.state.selectedRows.length <= 0) {
-            message.info(this.configuration.NOT_SELECT_MSG);
-            return;
-        }
-        let formData = {};
-        Object.assign(formData, this.state.selectedRows[0]);
-
-        this.setModalFormState({
-            modalTitle: "编辑单位",
-            formData: formData,
-            modalVisible: true
-        });
-    };
-    doSave = () => {
-        const that = this;
-        $.ajax({
-            url: this.configuration.saveUrl,
-            type: 'POST',
-            data: this.state.modalForm.formData,
-            async: true,
-            dataType: "json",
-            success: function (result) {
-                if (result.success) {
-                    that.saveSuccess(result);
-                } else {
-                    that.saveFail(result);
-                }
-            },
-            error: function (result) {
-                that.saveFail(result);
-            }
-        });
-    };
-    saveSuccess = (result) => {
-        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
-        this.handleCancel(true);
-    };
-    saveFail = (result) => {
-        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
-        this.setModalFormState({
-            isSubmitting: false
         });
     };
 
@@ -373,29 +255,14 @@ class CompanyManage extends React.Component {
                     rowSelection={rowSelection}
                     onRow={(record) => ({
                         onClick: () => {
-                            console.log("onRowClick");
                             this.selectRow(record);
                         },
                     })}
                 />
-                <ModalForm
-                    title={this.state.modalForm.modalTitle}
-                    visible={this.state.modalForm.modalVisible}
-                    width={this.state.modalForm.modalWidth}
-                    isSubmitting={this.state.modalForm.isSubmitting}
-                    formData={this.state.modalForm.formData}
-                    formDataIdKey={this.state.modalForm.formDataIdKey}
-                    formFields={this.getFormFields()}
-                    saveFormRef={this.saveFormRef}
-                    handleFormFieldsChange={this.handleFormFieldsChange}
-                    handleSubmit={this.handleSubmit}
-                    handleCancel={()=>{this.handleCancel(false)}}
-                >
-                </ModalForm>
             </div>
         );
     }
 }
 
 
-exports.CompanyManage = CompanyManage;
+exports.DispatchManage = DispatchManage;

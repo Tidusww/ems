@@ -75,6 +75,9 @@ class GroupManage extends React.Component {
             {
                 title: '联系电话', dataIndex: 'phone', key: 'phone', width: 75
             },
+            {
+                title: '派遣项目名称', dataIndex: 'projectName', key: 'projectName', width: 100
+            },
 
         ];
 
@@ -164,6 +167,15 @@ class GroupManage extends React.Component {
     };
     onSelectionChange = (selectedRowKeys, selectedRows) => {
         this.setState({selectedRowKeys, selectedRows});
+    };
+    selectRow = (record) => {
+        const selectedRowKeys = [...this.state.selectedRowKeys];
+        if (selectedRowKeys.indexOf(record.id) >= 0) {
+            selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
+        } else {
+            selectedRowKeys.push(record.id);
+        }
+        this.setState({ selectedRowKeys });
     };
 
     /**
@@ -539,6 +551,11 @@ class GroupManage extends React.Component {
                     columns={this.columns}
                     pagination={pagination}
                     rowSelection={rowSelection}
+                    onRow={(record) => ({
+                        onClick: () => {
+                            this.selectRow(record);
+                        },
+                    })}
                 />
                 <ModalForm
                     title={this.state.modalForm.modalTitle}

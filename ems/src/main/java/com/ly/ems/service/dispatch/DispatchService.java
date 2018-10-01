@@ -27,7 +27,7 @@ public interface DispatchService {
 
 
     /**
-     * 派遣班组到项目中，将现有派遣关系置为关系无效，再插入新
+     * 派遣班组到项目中，将现有派遣关系置为关系无效，再插入新的派遣关系
      * @param group
      * @param projectId
      */

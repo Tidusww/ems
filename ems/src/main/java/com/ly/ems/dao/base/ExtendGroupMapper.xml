@@ -5,12 +5,15 @@
     <resultMap id="GroupVoMap" type="com.ly.ems.model.base.group.GroupVo" extends="com.ly.ems.dao.base.mapper.GroupMapper.BaseResultMap">
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectByConditions" parameterType="com.ly.ems.model.base.group.GroupConditions" resultMap="GroupVoMap">
-        SELECT g.*, e.employee_name, e.phone
+        SELECT g.*, e.employee_name, e.phone, p.project_name
         FROM ly_group g
         LEFT JOIN ly_employee e on e.id = g.employee_id
+        LEFT JOIN ly_dispatch_rel dr on dr.group_id = g.id and dr.enable = 1
+        LEFT JOIN ly_project p on p.id = dr.project_id
         WHERE 1=1 AND g.enable = 1
         <if test="groupName != null and groupName != ''"> AND g.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
         <if test="employeeName != null and employeeName != ''"> AND e.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>

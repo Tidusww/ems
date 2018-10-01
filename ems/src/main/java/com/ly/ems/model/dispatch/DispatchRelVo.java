@@ -4,6 +4,7 @@ package com.ly.ems.model.dispatch;
  * Created by tidus on 2018/9/23.
  */
 public class DispatchRelVo extends DispatchRel {
+    private String companyName;
     private String groupName;
     private String projectName;
 
@@ -21,5 +22,13 @@ public class DispatchRelVo extends DispatchRel {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
