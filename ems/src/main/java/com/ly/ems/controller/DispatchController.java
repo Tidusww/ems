@@ -1,8 +1,6 @@
 package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
-import com.ly.ems.model.attendance.AttendanceConditions;
-import com.ly.ems.model.attendance.AttendanceDTO;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.dispatch.DispatchRelCondition;
 import com.ly.ems.model.dispatch.DispatchRelVo;
@@ -24,7 +22,7 @@ public class DispatchController {
     DispatchService dispatchService;
 
     @ResponseBody
-    @GetMapping(value = "/list", name = "分页查询考勤信息")
+    @GetMapping(value = "/list", name = "分页查询派遣信息")
     public AjaxResult getDispatchRels(DispatchRelCondition conditions) {
         PageableResult<DispatchRelVo> pageableResult = dispatchService.getDispatchRelsByConditions(conditions);
         return AjaxResult.success(pageableResult);

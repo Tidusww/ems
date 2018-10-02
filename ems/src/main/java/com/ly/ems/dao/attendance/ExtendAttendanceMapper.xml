@@ -4,7 +4,10 @@
 
     <resultMap id="AttendanceVoMap" type="com.ly.ems.model.attendance.AttendanceVo"
                extends="com.ly.ems.dao.attendance.AttendanceMapper.BaseResultMap">
-        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+        <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getAttendancesByConditions" resultMap="AttendanceVoMap">
