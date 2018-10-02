@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.salary.ExtendSalaryMapper">
+    <resultMap id="SalaryVoMap" type="com.ly.ems.model.salary.SalaryVo"
+               extends="com.ly.ems.dao.salary.SalaryMapper.BaseResultMap">
+        <result column="employee_name" property="employeeName" jdbcType="VARCHAR"/>
+        <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getSalariesByConditions" resultMap="AttendanceVoMap">
+        SELECT * FROM (
+            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
+            FROM ${attendanceTableName} a
+            LEFT JOIN ly_employee e ON a.employee_id = e.id
+            LEFT JOIN ly_group g ON e.group_id = g.id
+            LEFT JOIN ly_job j ON e.job_id = j.id
+        ) a
+        WHERE 1=1 AND a.enable = 1
+        <if test="conditions.employeeName != null and conditions.employeeName != ''">
+            AND a.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="conditions.groupId != null and conditions.groupId != ''">
+            AND group_id = #{conditions.groupId, jdbcType=VARCHAR}
+        </if>
+        <if test="conditions.jobId != null and conditions.jobId != ''">
+            AND job_id = #{conditions.jobId, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="isExistSalaryTable" parameterType="String" resultType="Integer">
+        SELECT COUNT(1) FROM INFORMATION_SCHEMA.tables WHERE table_name = '${salaryTableName}'
+    </select>
+
+    <update id="createSalaryTable" parameterType="String">
+        create table
+        -- if not exists
+        ${salaryTableName} like ly_salary_template
+    </update>
+
+    <insert id="batchInsert">
+        INSERT INTO ${salaryTableName} (
+        employee_id,  enable
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.employeeId},
+            ,#{item.enable})
+        </foreach>
+    </insert>
+</mapper>
