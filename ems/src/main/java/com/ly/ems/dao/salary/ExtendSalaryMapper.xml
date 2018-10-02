@@ -4,23 +4,26 @@
     <resultMap id="SalaryVoMap" type="com.ly.ems.model.salary.SalaryVo"
                extends="com.ly.ems.dao.salary.SalaryMapper.BaseResultMap">
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER" />
         <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER" />
         <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER" />
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
     </resultMap>
 
 
-    <select id="getSalariesByConditions" resultMap="AttendanceVoMap">
+    <select id="getSalariesByConditions" resultMap="SalaryVoMap">
         SELECT * FROM (
-            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
-            FROM ${attendanceTableName} a
-            LEFT JOIN ly_employee e ON a.employee_id = e.id
+            SELECT s.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
+            FROM ${salaryTableName} s
+            LEFT JOIN ly_employee e ON s.employee_id = e.id
             LEFT JOIN ly_group g ON e.group_id = g.id
             LEFT JOIN ly_job j ON e.job_id = j.id
         ) a
         WHERE 1=1 AND a.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">
-            AND a.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
+            AND employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
         </if>
         <if test="conditions.groupId != null and conditions.groupId != ''">
             AND group_id = #{conditions.groupId, jdbcType=VARCHAR}

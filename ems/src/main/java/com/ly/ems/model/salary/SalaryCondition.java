@@ -12,17 +12,17 @@ public class SalaryCondition extends SalaryVo{
 
     /** 工资月份 例如:201801*/
     @ParamName("monthSelect")
-    private Date attendanceMonth;
+    private Date month;
 
     public Integer current;
     public Integer pageSize;
 
-    public Date getAttendanceMonth() {
-        return attendanceMonth;
+    public Date getMonth() {
+        return month;
     }
 
-    public void setAttendanceMonth(Date attendanceMonth) {
-        this.attendanceMonth = attendanceMonth;
+    public void setMonth(Date attendanceMonth) {
+        this.month = attendanceMonth;
     }
 
     public Integer getCurrent() {

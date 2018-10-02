@@ -125,7 +125,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 
     @Override
-    public void saveAttendances(List<Attendance> attendances, String monthString) {
+    public void saveAttendances(List<Attendance> attendanceList, String monthString) {
 
 
     }

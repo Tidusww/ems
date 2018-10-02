@@ -47,13 +47,44 @@ class SalaryManage extends React.Component {
          * Table相关定义
          */
         this.columns = [
-            {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 140
+            {title: '员工姓名', dataIndex: 'employeeName', key: 'employeeName', width: 100
             },
-            {title: '是否特殊工种', dataIndex: 'isSpecValue', key: 'isSpecValue', width: 100
+            {title: '班组', dataIndex: 'groupName', key: 'groupName', width: 100
             },
-            {title: '工资', dataIndex: 'salary', key: 'salary', width: 75
+            {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 100
+            },
+            {title: '基本工资（元）', dataIndex: 'baseSalary', key: 'baseSalary', width: 100
+            },
+            {title: '加班工资（元）', dataIndex: 'overtimeSalary', key: 'overtimeSalary', width: 100
+            },
+            {title: '计量工资（元）', dataIndex: 'calculateSalary', key: 'calculateSalary', width: 100
+            },
+            {title: '高温补贴（元）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 100
+            },
+            {title: '社保补贴（元）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 100
+            },
+            {title: '公积金补贴（元）', dataIndex: 'houseFundAllowance', key: 'houseFundAllowance', width: 100
+            },
+            {title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 100
+            },
+            {title: '应付工资（元）', dataIndex: 'payableSalary', key: 'payableSalary', width: 100
             },
 
+            {title: '个人社保（元）', dataIndex: 'personalSocialSecurity', key: 'personalSocialSecurity', width: 100
+            },
+            {title: '个人公积金（元）', dataIndex: 'personalHouseFund', key: 'personalHouseFund', width: 100
+            },
+            {title: '其他扣除（元）', dataIndex: 'otherDeduction', key: 'otherDeduction', width: 100
+            },
+            {title: '应付个税（元）', dataIndex: 'payTaxes', key: 'payTaxes', width: 100
+            },
+            {title: '实发工资（元）', dataIndex: 'realSalary', key: 'realSalary', width: 100
+            },
+
+            {title: '单位社保（元）', dataIndex: 'companySocialSecurity', key: 'companySocialSecurity', width: 100
+            },
+            {title: '单位公积金（元）', dataIndex: 'companyHouseFund', key: 'companyHouseFund', width: 100
+            },
         ];
 
     }

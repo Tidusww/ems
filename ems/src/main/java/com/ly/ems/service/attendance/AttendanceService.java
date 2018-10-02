@@ -18,6 +18,6 @@ public interface AttendanceService {
 
     void generateAttendances(AttendanceConditions conditions);
 
-    void saveAttendances(List<Attendance> attendances, String monthString);
+    void saveAttendances(List<Attendance> attendanceList, String monthString);
 
 }

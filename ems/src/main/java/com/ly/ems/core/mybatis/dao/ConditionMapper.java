@@ -1,11 +1,5 @@
 package com.ly.ems.core.mybatis.dao;
 
-import com.ly.ems.core.mybatis.model.BaseModel;
-import com.ly.ems.core.mybatis.pagehelper.PageableModel;
-import com.ly.ems.model.common.constant.EnableEnum;
-import com.ly.ems.model.common.constant.StatusEnum;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 
 /**
