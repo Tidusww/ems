@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ly.ems.dao.config.SystemConfigMapper">
+  <resultMap id="BaseResultMap" type="com.ly.ems.model.config.SystemConfig">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="config_type" jdbcType="VARCHAR" property="configType" />
+    <result column="config_value" jdbcType="VARCHAR" property="configValue" />
+    <result column="config_desc" jdbcType="VARCHAR" property="configDesc" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, config_type, config_value, config_desc, enable, create_date, update_date, update_user_id
+  </sql>
+</mapper>

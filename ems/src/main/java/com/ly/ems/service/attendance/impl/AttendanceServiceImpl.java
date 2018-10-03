@@ -15,7 +15,7 @@ import com.ly.ems.model.base.employee.EmployeeVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.common.constant.EnableEnum;
 import com.ly.ems.service.attendance.AttendanceService;
-import com.ly.ems.service.holiday.HolidayService;
+import com.ly.ems.service.config.SystemConfigService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 
     @Autowired
-    HolidayService holidayService;
+    SystemConfigService systemConfigService;
 
     @Autowired
     ExtendEmployeeMapper extendEmployeeMapper;
@@ -159,12 +159,12 @@ public class AttendanceServiceImpl implements AttendanceService {
             final String keyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_KEY_PRE, monthDay);
 
             // 是否强制上班日
-            if (holidayService.isForceWorkingDate(nowDate)) {
+            if (systemConfigService.isForceWorking(nowDate)) {
                 attendanceMap.put(keyString, AttendanceStatusEnum.ATTENDANCE);
             }
 
             // 是否节假日
-            if (holidayService.isHoliday(nowDate)) {
+            if (systemConfigService.isHoliday(nowDate)) {
                 attendanceMap.put(keyString, AttendanceStatusEnum.VACATION);
             }
 

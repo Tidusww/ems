@@ -6,7 +6,7 @@ package com.ly.ems.core.mybatis;
 public interface BaseCodeValueEnum {
 
     String getCode();
-    void setCode(String key);
+    void setCode(String code);
     String getValue();
     void setValue(String value);
 

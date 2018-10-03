@@ -5,6 +5,6 @@ package com.ly.ems.model.salary.constant;
  */
 public class SalaryConstant {
 
-    public static final String Salary_TABLE_NAME_PRE = "ly_salary_";
+    public static final String SALARY_TABLE_NAME_PRE = "ly_salary_";
 
 }

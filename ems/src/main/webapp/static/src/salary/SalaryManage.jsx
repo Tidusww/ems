@@ -1,11 +1,11 @@
 import React from 'react';
-import { Table, message, Modal, Input, InputNumber } from 'antd';
-import { ConditionContainer } from 'component/ConditionContainer.jsx';
+import {Table, message, Modal, Input, InputNumber} from 'antd';
+import {ConditionContainer} from 'component/ConditionContainer.jsx';
 
 const confirm = Modal.confirm;
 
 class SalaryManage extends React.Component {
-    constructor(props) {    
+    constructor(props) {
         super(props);
         this.state = {
             //Table状态
@@ -30,7 +30,7 @@ class SalaryManage extends React.Component {
         };
         this.configuration = {
             //提示
-            NOT_SELECT_MSG: "请先选择工种",
+            NOT_SELECT_MSG: "请先选择工资记录",
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
 
@@ -38,52 +38,71 @@ class SalaryManage extends React.Component {
             conditionConfigCode: "SALARY_MANAGE",
             keyId: "id",
             selectionType: "radio",
-            getUrl: `${_ctx_}/`,
-            saveUrl: `${_ctx_}/`,
-            disableUrl: `${_ctx_}/`
+            getUrl: `${_ctx_}/salary/get`,
+            saveUrl: `${_ctx_}/salary`,
+            disableUrl: `${_ctx_}/`,
+            generateUrl: `${_ctx_}/salary/generate`,
 
         };
         /**
          * Table相关定义
          */
         this.columns = [
-            {title: '员工姓名', dataIndex: 'employeeName', key: 'employeeName', width: 100
+            {
+                title: '员工姓名', dataIndex: 'employeeName', key: 'employeeName', width: 100
             },
-            {title: '班组', dataIndex: 'groupName', key: 'groupName', width: 100
+            {
+                title: '班组', dataIndex: 'groupName', key: 'groupName', width: 100
             },
-            {title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 100
+            {
+                title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 100
             },
-            {title: '基本工资（元）', dataIndex: 'baseSalary', key: 'baseSalary', width: 100
+            {
+                title: '基本工资（元）', dataIndex: 'baseSalary', key: 'baseSalary', width: 120
             },
-            {title: '加班工资（元）', dataIndex: 'overtimeSalary', key: 'overtimeSalary', width: 100
+            {
+                title: '加班工资（元）', dataIndex: 'overtimeSalary', key: 'overtimeSalary', width: 120
             },
-            {title: '计量工资（元）', dataIndex: 'calculateSalary', key: 'calculateSalary', width: 100
+            {
+                title: '计量工资（元）', dataIndex: 'calculateSalary', key: 'calculateSalary', width: 120
             },
-            {title: '高温补贴（元）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 100
+            {
+                title: '高温补贴（元）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 120
             },
-            {title: '社保补贴（元）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 100
+            {
+                title: '社保补贴（元）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 120
             },
-            {title: '公积金补贴（元）', dataIndex: 'houseFundAllowance', key: 'houseFundAllowance', width: 100
+            {
+                title: '公积金补贴（元）', dataIndex: 'houseFundAllowance', key: 'houseFundAllowance', width: 140
             },
-            {title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 100
+            {
+                title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120
             },
-            {title: '应付工资（元）', dataIndex: 'payableSalary', key: 'payableSalary', width: 100
+            {
+                title: '应付工资（元）', dataIndex: 'payableSalary', key: 'payableSalary', width: 120
             },
 
-            {title: '个人社保（元）', dataIndex: 'personalSocialSecurity', key: 'personalSocialSecurity', width: 100
+            {
+                title: '个人社保（元）', dataIndex: 'personalSocialSecurity', key: 'personalSocialSecurity', width: 120
             },
-            {title: '个人公积金（元）', dataIndex: 'personalHouseFund', key: 'personalHouseFund', width: 100
+            {
+                title: '个人公积金（元）', dataIndex: 'personalHouseFund', key: 'personalHouseFund', width: 140
             },
-            {title: '其他扣除（元）', dataIndex: 'otherDeduction', key: 'otherDeduction', width: 100
+            {
+                title: '其他扣除（元）', dataIndex: 'otherDeduction', key: 'otherDeduction', width: 120
             },
-            {title: '应付个税（元）', dataIndex: 'payTaxes', key: 'payTaxes', width: 100
+            {
+                title: '应付个税（元）', dataIndex: 'payTaxes', key: 'payTaxes', width: 120
             },
-            {title: '实发工资（元）', dataIndex: 'realSalary', key: 'realSalary', width: 100
+            {
+                title: '实发工资（元）', dataIndex: 'realSalary', key: 'realSalary', width: 120
             },
 
-            {title: '单位社保（元）', dataIndex: 'companySocialSecurity', key: 'companySocialSecurity', width: 100
+            {
+                title: '单位社保（元）', dataIndex: 'companySocialSecurity', key: 'companySocialSecurity', width: 120
             },
-            {title: '单位公积金（元）', dataIndex: 'companyHouseFund', key: 'companyHouseFund', width: 100
+            {
+                title: '单位公积金（元）', dataIndex: 'companyHouseFund', key: 'companyHouseFund', width: 140
             },
         ];
 
@@ -115,7 +134,7 @@ class SalaryManage extends React.Component {
      *  condition container事件
      */
     conditionDidLoad = () => {
-        this.doSearch();
+        // this.doSearch();
     }
     handleItemChange = (conditionKey, value) => {
         this.state.dataParam[conditionKey] = value;
@@ -130,6 +149,10 @@ class SalaryManage extends React.Component {
                 this.state.dataParam.current = 1;
                 this.doSearch();
                 break;
+            }
+            case 'generateSalary':
+            {
+                this.generateSalaryInfo();
             }
         }
     };
@@ -152,9 +175,8 @@ class SalaryManage extends React.Component {
         } else {
             selectedRowKeys.push(record.id);
         }
-        this.setState({ selectedRowKeys });
+        this.setState({selectedRowKeys});
     };
-
 
 
     /**
@@ -164,31 +186,57 @@ class SalaryManage extends React.Component {
         this.clearSelection();
         this.setState({isLoading: true});
 
-        const _this = this;
         $.ajax({
             url: this.configuration.getUrl,
             type: 'GET',
             data: this.state.dataParam,
             async: true,
             dataType: "json",
-            success: function (result) {
-                _this.setState({isLoading: false});
+            success: (result) => {
+                this.setState({isLoading: false});
                 if (result.success) {
                     const data = result.data;
-                    _this.setState({dataSource: data.dataSource, total: data.total});
+                    this.setState({dataSource: data.dataSource, total: data.total});
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);
                 }
             },
-            error: function (result) {
-                _this.setState({isLoading: false});
+            error: (result) => {
+                this.setState({isLoading: false});
                 console.log("请求出错" + result);
-                message.error(_this.configuration.OPERATION_FAILED_MSG, 3);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
             }
         });
     };
 
+    /**
+     * 生成工资数据
+     */
+    generateSalaryInfo = () => {
+        $.ajax({
+            url: this.configuration.generateUrl,
+            type: 'POST',
+            data: this.state.dataParam,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                this.setState({isLoading: false});
+                if (result.success) {
+                    const data = result.data;
+                    this.setState({dataSource: data.dataSource, total: data.total});
+                } else {
+                    console.log("请求出错");
+                    message.error(result.msg, 3);
+                }
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                console.log("请求出错" + result);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
+    };
 
 
     /**
@@ -225,13 +273,14 @@ class SalaryManage extends React.Component {
                 />
                 <Table
                     bordered
-                    title={()=>`工种列表`}
+                    title={()=>`工资列表`}
                     rowKey={this.configuration.keyId}
                     loading={this.state.isLoading}
                     dataSource={this.state.dataSource}
                     columns={this.columns}
                     pagination={pagination}
                     rowSelection={rowSelection}
+                    scroll={{x: 2222}}//列的总宽度+62(有选择框)
                     onRow={(record) => ({
                         onClick: () => {
                             this.selectRow(record);
