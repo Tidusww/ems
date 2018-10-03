@@ -58,7 +58,7 @@ class SalaryManage extends React.Component {
                 title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 100
             },
             {
-                title: '基本工资（元）', dataIndex: 'baseSalary', key: 'baseSalary', width: 120
+                title: '基本工资（元）', dataIndex: 'basicSalary', key: 'basicSalary', width: 120
             },
             {
                 title: '加班工资（元）', dataIndex: 'overtimeSalary', key: 'overtimeSalary', width: 120

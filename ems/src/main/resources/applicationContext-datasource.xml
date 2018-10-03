@@ -111,11 +111,11 @@
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <!--不需要事务-->
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="find*" read-only="true"/>
-            <tx:method name="list*" read-only="true"/>
-            <tx:method name="query*" read-only="true"/>
-            <tx:method name="search*" read-only="true"/>
+            <tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="find*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="list*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="query*" read-only="true" propagation="SUPPORTS"/>
+            <tx:method name="search*" read-only="true" propagation="SUPPORTS"/>
             <!--需要事务-->
             <tx:method name="*" propagation="REQUIRED" no-rollback-for="com.ly.ems.core.exception.EMSBaseException"/>
         </tx:attributes>
