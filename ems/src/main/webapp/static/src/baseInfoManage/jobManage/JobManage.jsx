@@ -53,7 +53,7 @@ class JobManage extends React.Component {
             },
             {title: '是否特殊工种', dataIndex: 'isSpecValue', key: 'isSpecValue', width: 100
             },
-            {title: '工资', dataIndex: 'salary', key: 'salary', width: 75
+            {title: '工资（元/日）', dataIndex: 'salary', key: 'salary', width: 75
             },
 
         ];
@@ -207,7 +207,7 @@ class JobManage extends React.Component {
                 )
             },
             {
-                label: "工资", key: "salary", labelSpan:6, fieldSpan: 16,
+                label: "工资（元/日）", key: "salary", labelSpan:6, fieldSpan: 16,
                 rules: [
                     {required: true, message: '请输入工资'}
                 ],

@@ -88,16 +88,16 @@ public class SalaryServiceImpl implements SalaryService {
         }
 
         String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
-        if (this.checkSalaryExist(monthString)) {
-            throw new EMSBusinessException(String.format("月份%s的工资数据已存在!", monthString));
-        }
-
-        try {
-            this.createSalaryTable(month);
-        } catch (Exception e) {
-            LOGGER.error("创建考勤表失败", e);
-            throw new EMSBusinessException("创建考勤表失败");
-        }
+//        if (this.checkSalaryExist(monthString)) {
+//            throw new EMSBusinessException(String.format("月份%s的工资数据已存在!", monthString));
+//        }
+//
+//        try {
+//            this.createSalaryTable(month);
+//        } catch (Exception e) {
+//            LOGGER.error("创建考勤表失败", e);
+//            throw new EMSBusinessException("创建考勤表失败");
+//        }
 
         // 获取考勤数据
         AttendanceConditions attendanceConditions = new AttendanceConditions();
@@ -128,10 +128,14 @@ public class SalaryServiceImpl implements SalaryService {
             List<Salary> salaryList = new ArrayList<Salary>();
             for (AttendanceVo attendanceVo : attendanceVoPage) {
                 Salary salary = this.generateSalaryForAttendance(attendanceVo, month);
-                salaryList.add(salary);
+                if (salary != null) {
+                    salaryList.add(salary);
+                }
             }
-            String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
-            extendSalaryMapper.batchInsert(salaryTableName, salaryList);
+            if (!salaryList.isEmpty()) {
+                String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+                extendSalaryMapper.batchInsert(salaryTableName, salaryList);
+            }
             totalSize += salaryList.size();
         }
 
@@ -187,7 +191,7 @@ public class SalaryServiceImpl implements SalaryService {
             // 1.基本工资：本地最低月工资标准（手动）
             double basicSalary = systemConfigService.getBasicSalary();
             // 2.加班工资：工种工资*（总出勤天数-21.75）*2
-            double overtimeSalary = jobSalary * (attendanceDays - 21.75f) * 2;
+            double overtimeSalary = Math.max(jobSalary * (attendanceDays - 21.75d) * 2, 0);
             // 3.计量工资：工种工资*出勤天数-基本工资-加班工资
             double calculateSalary = jobSalary * attendanceDays - basicSalary - overtimeSalary;
             // 4.高温费：不同地区不同时段，出勤天数*日高温费标准（手动）
@@ -247,32 +251,33 @@ public class SalaryServiceImpl implements SalaryService {
             return salary;
         } catch (Exception e) {
             LOGGER.error(String.format("生成工资信息失败，出勤记录id：【%d】", attendanceVo.getId()), e);
+            return null;
         }
-        return salary;
     }
 
     /**
      * util-4
      * 根据应付工资（税前）计算应付个税
+     *
      * @param payableSalary
      * @return
      */
-    private double getPayTaxes(double payableSalary){
+    private double getPayTaxes(double payableSalary) {
         // 应纳税所得额
         double payableTaxesSalary = payableSalary - 5000.d;
-        if(payableTaxesSalary < 0) {
+        if (payableTaxesSalary < 0) {
             return 0;
-        } else if(payableTaxesSalary < 3000.d) {
+        } else if (payableTaxesSalary < 3000.d) {
             return payableTaxesSalary * 0.03d;
-        } else if(payableTaxesSalary < 12000.d) {
+        } else if (payableTaxesSalary < 12000.d) {
             return payableTaxesSalary * 0.10d - 210;
-        } else if(payableTaxesSalary < 25000.d) {
+        } else if (payableTaxesSalary < 25000.d) {
             return payableTaxesSalary * 0.20d - 1410;
-        } else if(payableTaxesSalary < 35000.d) {
+        } else if (payableTaxesSalary < 35000.d) {
             return payableTaxesSalary * 0.25d - 2660;
-        } else if(payableTaxesSalary < 55000.d) {
+        } else if (payableTaxesSalary < 55000.d) {
             return payableTaxesSalary * 0.30d - 4410;
-        } else if(payableTaxesSalary < 80000.d) {
+        } else if (payableTaxesSalary < 80000.d) {
             return payableTaxesSalary * 0.35d - 7160;
         } else {
             return payableTaxesSalary * 0.45d - 15160;

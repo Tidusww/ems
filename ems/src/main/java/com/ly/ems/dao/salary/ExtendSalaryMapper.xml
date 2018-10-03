@@ -45,12 +45,18 @@
 
     <insert id="batchInsert">
         INSERT INTO ${salaryTableName} (
-        employee_id,  enable
+        employee_id, enable, basic_salary, overtime_salary, calculate_salary, hot_allowance,
+        social_security_allowance, house_fund_allowance, other_income, payable_salary, personal_social_security,
+        personal_house_fund, other_deduction, pay_taxes, real_salary, company_social_security,
+        company_house_fund
         )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.employeeId},
-            ,#{item.enable})
+            (#{item.employeeId}, #{item.enable},
+            #{basic_salary}, #{overtime_salary}, #{calculate_salary}, #{hot_allowance},
+            #{social_security_allowance}, #{house_fund_allowance}, #{other_income}, #{payable_salary}, #{personal_social_security},
+            #{personal_house_fund}, #{other_deduction}, #{pay_taxes}, #{real_salary}, #{company_social_security},
+            #{company_house_fund})
         </foreach>
     </insert>
 </mapper>

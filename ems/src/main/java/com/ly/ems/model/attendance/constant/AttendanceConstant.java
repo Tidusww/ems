@@ -6,7 +6,7 @@ package com.ly.ems.model.attendance.constant;
 public class AttendanceConstant {
 
     public static final String ATTENDANCE_TABLE_NAME_PRE = "ly_attendance_";
-    public static final String ATTENDANCE_STATUS_KEY_PRE = "attendanceStatus";
+    public static final String ATTENDANCE_STATUS_FIELD_PRE = "attendanceStatus";
     public static final Float OVERTIME_PROBABILITY = 30.00f;
 
 }

@@ -30,7 +30,7 @@ public class AttendanceVo extends Attendance {
          * 反射设置每天的出勤情况
          */
         for (int monthDay = 1; monthDay <= 31; monthDay++) {
-            String keyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_KEY_PRE, monthDay);
+            String keyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE, monthDay);
             AttendanceStatusEnum attendanceStatus = (AttendanceStatusEnum) attendanceMap.get(keyString);
             if (attendanceStatus != null) {
                 try {
@@ -50,7 +50,7 @@ public class AttendanceVo extends Attendance {
      */
     public Integer getAttendanceDays() throws NoSuchFieldException {
         Integer attendanceTimes = 0;
-        final String fieldPrefix = "getAttendanceStatus";
+        final String fieldPrefix = AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE;
         for (int i = 0; i < 31; i++) {
             String index = String.valueOf(i+1);
             String fieldName = fieldPrefix + index;

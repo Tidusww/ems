@@ -156,7 +156,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             int weekDay = DateUtil.getDayOfWeek(nowDate);
 
             // 用于设置出勤
-            final String keyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_KEY_PRE, monthDay);
+            final String keyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE, monthDay);
 
             // 是否强制上班日
             if (systemConfigService.isForceWorking(nowDate)) {
@@ -190,7 +190,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                                     AttendanceStatusEnum.OVERTIME : AttendanceStatusEnum.VACATION);
                 } else {
                     // 看看前一天周六有没有加班
-                    final String preDayKeyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_KEY_PRE, monthDay - 1);
+                    final String preDayKeyString = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE, monthDay - 1);
                     AttendanceStatusEnum preAttendanceStatus = (AttendanceStatusEnum) attendanceMap.get(preDayKeyString);
                     if (preAttendanceStatus == AttendanceStatusEnum.OVERTIME) {
                         // 前一天周六加班了，必须休息

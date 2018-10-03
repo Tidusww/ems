@@ -38,4 +38,14 @@ public class SystemConfigController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/refreshSystemConfigCache", method = RequestMethod.POST, name = "刷新系统配置缓存")
+    public AjaxResult refreshSystemConfigCache(HttpServletRequest request, Model model) {
+        Cache cache = ehcacheManager.getCache("systemConfigCache");
+        if (cache != null) {
+            cache.flush();
+        }
+        return AjaxResult.success("刷新成功");
+
+    }
 }
