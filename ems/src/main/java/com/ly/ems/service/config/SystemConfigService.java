@@ -32,25 +32,25 @@ public interface SystemConfigService {
      * 获取基本工资（元/月）
      * @return
      */
-    float getBasicSalary();
+    double getBasicSalary();
 
     /**
      * 获取高温补贴（元/日）
      * @return
      */
-    float getHotAllowance();
+    double getHotAllowance();
 
     /**
      * 获取社保补贴（元/日）
      * @return
      */
-    float getSocialSecurityAllowance();
+    double getSocialSecurityAllowance();
 
     /**
      * 获取住房补贴（元/日）
      * @return
      */
-    float getHouseFundAllowance();
+    double getHouseFundAllowance();
 
 
 }

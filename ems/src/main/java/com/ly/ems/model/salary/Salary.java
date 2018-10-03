@@ -21,8 +21,8 @@ public class Salary {
     /**
      * 1、最低月基本工资
      */
-    @Column(name = "`base_salary`")
-    private BigDecimal baseSalary;
+    @Column(name = "`basic_salary`")
+    private BigDecimal basicSalary;
 
     /**
      * 2、加班工资：工种工资*（总出勤天数-21.75）*2
@@ -167,19 +167,19 @@ public class Salary {
     /**
      * 获取1、最低月基本工资
      *
-     * @return base_salary - 1、最低月基本工资
+     * @return basic_salary - 1、最低月基本工资
      */
-    public BigDecimal getBaseSalary() {
-        return baseSalary;
+    public BigDecimal getBasicSalary() {
+        return basicSalary;
     }
 
     /**
      * 设置1、最低月基本工资
      *
-     * @param baseSalary 1、最低月基本工资
+     * @param basicSalary 1、最低月基本工资
      */
-    public void setBaseSalary(BigDecimal baseSalary) {
-        this.baseSalary = baseSalary;
+    public void setBasicSalary(BigDecimal basicSalary) {
+        this.basicSalary = basicSalary;
     }
 
     /**

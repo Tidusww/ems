@@ -1,6 +1,7 @@
 package com.ly.ems.service.config.impl;
 
 import com.ly.ems.service.config.SystemConfigService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 /**
  * Created by tidus on 2018/10/1.
  */
+@Cacheable
 @Service
 public class SystemConfigServiceImpl implements SystemConfigService {
 
@@ -55,7 +57,7 @@ public class SystemConfigServiceImpl implements SystemConfigService {
      * @return
      */
     @Override
-    public float getBasicSalary() {
+    public double getBasicSalary() {
         return 0.f;
     }
 
@@ -64,7 +66,7 @@ public class SystemConfigServiceImpl implements SystemConfigService {
      * @return
      */
     @Override
-    public float getHotAllowance() {
+    public double getHotAllowance() {
         return 0.f;
     }
 
@@ -73,7 +75,7 @@ public class SystemConfigServiceImpl implements SystemConfigService {
      * @return
      */
     @Override
-    public float getSocialSecurityAllowance() {
+    public double getSocialSecurityAllowance() {
         return 0.f;
     }
 
@@ -82,7 +84,7 @@ public class SystemConfigServiceImpl implements SystemConfigService {
      * @return
      */
     @Override
-    public float getHouseFundAllowance() {
+    public double getHouseFundAllowance() {
         return 0.f;
     }
 }

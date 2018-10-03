@@ -48,7 +48,7 @@ public class AttendanceVo extends Attendance {
      *
      * @return
      */
-    public Integer getAttendanceTimes() throws NoSuchFieldException {
+    public Integer getAttendanceDays() throws NoSuchFieldException {
         Integer attendanceTimes = 0;
         final String fieldPrefix = "getAttendanceStatus";
         for (int i = 0; i < 31; i++) {
