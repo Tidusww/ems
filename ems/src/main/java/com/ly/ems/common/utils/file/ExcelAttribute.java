@@ -14,34 +14,13 @@ public @interface ExcelAttribute {
      *
      * @return
      */
-    public abstract String name();
+    String name();
 
     /**
      * 列名对应的A,B,C,D...,不指定按照默认顺序排序
      *
      * @return
      */
-    public abstract String column() default "";
-
-    /**
-     * 提示信息
-     *
-     * @return
-     */
-    public abstract String prompt() default "";
-
-    /**
-     * 设置只能选择不能输入的列内容
-     *
-     * @return
-     */
-    public abstract String[] combo() default {};
-
-    /**
-     * 是否导出数据
-     *
-     * @return
-     */
-    public abstract boolean isExport() default true;
+    String column() default "";
 
 }

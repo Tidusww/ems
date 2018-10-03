@@ -25,9 +25,6 @@ public class FileUtil {
     public static final String FILE_SUFFIX_XLS = ".xls";
     public static final String FILE_SUFFIX_XLSX = ".xlsx";
 
-    @Value("${admin.backend.temp-dir}")
-    private static String tempDir;
-
     /**
      * @param file 文件
      * @param limitSize     Byte
@@ -92,16 +89,15 @@ public class FileUtil {
 
     /**
      * 根据文件名 生成唯一文件名
-     *
-     * @param name 文件名
+     * @param name
      * @return timestamp_uuid.png
      */
     public static String getFileUniqueName(String name) {
-        UUID uuid = UUID.randomUUID();
-        Long current = System.currentTimeMillis();
+        String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+        Long current = new Long(System.currentTimeMillis());
         String suffix = getSuffix(name);
 
-        String uniqueName = current.toString() + "_" + uuid.toString();
+        String uniqueName = current.toString() + "_" + uuid;
         if (!StringUtils.isEmpty(suffix)) {
             uniqueName = uniqueName + suffix;
         }
