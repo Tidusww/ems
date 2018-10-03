@@ -47,14 +47,16 @@
         <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
-        <!--<table tableName="ly_employee" domainObjectName="Employee"-->
-        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true" selectByExampleQueryId="false" >-->
-        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--<columnOverride column="salary_bank" javaType="com.ly.ems.model.base.employee.constant.SalaryBankEnum"/>-->
-        <!--<columnOverride column="gender" javaType="com.ly.ems.model.base.employee.constant.GenderEnum"/>-->
-        <!--<columnOverride column="status" javaType="com.ly.ems.model.base.employee.constant.EmployeeStatusEnum"/>-->
-        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
-        <!--</table>-->
+        <table tableName="ly_employee" domainObjectName="Employee"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="true" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+            <columnOverride column="salary_bank" javaType="com.ly.ems.model.base.employee.constant.SalaryBankEnum"/>
+            <columnOverride column="gender" javaType="com.ly.ems.model.base.employee.constant.GenderEnum"/>
+            <columnOverride column="location" javaType="com.ly.ems.model.base.employee.constant.LocationEnum"/>
+            <columnOverride column="status" javaType="com.ly.ems.model.base.employee.constant.EmployeeStatusEnum"/>
+            <columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>
+        </table>
         <!--<table tableName="ly_job" domainObjectName="Job"-->
         <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true" selectByExampleQueryId="false" >-->
         <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
@@ -63,69 +65,69 @@
         <!--</table>-->
         <!--派遣关系-->
         <!--<table tableName="ly_dispatch_rel" domainObjectName="DispatchRel"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="true" selectByExampleQueryId="false">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-            <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="true" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
         <!--出勤模板-->
         <!--<table tableName="ly_attendance_template" domainObjectName="Attendance"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-            <!--<columnOverride column="attendance_status_1" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_2" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_3" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_4" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_5" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_6" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_7" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_8" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_9" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_10" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_11" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_12" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_13" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_14" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_15" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_16" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_17" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_18" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_19" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_20" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_21" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_22" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_23" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_24" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_25" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_26" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_27" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_28" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_29" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_30" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="attendance_status_31" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="attendance_status_1" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_2" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_3" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_4" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_5" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_6" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_7" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_8" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_9" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_10" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_11" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_12" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_13" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_14" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_15" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_16" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_17" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_18" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_19" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_20" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_21" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_22" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_23" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_24" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_25" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_26" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_27" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_28" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_29" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_30" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="attendance_status_31" javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
         <!--<table tableName="ly_attendance_template" domainObjectName="Attendance"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-            <!--<columnOverride column="attendance_status_1"-->
-                            <!--javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
-            <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="attendance_status_1"-->
+        <!--javaType="com.ly.ems.model.attendance.constant.AttendanceStatusEnum"/>-->
+        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
         <!--<table tableName="ly_salary_template" domainObjectName="Salary"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-            <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
         <!--<table tableName="ly_system_config" domainObjectName="SystemConfig"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-            <!--<columnOverride column="config_type" javaType="com.ly.ems.model.config.constant.SystemConfigTypeEnum"/>-->
-            <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="config_type" javaType="com.ly.ems.model.config.constant.SystemConfigTypeEnum"/>-->
+        <!--<columnOverride column="enable" javaType="com.ly.ems.model.common.constant.EnableEnum"/>-->
         <!--</table>-->
 
     </context>

@@ -8,7 +8,8 @@ class CacheManage extends React.Component {
         super(props);
         this.state = {
             //button状态
-            isRefreshingConditionCache: false
+            isRefreshingConditionCache: false,
+            isRefreshingSystemConfigCache: false
 
         };
         this.configuration = {
@@ -16,7 +17,8 @@ class CacheManage extends React.Component {
             OPERATION_SUCCESS_MSG: "操作成功",
             OPERATION_FAILED_MSG: "操作失败，请重试，或与管理员联系",
             //url
-            refreshConditionUrl: `${_ctx_}/system/refreshConditionCache`
+            refreshConditionUrl: `${_ctx_}/system/refreshConditionCache`,
+            refreshSystemConfigUrl: `${_ctx_}/system/refreshSystemConfigCache`
         };
     }
 
@@ -43,7 +45,7 @@ class CacheManage extends React.Component {
     };
 
 
-    //同步班级
+    // 刷新条件缓存
     refreshConditionCache = () =>{
         this.setState({
             isRefreshingConditionCache: true
@@ -57,6 +59,24 @@ class CacheManage extends React.Component {
         }, () => {
             this.setState({
                 isRefreshingConditionCache: false
+            });
+        })
+    };
+
+    // 刷新系统配置缓存
+    refreshSystemConfigCache = () =>{
+        this.setState({
+            isRefreshingSystemConfigCache: true
+        });
+        this.doAction(this.configuration.refreshSystemConfigUrl, {
+
+        },() => {
+            this.setState({
+                isRefreshingSystemConfigCache: false
+            });
+        }, () => {
+            this.setState({
+                isRefreshingSystemConfigCache: false
             });
         })
     };
@@ -92,8 +112,9 @@ class CacheManage extends React.Component {
 
         return (
             <div>
-                <Button style={{margin:10}} type="primary" icon="sync" loading={this.state.isRefreshingConditionCache} onClick={this.refreshConditionCache}> 刷新静态条件缓存 </Button>
+                <Button style={{margin:10}} type="primary" icon="sync" loading={this.state.isRefreshingSystemConfigCache} onClick={this.refreshSystemConfigCache}> 刷新系统配置缓存 </Button>
                 <br />
+                <Button style={{margin:10}} type="primary" icon="sync" loading={this.state.isRefreshingConditionCache} onClick={this.refreshConditionCache}> 刷新静态条件缓存 </Button>
             </div>
         );
     }

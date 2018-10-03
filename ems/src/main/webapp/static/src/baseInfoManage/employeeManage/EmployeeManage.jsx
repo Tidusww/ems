@@ -56,7 +56,9 @@ class EmployeeManage extends React.Component {
             },
             {title: '身份证', dataIndex: 'idCard', key: 'idCard', width: 140
             },
-            {title: '性别', dataIndex: 'gender', key: 'gender', width: 140
+            {title: '性别', dataIndex: 'genderValue', key: 'genderValue', width: 140
+            },
+            {title: '地区', dataIndex: 'locationValue', key: 'locationValue', width: 140
             },
             {title: '班组', dataIndex: 'groupName', key: 'groupName', width: 140
             },
@@ -366,6 +368,15 @@ class EmployeeManage extends React.Component {
                 ],
                 item:(
                     <Input disabled={this.state.modalForm.isSubmitting} />
+                )
+            },
+            {
+                label: "地区", key: "location", labelSpan:6, fieldSpan: 16,
+                rules: [
+                    {required: true, message: '请选择地区'}
+                ],
+                item:(
+                    <ConditionSelect conditionCode="LOCATION" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
                 )
             },
             {

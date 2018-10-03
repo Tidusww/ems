@@ -2,6 +2,7 @@ package com.ly.ems.model.base.employee;
 
 import com.ly.ems.model.base.employee.constant.EmployeeStatusEnum;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
+import com.ly.ems.model.base.employee.constant.LocationEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.common.constant.EnableEnum;
 import java.math.BigDecimal;
@@ -44,6 +45,12 @@ public class Employee {
      */
     @Column(name = "`phone`")
     private String phone;
+
+    /**
+     * 地区，0：本地，1：外地
+     */
+    @Column(name = "`location`")
+    private LocationEnum location;
 
     /**
      * 班组id
@@ -237,6 +244,24 @@ public class Employee {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    /**
+     * 获取地区，0：本地，1：外地
+     *
+     * @return location - 地区，0：本地，1：外地
+     */
+    public LocationEnum getLocation() {
+        return location;
+    }
+
+    /**
+     * 设置地区，0：本地，1：外地
+     *
+     * @param location 地区，0：本地，1：外地
+     */
+    public void setLocation(LocationEnum location) {
+        this.location = location;
     }
 
     /**

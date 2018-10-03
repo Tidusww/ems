@@ -11,6 +11,7 @@
     <result column="id_card" jdbcType="VARCHAR" property="idCard" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="location" jdbcType="TINYINT" property="location" />
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="job_id" jdbcType="INTEGER" property="jobId" />
     <result column="salary_bank" jdbcType="VARCHAR" property="salaryBank" />
@@ -63,8 +64,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, employee_name, gender, id_card, address, phone, group_id, job_id, salary_bank, 
-    salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount, 
+    id, employee_name, gender, id_card, address, phone, location, group_id, job_id, salary_bank,
+    salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount,
     entry_date, contract_no, status, enable, create_date, update_date, update_user_id
   </sql>
   <select id="selectByExample" parameterType="com.ly.ems.model.base.employee.EmployeeExample" resultMap="BaseResultMap">

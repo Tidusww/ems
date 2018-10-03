@@ -2,6 +2,7 @@ package com.ly.ems.model.base.employee;
 
 import com.ly.ems.model.base.employee.constant.EmployeeStatusEnum;
 import com.ly.ems.model.base.employee.constant.GenderEnum;
+import com.ly.ems.model.base.employee.constant.LocationEnum;
 import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.common.constant.EnableEnum;
 import java.math.BigDecimal;
@@ -507,6 +508,66 @@ public class EmployeeExample {
 
         public Criteria andPhoneNotBetween(String value1, String value2) {
             addCriterion("phone not between", value1, value2, "phone");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNull() {
+            addCriterion("location is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNotNull() {
+            addCriterion("location is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationEqualTo(LocationEnum value) {
+            addCriterion("location =", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotEqualTo(LocationEnum value) {
+            addCriterion("location <>", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThan(LocationEnum value) {
+            addCriterion("location >", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThanOrEqualTo(LocationEnum value) {
+            addCriterion("location >=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThan(LocationEnum value) {
+            addCriterion("location <", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThanOrEqualTo(LocationEnum value) {
+            addCriterion("location <=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIn(List<LocationEnum> values) {
+            addCriterion("location in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotIn(List<LocationEnum> values) {
+            addCriterion("location not in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationBetween(LocationEnum value1, LocationEnum value2) {
+            addCriterion("location between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotBetween(LocationEnum value1, LocationEnum value2) {
+            addCriterion("location not between", value1, value2, "location");
             return (Criteria) this;
         }
 

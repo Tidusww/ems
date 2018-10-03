@@ -38,6 +38,13 @@ public class EmployeeVo extends Employee{
         return super.getGender().getValue();
     }
 
+    public String getLocationValue() {
+        if(super.getLocation() == null) {
+            return "";
+        }
+        return super.getLocation().getValue();
+    }
+
     public String getSalaryBankValue(){
         if(super.getSalaryBank() == null){
             return "";
