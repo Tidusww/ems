@@ -30,10 +30,10 @@ public class DownloadUtil {
     private static String tempDir;
 
     /**
-     * 下载文件
+     * 1.下载文件
      *
      * @param resourcePath 资源路径
-     * @param fileName 保存的文件名
+     * @param fileName     保存的文件名
      * @throws EMSBusinessException
      * @throws IOException
      */
@@ -51,7 +51,7 @@ public class DownloadUtil {
     }
 
     /**
-     * 根据模板和数据生成excel并下载
+     * 2.根据模板和数据生成excel并下载
      *
      * @param templatePath 模板路径
      * @param beanParams   数据
@@ -75,25 +75,41 @@ public class DownloadUtil {
         outputExcel(workbook, fileName);
     }
 
+    /**
+     * 3.下载大excel（通过导出定义类）
+     *
+     * @param clazz
+     * @param resultList
+     * @param fileName
+     * @throws IOException
+     */
+    public static void downloadBigExcel(Class<?> clazz, List<?> resultList, String fileName) {
+        // 生成workbook
+        Workbook workbook = ExcelUtil.getWorkbook(clazz, resultList);
+        // 输出
+        outputExcelWithTempFile(workbook, fileName);
+    }
+
 
     /**
      * 输出文件
+     *
      * @param file
      * @param downloadName
      * @throws EMSBusinessException
      */
     private static void outputFile(File file, String downloadName) throws EMSBusinessException {
-        if(file == null) {
+        if (file == null) {
             return;
         }
         FileInputStream inputStream = null;
         ServletOutputStream outputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            HttpServletResponse response = getResponse(downloadName, inputStream.available());
+            HttpServletResponse response = getResponse(downloadName, String.valueOf(inputStream.available()));
 
 
-            byte[] b = new byte[100];
+            byte[] b = new byte[1024];
             outputStream = response.getOutputStream();
             while (inputStream.read(b) != -1) {
                 outputStream.write(b);
@@ -122,20 +138,21 @@ public class DownloadUtil {
 
     /**
      * 输出 resource
+     *
      * @param resource
      * @param downloadName
      * @throws EMSBusinessException
      * @throws IOException
      */
     private static void outputResource(Resource resource, String downloadName) throws EMSBusinessException {
-        if(resource == null) {
+        if (resource == null) {
             return;
         }
         InputStream inputStream = null;
         ServletOutputStream outputStream = null;
         try {
             inputStream = resource.getInputStream();
-            HttpServletResponse response = getResponse(downloadName, inputStream.available());
+            HttpServletResponse response = getResponse(downloadName, String.valueOf(inputStream.available()));
 
 
             byte[] b = new byte[100];
@@ -166,16 +183,16 @@ public class DownloadUtil {
     }
 
 
-
     /**
      * 输出 workbook
+     *
      * @param workbook
      * @param downloadName
      * @throws EMSBusinessException
      * @throws IOException
      */
     private static void outputExcel(Workbook workbook, String downloadName) throws EMSBusinessException {
-        if(workbook == null) {
+        if (workbook == null) {
             return;
         }
 
@@ -184,7 +201,7 @@ public class DownloadUtil {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             workbook.write(byteArrayOutputStream);
 
-            HttpServletResponse response = getResponse(downloadName, byteArrayOutputStream.size());
+            HttpServletResponse response = getResponse(downloadName, String.valueOf(byteArrayOutputStream.size()));
             outputStream = response.getOutputStream();
             workbook.write(outputStream);
 
@@ -208,31 +225,47 @@ public class DownloadUtil {
     }
 
     /**
-     * 下载大excel
+     * 输出 workbook（以临时文件的方式）
      *
-     * @param result
-     * @param clazz
-     * @param fileName
+     * @param workbook
+     * @param downloadName
+     * @throws EMSBusinessException
      * @throws IOException
      */
-    public static void exportLargetExcel(List result, Class clazz, String fileName) throws IOException {
+    private static void outputExcelWithTempFile(Workbook workbook, String downloadName) throws EMSBusinessException {
+        if (workbook == null) {
+            return;
+        }
+        File tempFile = null;
+        try {
+            File dir = FileUtil.createTempDir(String.format("%s%s", System.getProperty("java.io.tmpdir"), FileUtil.PATH_EXCEL_TEMP));
+            tempFile = File.createTempFile(FileUtil.PREFIX_EXCEL_TEMP, FileUtil.FILE_SUFFIX_XLSX, dir);
+            FileOutputStream os = new FileOutputStream(tempFile);
+            workbook.write(os);
+            workbook.close();
 
-        Workbook workbook = ExcelUtil.getWorkbook(clazz, result);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        workbook.write(byteArrayOutputStream);
-
-        HttpServletResponse response = getResponse(fileName, byteArrayOutputStream.size());
-        ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.flush();
-        workbook.write(outputStream);
+            outputFile(tempFile, downloadName);
+        } catch (Exception e) {
+            LOGGER.error("输出Excel出错", e);
+            throw new EMSBusinessException("输出Excel出错");
+        } finally {
+            if (tempFile != null) {
+                boolean deleted = tempFile.delete();
+                if(!deleted) {
+                    LOGGER.error("临时文件删除失败：%s",tempFile.getAbsolutePath());
+                }
+            }
+        }
     }
+
 
     /**
      * 统一设置 HttpServletResponse
+     *
      * @param downloadName
      * @throws UnsupportedEncodingException
      */
-    private static HttpServletResponse getResponse(String downloadName, int size) throws UnsupportedEncodingException {
+    private static HttpServletResponse getResponse(String downloadName, String size) throws UnsupportedEncodingException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
@@ -245,12 +278,12 @@ public class DownloadUtil {
 
         // 文件类型
         String suffix = FileUtil.getSuffix(finalFileName);
-        if(StringUtils.equals(suffix, FileUtil.FILE_SUFFIX_XLS) || StringUtils.equals(suffix, FileUtil.FILE_SUFFIX_XLSX)) {
+        if (StringUtils.equals(suffix, FileUtil.FILE_SUFFIX_XLS) || StringUtils.equals(suffix, FileUtil.FILE_SUFFIX_XLSX)) {
             response.setContentType("application/vnd.msexcel");
         }
 
         // 文件大小
-        response.setHeader("Content-Length", String.valueOf(size));
+        response.setHeader("Content-Length", size);
 
         return response;
     }

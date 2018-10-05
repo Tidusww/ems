@@ -76,7 +76,32 @@ const CommonHelper = {
         const newState = {};
         newState[oldTargetStateName] = finalNewTargetState;
         context.setState(newState, callback || (()=>{}));
-    }
+    },
+    /**
+     * 参数Map拼装成url请求字符串
+     * @param paramArray
+     * @returns {string}
+     */
+    getNewUrlWithParam : (originUrl, param) => {
+        let newUrl = originUrl;
+        if(!param || param.length == 0){
+            return newUrl;
+        }
+
+        let paramStr = "";
+        for (const attr in param) {
+            paramStr += "&" + attr + "=" + param[attr];
+        }
+
+        const index = originUrl.indexOf("?");
+        if(index != -1){
+            newUrl = newUrl + paramStr;
+        }else{
+            newUrl = newUrl + "?" + paramStr.substring(1, paramStr.length);
+        }
+
+        return newUrl;
+    },
 };
 
 exports.CommonHelper = CommonHelper;

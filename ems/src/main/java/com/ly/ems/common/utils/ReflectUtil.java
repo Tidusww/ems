@@ -19,7 +19,7 @@ public class ReflectUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectUtil.class);
 
     /**
-     * 1、根据属性名获取对象中的属性值
+     * 1.1、根据属性名获取对象中的属性值
      *
      * @param fieldName 属性名
      * @param target    对象
@@ -36,6 +36,21 @@ public class ReflectUtil {
             LOGGER.error(String.format("获取%s对象中的%s属性失败", target.toString(), fieldName), e);
         }
         return object;
+    }
+
+    /**
+     * 1.2、根据属性名获取对象中的属性类型
+     *
+     * @param fieldName 属性名
+     * @param target    对象
+     * @return
+     * @throws NoSuchFieldException
+     */
+    public static Class<?> getFieldTypeByFieldName(String fieldName, Object target) throws NoSuchFieldException {
+        Class<?> clazz;
+        Field field = getFieldByClass(fieldName, target.getClass());
+        clazz = field.getType();
+        return clazz;
     }
 
     /**

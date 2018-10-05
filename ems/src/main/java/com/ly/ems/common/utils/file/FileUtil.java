@@ -1,15 +1,15 @@
 package com.ly.ems.common.utils.file;
 
+import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.model.common.constant.FileTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
@@ -22,11 +22,14 @@ public class FileUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
+    public static final String PREFIX_EXCEL_TEMP = "export_temp_";
+    public static final String PATH_EXCEL_TEMP = "/excel/";
+
     public static final String FILE_SUFFIX_XLS = ".xls";
     public static final String FILE_SUFFIX_XLSX = ".xlsx";
 
     /**
-     * @param file 文件
+     * @param file          文件
      * @param limitSize     Byte
      * @param supportSuffix [".jpg", ".png", ".jpeg", ".gif"]
      * @return
@@ -89,6 +92,7 @@ public class FileUtil {
 
     /**
      * 根据文件名 生成唯一文件名
+     *
      * @param name
      * @return timestamp_uuid.png
      */
@@ -111,18 +115,18 @@ public class FileUtil {
      * @return FileType
      */
     public static FileTypeEnum getFileType(String name) {
-        List<String> imageSuffixes = Arrays.asList(new String[] { ".jpg", ".png", ".jpeg", ".gif" });
-        List<String> audioSuffixes = Arrays.asList(new String[] { ".mp3" });
-        List<String> videoSuffixes = Arrays.asList(new String[] { ".mp4" });
+        List<String> imageSuffixes = Arrays.asList(new String[]{".jpg", ".png", ".jpeg", ".gif"});
+        List<String> audioSuffixes = Arrays.asList(new String[]{".mp3"});
+        List<String> videoSuffixes = Arrays.asList(new String[]{".mp4"});
 
         String suffix = getSuffix(name);
-        if(imageSuffixes.contains(suffix)) {
+        if (imageSuffixes.contains(suffix)) {
             return FileTypeEnum.IMAGE;
         }
-        if(audioSuffixes.contains(suffix)){
+        if (audioSuffixes.contains(suffix)) {
             return FileTypeEnum.AUDIO;
         }
-        if(videoSuffixes.contains(suffix)){
+        if (videoSuffixes.contains(suffix)) {
             return FileTypeEnum.VIDEO;
         }
 
@@ -145,6 +149,27 @@ public class FileUtil {
             return URLEncoder.encode(originFileName, "UTF-8");
         }
         return new String(originFileName.getBytes("UTF-8"), "ISO-8859-1");
+    }
+
+
+    public static File createTempDir(String dirFullPath) throws IOException {
+        File tempDir = new File(dirFullPath);
+        boolean deleted = true;
+        boolean created = true;
+
+        if (!tempDir.exists()) {
+            created = tempDir.mkdir();
+        }else {
+            if(!tempDir.isDirectory()) {
+                deleted = tempDir.delete();
+                created = tempDir.mkdir();
+            }
+        }
+
+        if (!deleted || !created) {
+            throw new IOException(String.format("创建临时文件夹失败：%s", dirFullPath));
+        }
+        return tempDir;
     }
 
     /**
@@ -174,5 +199,25 @@ public class FileUtil {
         return file.delete();
     }
 
+    public static String generateFile(Workbook workbook, HttpServletRequest request, String fileName) {
+        String DOWNLOAD_EXCEL_TEMP_FILE_PATH = "/export/" + getFileUniqueName(fileName);
+        String destFilePath = request.getSession().getServletContext().getRealPath(DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+
+        try {
+            File tempFile = new File(destFilePath);
+            if (!tempFile.exists()) {
+                tempFile.createNewFile();
+            }
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(destFilePath));
+            workbook.write(os);
+            os.flush();
+            os.close();
+
+        } catch (Exception e) {
+            deleteFile(request, DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+            throw new EMSBusinessException("生成Excel出错");
+        }
+        return DOWNLOAD_EXCEL_TEMP_FILE_PATH;
+    }
 
 }

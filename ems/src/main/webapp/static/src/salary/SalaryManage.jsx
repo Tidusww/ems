@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table, message, Modal, Input, InputNumber} from 'antd';
 import {ConditionContainer} from 'component/ConditionContainer.jsx';
+import {CommonHelper} from 'core/Common.jsx';
 
 const confirm = Modal.confirm;
 
@@ -154,6 +155,11 @@ class SalaryManage extends React.Component {
             {
                 this.generateSalaryInfo();
             }
+            case "export":
+            {
+                this.doExport();
+                break;
+            }
         }
     };
 
@@ -238,6 +244,10 @@ class SalaryManage extends React.Component {
         });
     };
 
+    doExport = () => {
+        const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaries`, this.state.dataParam);
+        this.refs.ifile.src = newUrl;
+    };
 
     /**
      * helper method
@@ -287,6 +297,7 @@ class SalaryManage extends React.Component {
                         },
                     })}
                 />
+                <iframe ref="ifile" style={{display:'none'}}></iframe>
             </div>
         );
     }
