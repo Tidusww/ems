@@ -9,111 +9,80 @@ import java.math.BigDecimal;
  */
 public class SalaryExport {
     /**
-     * 标题定义
+     * 纯标题定义
      */
-    @ExcelAttribute(content ="员工工资表（本地/外地/劳务派遣/外包作业）", isTitle = true, titleRegion = "0,0,A,Z")
+    @ExcelAttribute(content ="员工工资表（本地/外地/劳务派遣/外包作业）", isPureTitle = true, titleRegion = "0,0,A,Z")
     private String title;
-    /**
-     * 标题定义
-     */
-    @ExcelAttribute(paramKey ="month", isTitle = true, titleRegion = "1,1,F,S")
+    @ExcelAttribute(paramKey ="month", isPureTitle = true, titleRegion = "1,1,F,S")
     private String month;
+    @ExcelAttribute(content ="单位：元/人民币", isPureTitle = true, titleRegion = "1,1,T,T")
+    private String unit;
+    @ExcelAttribute(content ="出勤情况", isPureTitle = true, titleRegion = "1,3,F,G")
+    private String attendanceDetail;
+    @ExcelAttribute(content ="应发项目", isPureTitle = true, titleRegion = "1,3,H,N")
+    private String payableItems;
+    @ExcelAttribute(content ="应扣项目", isPureTitle = true, titleRegion = "1,3,P,S")
+    private String deductableItems;
+
 
 
     /**
-     * 员工id
+     * 数据列定义
      */
-    @ExcelAttribute(content = "员工姓名", column = "A")
+    @ExcelAttribute(content = "班组", column = "A", titleRegion = "1,3,A,A")
+    private String groupName;
+    @ExcelAttribute(content = "序号", isPureTitle = true, column = "B", titleRegion = "1,3,B,B")
+    private String numberInGroup;
+    @ExcelAttribute(content = "员工姓名", column = "C", titleRegion = "1,3,C,C")
     private String employeeName;
+    @ExcelAttribute(content = "身份证号", column = "D", titleRegion = "1,3,D,D")
+    private String idCard;
+    @ExcelAttribute(content = "性别", column = "E", titleRegion = "1,3,E,E")
+    private String gender;
+    @ExcelAttribute(content = "正常出勤天数", column = "F", titleRegion = "3,3,F,F")
+    private String attendanceDays;
+    @ExcelAttribute(content = "加班天数", column = "G", titleRegion = "3,3,G,G")
+    private String overtimeDays;
 
-    /**
-     * 1、最低月基本工资
-     */
-    @ExcelAttribute(content = "月基本工资", column = "B")
+
+    @ExcelAttribute(content = "基本工资", column = "H", titleRegion = "3,3,H,H")
     private BigDecimal basicSalary;
-
-    /**
-     * 2、加班工资：工种工资*（总出勤天数-21.75）*2
-     */
-    @ExcelAttribute(content = "加班工资", column = "C")
+    @ExcelAttribute(content = "加班工资", column = "I", titleRegion = "3,3,I,I")
     private BigDecimal overtimeSalary;
 
-    /**
-     * 3、计量工资：工种工资*出勤天数-基本工资-加班工资
-     */
-    @ExcelAttribute(content = "计量工资", column = "D")
+    @ExcelAttribute(content = "计量工资", column = "J", titleRegion = "3,3,J,J")
     private BigDecimal calculateSalary;
-
-    /**
-     * 4、高温费：总出勤天数*每日高温费
-     */
-    @ExcelAttribute(content = "高温费", column = "E")
+    @ExcelAttribute(content = "高温费", column = "K", titleRegion = "3,3,K,K")
     private BigDecimal hotAllowance;
-
-    /**
-     * 5、社保补贴：30*每日社保
-     */
-    @ExcelAttribute(content = "社保补贴", column = "F")
+    @ExcelAttribute(content = "社保补贴", column = "L", titleRegion = "3,3,L,L")
     private BigDecimal socialSecurityAllowance;
-
-    /**
-     * 6、住房补贴：30*每日住房
-     */
-    @ExcelAttribute(content = "住房补贴", column = "G")
+    @ExcelAttribute(content = "住房补贴", column = "M", titleRegion = "3,3,M,M")
     private BigDecimal houseFundAllowance;
-
-    /**
-     * 7、其他收入（手动）
-     */
-    @ExcelAttribute(content = "其他收入", column = "H")
+    @ExcelAttribute(content = "其他收入", column = "N", titleRegion = "3,3,N,N")
     private BigDecimal otherIncome;
 
-    /**
-     * 8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
-     */
-    @ExcelAttribute(content = "应付工资", column = "I")
+    @ExcelAttribute(content = "应付工资", column = "O", titleRegion = "2,3,O,O")
     private BigDecimal payableSalary;
 
-    /**
-     * 9、个人部分社保(手动)
-     */
-    @ExcelAttribute(content = "个人部分社保", column = "J")
+    @ExcelAttribute(content = "个人部分社保", column = "P", titleRegion = "3,3,P,P")
     private BigDecimal personalSocialSecurity;
-
-    /**
-     * 10、个人部分公积金(手动)
-     */
-    @ExcelAttribute(content = "个人部分公积金", column = "K")
+    @ExcelAttribute(content = "个人部分公积金", column = "Q", titleRegion = "3,3,Q,Q")
     private BigDecimal personalHouseFund;
-
-    /**
-     * 11、其他扣除：借支或扣费（手动）
-     */
-    @ExcelAttribute(content = "其他扣除", column = "L")
+    @ExcelAttribute(content = "其他扣除", column = "R", titleRegion = "3,3,R,R")
     private BigDecimal otherDeduction;
-
-    /**
-     * 应付个税：最新税法
-     */
-    @ExcelAttribute(content = "应付个税", column = "M")
+    @ExcelAttribute(content = "应付个税", column = "S", titleRegion = "3,3,S,S")
     private BigDecimal payTaxes;
 
-    /**
-     * 12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
-     */
-    @ExcelAttribute(content = "实发工资", column = "N")
+    @ExcelAttribute(content = "实发工资", column = "T", titleRegion = "2,3,T,T")
     private BigDecimal realSalary;
 
-    /**
-     * 13、单位社保(手动)
-     */
-    @ExcelAttribute(content = "单位社保", column = "O")
+    @ExcelAttribute(content ="日工资", column = "U", titleRegion = "1,3,U,U")
+    private String dailySalary;
+    @ExcelAttribute(content = "单位社保", column = "V", titleRegion = "1,3,V,V")
     private BigDecimal companySocialSecurity;
-
-    /**
-     * 14、单位公积金(手动)
-     */
-    @ExcelAttribute(content = "单位公积金", column = "P")
+    @ExcelAttribute(content = "单位公积金", column = "W", titleRegion = "1,3,W,W")
     private BigDecimal companyHouseFund;
+
+
 
 }

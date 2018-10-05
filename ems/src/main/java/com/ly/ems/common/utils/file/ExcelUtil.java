@@ -165,9 +165,9 @@ public class ExcelUtil implements Serializable {
             Field field = fields.get(cellNum);
             // 获取注解信息
             ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
-            boolean isTitle = attr.isTitle();
-            if (isTitle) {
-                // 纯标题列
+//            boolean isTitle = attr.isPureTitle();
+//            if (isTitle) {
+                //
                 String titleRegion = attr.titleRegion();
 
                 // 配置复杂表头
@@ -195,26 +195,26 @@ public class ExcelUtil implements Serializable {
                     // 先合并单元格
                     sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
 
-                }
+//                }
 
-            } else {
-                // 数据标题
-
-
-                // 根据指定的顺序获得列号
-                int col = cellNum;
-                if (StringUtils.isNotBlank(attr.column())) {
-                    col = getExcelColNum(attr.column());
-                }
-
-                // 创建列
-                Cell cell = titleRow.createCell(col);
-                // 设置列中写入内容为String类型
-                cell.setCellType(Cell.CELL_TYPE_STRING);
-                // 写入列名
-                cell.setCellValue(attr.content());
-                // 设置宽度
-                sheet.setColumnWidth(col, (int) ((attr.content().getBytes().length <= 4 ? 6 : attr.content().getBytes().length) * 1.5 * 256));
+//            } else {
+//                // 数据标题
+//
+//
+//                // 根据指定的顺序获得列号
+//                int col = cellNum;
+//                if (StringUtils.isNotBlank(attr.column())) {
+//                    col = getExcelColNum(attr.column());
+//                }
+//
+//                // 创建列
+//                Cell cell = titleRow.createCell(col);
+//                // 设置列中写入内容为String类型
+//                cell.setCellType(Cell.CELL_TYPE_STRING);
+//                // 写入列名
+//                cell.setCellValue(attr.content());
+//                // 设置宽度
+//                sheet.setColumnWidth(col, (int) ((attr.content().getBytes().length <= 4 ? 6 : attr.content().getBytes().length) * 1.5 * 256));
             }
         }
         return maxRow;
@@ -234,7 +234,7 @@ public class ExcelUtil implements Serializable {
             Field field = fields.get(cellNum);
             // 获取注解信息
             ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
-            boolean isTitle = attr.isTitle();
+            boolean isTitle = attr.isPureTitle();
             if (isTitle) {
                 // 纯标题列
                 String titleRegion = attr.titleRegion();
@@ -275,7 +275,7 @@ public class ExcelUtil implements Serializable {
 
                 ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
 
-                if (attr.isTitle()) {
+                if (attr.isPureTitle()) {
                     continue;
                 }
 
