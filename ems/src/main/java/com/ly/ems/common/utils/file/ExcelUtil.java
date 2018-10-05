@@ -85,7 +85,7 @@ public class ExcelUtil implements Serializable {
      * @param resultList 数据
      * @return
      */
-    public static <T> Workbook getWorkbook(Class<?> clazz, List<T> resultList) {
+    public static <T> Workbook generateBigWorkbook(Class<?> clazz, List<T> resultList) {
         try {
             // 数据源数量
             int listSize = 0;
@@ -100,7 +100,6 @@ public class ExcelUtil implements Serializable {
 
             // 产生工作薄对象
             Workbook workbook = new SXSSFWorkbook(rowSize);
-//            Workbook workbook = new HSSFWorkbook(rowSize);
 
             // 输出每个工作簿的内容、并输出标题
             for (int i = 0; i <= sheetNo; i++) {

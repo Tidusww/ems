@@ -20,91 +20,91 @@ public class SalaryExport {
     /**
      * 1、最低月基本工资
      */
-    @Column(name = "`basicSalary`")
+    @ExcelAttribute(name = "月基本工资", column = "B")
     private BigDecimal basicSalary;
 
     /**
      * 2、加班工资：工种工资*（总出勤天数-21.75）*2
      */
-    @Column(name = "`overtime_salary`")
+    @ExcelAttribute(name = "加班工资", column = "C")
     private BigDecimal overtimeSalary;
 
     /**
      * 3、计量工资：工种工资*出勤天数-基本工资-加班工资
      */
-    @Column(name = "`calculate_salary`")
+    @ExcelAttribute(name = "计量工资", column = "D")
     private BigDecimal calculateSalary;
 
     /**
      * 4、高温费：总出勤天数*每日高温费
      */
-    @Column(name = "`hot_allowance`")
+    @ExcelAttribute(name = "高温费", column = "E")
     private BigDecimal hotAllowance;
 
     /**
      * 5、社保补贴：30*每日社保
      */
-    @Column(name = "`social_security_allowance`")
+    @ExcelAttribute(name = "社保补贴", column = "F")
     private BigDecimal socialSecurityAllowance;
 
     /**
      * 6、住房补贴：30*每日住房
      */
-    @Column(name = "`house_fund_allowance`")
+    @ExcelAttribute(name = "住房补贴", column = "G")
     private BigDecimal houseFundAllowance;
 
     /**
      * 7、其他收入（手动）
      */
-    @Column(name = "`other_income`")
+    @ExcelAttribute(name = "其他收入", column = "H")
     private BigDecimal otherIncome;
 
     /**
      * 8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
      */
-    @Column(name = "`payable_salary`")
+    @ExcelAttribute(name = "应付工资", column = "I")
     private BigDecimal payableSalary;
 
     /**
      * 9、个人部分社保(手动)
      */
-    @Column(name = "`personal_social_security`")
+    @ExcelAttribute(name = "个人部分社保", column = "J")
     private BigDecimal personalSocialSecurity;
 
     /**
      * 10、个人部分公积金(手动)
      */
-    @Column(name = "`personal_house_fund`")
+    @ExcelAttribute(name = "个人部分公积金", column = "K")
     private BigDecimal personalHouseFund;
 
     /**
      * 11、其他扣除：借支或扣费（手动）
      */
-    @Column(name = "`other_deduction`")
+    @ExcelAttribute(name = "其他扣除", column = "L")
     private BigDecimal otherDeduction;
 
     /**
      * 应付个税：最新税法
      */
-    @Column(name = "`pay_taxes`")
+    @ExcelAttribute(name = "应付个税", column = "M")
     private BigDecimal payTaxes;
 
     /**
      * 12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
      */
-    @Column(name = "`real_salary`")
+    @ExcelAttribute(name = "实发工资", column = "N")
     private BigDecimal realSalary;
 
     /**
      * 13、单位社保(手动)
      */
-    @Column(name = "`company_social_security`")
+    @ExcelAttribute(name = "单位社保", column = "O")
     private BigDecimal companySocialSecurity;
 
     /**
      * 14、单位公积金(手动)
      */
-    @Column(name = "`company_house_fund`")
+    @ExcelAttribute(name = "单位公积金", column = "P")
     private BigDecimal companyHouseFund;
 
 }

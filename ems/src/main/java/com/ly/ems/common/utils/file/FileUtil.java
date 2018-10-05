@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +77,22 @@ public class FileUtil {
     }
 
     /**
+     * 根据文件名 去掉后缀名
+     *
+     * @param name 文件名
+     * @return "abcd"
+     */
+    public static String getFileName(String name) {
+        String fileName;
+        int suffixIndex = name.lastIndexOf(".");
+        if (suffixIndex == -1) {
+            return name;
+        }
+        fileName = name.substring(0, suffixIndex);
+        return fileName;
+    }
+
+    /**
      * 根据文件名 获取后缀名
      *
      * @param name 文件名
@@ -98,10 +116,11 @@ public class FileUtil {
      */
     public static String getFileUniqueName(String name) {
         String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
-        Long current = new Long(System.currentTimeMillis());
+        Long current = System.currentTimeMillis();
+        String fileName = getFileName(name);
         String suffix = getSuffix(name);
 
-        String uniqueName = current.toString() + "_" + uuid;
+        String uniqueName = fileName + "_" + current.toString() + "_" + uuid;
         if (!StringUtils.isEmpty(suffix)) {
             uniqueName = uniqueName + suffix;
         }
@@ -151,7 +170,12 @@ public class FileUtil {
         return new String(originFileName.getBytes("UTF-8"), "ISO-8859-1");
     }
 
-
+    /**
+     * 生成临时文件夹
+     * @param dirFullPath
+     * @return
+     * @throws IOException
+     */
     public static File createTempDir(String dirFullPath) throws IOException {
         File tempDir = new File(dirFullPath);
         boolean deleted = true;
@@ -199,25 +223,34 @@ public class FileUtil {
         return file.delete();
     }
 
-    public static String generateFile(Workbook workbook, HttpServletRequest request, String fileName) {
-        String DOWNLOAD_EXCEL_TEMP_FILE_PATH = "/export/" + getFileUniqueName(fileName);
-        String destFilePath = request.getSession().getServletContext().getRealPath(DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+    /**
+     * 根据workbook生成文件，并返回下载地址
+     * @param workbook
+     * @param fileName
+     * @return
+     */
+    public static String generateFileByWorkbook(Workbook workbook, String fileName) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+        String download_path = "/excel/export/" + getFileUniqueName(fileName);
+        String targetFilePath = request.getSession().getServletContext().getRealPath(download_path);
 
         try {
-            File tempFile = new File(destFilePath);
+            File tempFile = new File(targetFilePath);
             if (!tempFile.exists()) {
                 tempFile.createNewFile();
             }
-            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(destFilePath));
+            BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(targetFilePath));
             workbook.write(os);
             os.flush();
             os.close();
 
         } catch (Exception e) {
-            deleteFile(request, DOWNLOAD_EXCEL_TEMP_FILE_PATH);
+            LOGGER.error("生成文件失败", e);
+            deleteFile(request, download_path);
             throw new EMSBusinessException("生成Excel出错");
         }
-        return DOWNLOAD_EXCEL_TEMP_FILE_PATH;
+        return download_path;
     }
 
 }

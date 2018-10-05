@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, message, Modal, Input, InputNumber} from 'antd';
+import {Table, message, Modal, Input, InputNumber, Spin, Button} from 'antd';
 import {ConditionContainer} from 'component/ConditionContainer.jsx';
 import {CommonHelper} from 'core/Common.jsx';
 
@@ -11,6 +11,7 @@ class SalaryManage extends React.Component {
         this.state = {
             //Table状态
             isLoading: false,
+            isDownloading: false,
             selectedRowKeys: [],
             selectedRows: [],
             dataSource: [],
@@ -43,6 +44,7 @@ class SalaryManage extends React.Component {
             saveUrl: `${_ctx_}/salary`,
             disableUrl: `${_ctx_}/`,
             generateUrl: `${_ctx_}/salary/generate`,
+            exportSalariesUrl: `${_ctx_}/salary/exportSalaries`,
 
         };
         /**
@@ -154,6 +156,7 @@ class SalaryManage extends React.Component {
             case 'generateSalary':
             {
                 this.generateSalaryInfo();
+                break;
             }
             case "export":
             {
@@ -244,10 +247,42 @@ class SalaryManage extends React.Component {
         });
     };
 
+    /**
+     * 导出
+     */
     doExport = () => {
-        const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaries`, this.state.dataParam);
-        this.refs.ifile.src = newUrl;
+        // const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaries`, this.state.dataParam);
+        // this.refs.ifile.src = newUrl;
+        $.ajax({
+            url: this.configuration.exportSalariesUrl,
+            type: 'POST',
+            data: this.state.dataParam,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                this.setState({isLoading: false});
+                if (result.success) {
+                    const data = result.data;
+                    this.showDownloadDialog(data);
+                } else {
+                    console.log("请求出错");
+                    message.error(result.msg, 3);
+                }
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                console.log("请求出错" + result);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
     };
+    showDownloadDialog = (fileData)=> {
+        const downloadUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/export`, fileData);
+        this.setState({downloadVisible: true, downloadUrl: downloadUrl});
+    }
+    download = ()=> {
+        this.refs.ifile.src = this.state.downloadUrl;
+    }
 
     /**
      * helper method
@@ -274,29 +309,41 @@ class SalaryManage extends React.Component {
 
         return (
             <div>
-                <ConditionContainer
-                    configCode={this.configuration.conditionConfigCode}
-                    conditionDidLoad={this.conditionDidLoad}
-                    onItemChange={this.handleItemChange}
-                    onItemPressEnter={this.handleItemPressEnter}
-                    onButtonClick={this.handleButtonClick}
-                />
-                <Table
-                    bordered
-                    title={()=>`工资列表`}
-                    rowKey={this.configuration.keyId}
-                    loading={this.state.isLoading}
-                    dataSource={this.state.dataSource}
-                    columns={this.columns}
-                    pagination={pagination}
-                    rowSelection={rowSelection}
-                    scroll={{x: 2222}}//列的总宽度+62(有选择框)
-                    onRow={(record) => ({
+                <Spin spinning={this.state.isDownloading} delay={500} tip="正在生成excel，由于数据量大，可能需要数分钟，请耐心等待">
+                    <ConditionContainer
+                        configCode={this.configuration.conditionConfigCode}
+                        conditionDidLoad={this.conditionDidLoad}
+                        onItemChange={this.handleItemChange}
+                        onItemPressEnter={this.handleItemPressEnter}
+                        onButtonClick={this.handleButtonClick}
+                    />
+                    <Table
+                        bordered
+                        title={()=>`工资列表`}
+                        rowKey={this.configuration.keyId}
+                        loading={this.state.isLoading}
+                        dataSource={this.state.dataSource}
+                        columns={this.columns}
+                        pagination={pagination}
+                        rowSelection={rowSelection}
+                        scroll={{x: 2222}}//列的总宽度+62(有选择框)
+                        onRow={(record) => ({
                         onClick: () => {
                             this.selectRow(record);
                         },
                     })}
-                />
+                    />
+                </Spin>
+                <Modal
+                    title='生成文件成功'
+                    visible={this.state.downloadVisible}
+                    onCancel={()=>{
+                        this.setState({downloadVisible:false, downloadUrl: ''})
+                    }}
+                    footer={null}
+                >
+                    <Button onClick={this.download}>点击下载</Button>
+                </Modal>
                 <iframe ref="ifile" style={{display:'none'}}></iframe>
             </div>
         );

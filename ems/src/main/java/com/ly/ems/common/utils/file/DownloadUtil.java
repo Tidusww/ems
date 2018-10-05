@@ -32,22 +32,25 @@ public class DownloadUtil {
     /**
      * 1.下载文件
      *
-     * @param resourcePath 资源路径
-     * @param fileName     保存的文件名
+     * @param filePath 文件路径
+     * @param fileName 保存的文件名
      * @throws EMSBusinessException
      * @throws IOException
      */
-    public static void downloadResource(String resourcePath, String fileName) throws EMSBusinessException, IOException {
+    public static void downloadFile(String filePath, String fileName) throws EMSBusinessException {
         // 0. prepare
-        if (StringUtils.isEmpty(resourcePath)) {
-            throw new EMSBusinessException("资源路径为空");
+        if (StringUtils.isEmpty(filePath)) {
+            throw new EMSBusinessException("文件路径为空");
         }
 
-        // 加载模板资源
-        Resource resource = new ClassPathResource(resourcePath);
+        // 加载文件
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+        String targetFilePath = request.getSession().getServletContext().getRealPath(filePath);
+        File file = new File(targetFilePath);
 
         // 输出
-        outputResource(resource, fileName);
+        outputFile(file, fileName);
     }
 
     /**
@@ -58,7 +61,7 @@ public class DownloadUtil {
      * @param fileName     下载文件名
      * @throws EMSBusinessException,IOException
      */
-    public static void downloadExcel(String templatePath, Map beanParams, String fileName) throws EMSBusinessException, IOException {
+    public static void downloadExcel(String templatePath, Map beanParams, String fileName) throws EMSBusinessException {
         // 0. prepare
         if (StringUtils.isEmpty(templatePath)) {
             throw new EMSBusinessException("模板路径为空");
@@ -66,7 +69,13 @@ public class DownloadUtil {
 
         // 加载模板资源
         Resource resource = new ClassPathResource(templatePath);
-        InputStream templateStream = resource.getInputStream();
+        InputStream templateStream = null;
+        try {
+            templateStream = resource.getInputStream();
+        } catch (IOException e) {
+            LOGGER.error("加载模板失败", e);
+            throw new EMSBusinessException("加载模板失败");
+        }
 
         // 生成workbook
         Workbook workbook = ExcelUtil.generateWorkbook(templateStream, beanParams);
@@ -85,9 +94,30 @@ public class DownloadUtil {
      */
     public static void downloadBigExcel(Class<?> clazz, List<?> resultList, String fileName) {
         // 生成workbook
-        Workbook workbook = ExcelUtil.getWorkbook(clazz, resultList);
+        Workbook workbook = ExcelUtil.generateBigWorkbook(clazz, resultList);
         // 输出
         outputExcelWithTempFile(workbook, fileName);
+    }
+
+    /**
+     * 1.下载文件
+     *
+     * @param resourcePath 资源路径
+     * @param fileName     保存的文件名
+     * @throws EMSBusinessException
+     * @throws IOException
+     */
+    public static void downloadResource(String resourcePath, String fileName) throws EMSBusinessException {
+        // 0. prepare
+        if (StringUtils.isEmpty(resourcePath)) {
+            throw new EMSBusinessException("资源路径为空");
+        }
+
+        // 加载资源
+        Resource resource = new ClassPathResource(resourcePath);
+
+        // 输出
+        outputResource(resource, fileName);
     }
 
 
@@ -110,52 +140,6 @@ public class DownloadUtil {
 
 
             byte[] b = new byte[1024];
-            outputStream = response.getOutputStream();
-            while (inputStream.read(b) != -1) {
-                outputStream.write(b);
-            }
-
-        } catch (Exception e) {
-            LOGGER.error("输出Excel出错", e);
-            throw new EMSBusinessException("输出Excel出错");
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * 输出 resource
-     *
-     * @param resource
-     * @param downloadName
-     * @throws EMSBusinessException
-     * @throws IOException
-     */
-    private static void outputResource(Resource resource, String downloadName) throws EMSBusinessException {
-        if (resource == null) {
-            return;
-        }
-        InputStream inputStream = null;
-        ServletOutputStream outputStream = null;
-        try {
-            inputStream = resource.getInputStream();
-            HttpServletResponse response = getResponse(downloadName, String.valueOf(inputStream.available()));
-
-
-            byte[] b = new byte[100];
             outputStream = response.getOutputStream();
             while (inputStream.read(b) != -1) {
                 outputStream.write(b);
@@ -242,6 +226,7 @@ public class DownloadUtil {
             tempFile = File.createTempFile(FileUtil.PREFIX_EXCEL_TEMP, FileUtil.FILE_SUFFIX_XLSX, dir);
             FileOutputStream os = new FileOutputStream(tempFile);
             workbook.write(os);
+            os.close();
             workbook.close();
 
             outputFile(tempFile, downloadName);
@@ -253,6 +238,52 @@ public class DownloadUtil {
                 boolean deleted = tempFile.delete();
                 if(!deleted) {
                     LOGGER.error("临时文件删除失败：%s",tempFile.getAbsolutePath());
+                }
+            }
+        }
+    }
+
+    /**
+     * 输出 resource
+     *
+     * @param resource
+     * @param downloadName
+     * @throws EMSBusinessException
+     * @throws IOException
+     */
+    private static void outputResource(Resource resource, String downloadName) throws EMSBusinessException {
+        if (resource == null) {
+            return;
+        }
+        InputStream inputStream = null;
+        ServletOutputStream outputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+            HttpServletResponse response = getResponse(downloadName, String.valueOf(inputStream.available()));
+
+
+            byte[] b = new byte[100];
+            outputStream = response.getOutputStream();
+            while (inputStream.read(b) != -1) {
+                outputStream.write(b);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("输出Excel出错", e);
+            throw new EMSBusinessException("输出Excel出错");
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
