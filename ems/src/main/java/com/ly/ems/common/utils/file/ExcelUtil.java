@@ -109,12 +109,12 @@ public class ExcelUtil implements Serializable {
                 workbook.setSheetName(i, "Sheet" + (i + 1));
 
                 // 2. 创建标题行
-                int maxRow = createTitles(sheet, fields, externalParam);
+                int titleRow = createTitles(sheet, fields, externalParam);
 
                 // 3. 创建内容列
                 int startNo = i * sheetSize;
                 int endNo = Math.min(startNo + sheetSize, listSize);
-                createRecords(sheet, fields, startNo, endNo, resultList, externalParam);
+                createRecords(sheet, fields, startNo, endNo, titleRow, resultList, externalParam);
             }
             return workbook;
         } catch (Exception e) {
@@ -179,16 +179,22 @@ public class ExcelUtil implements Serializable {
                     Integer startCol = getExcelColNum(titleRegions[2]);
                     Integer endCol = getExcelColNum(titleRegions[3]);
 
-                    // 创建对应的单元格
+                    // 再创建对应的单元格
                     Row row = sheet.getRow(startRow);
-                    Cell cell = titleRow.createCell(startCol);
+                    Cell cell = row.createCell(startCol);
                     // 设置列中写入内容为String类型
                     cell.setCellType(Cell.CELL_TYPE_STRING);
-                    // 写入列名
-                    cell.setCellValue(attr.content());
+                    // 写入内容，可以是类中定义的content，也可以是paramKey
+                    String paramKey = attr.paramKey();
+                    String content = attr.content();
+                    if(!StringUtils.isEmpty(paramKey) && externalParam != null) {
+                        content = externalParam.get(paramKey);
+                    }
+                    cell.setCellValue(content);
 
-                    // 合并单元格
+                    // 先合并单元格
                     sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
+
                 }
 
             } else {
@@ -211,6 +217,7 @@ public class ExcelUtil implements Serializable {
                 sheet.setColumnWidth(col, (int) ((attr.content().getBytes().length <= 4 ? 6 : attr.content().getBytes().length) * 1.5 * 256));
             }
         }
+        return maxRow;
     }
 
 
@@ -254,9 +261,10 @@ public class ExcelUtil implements Serializable {
      * @param resultList
      * @throws Exception
      */
-    private static <T extends Object> void createRecords(Sheet sheet, List<Field> fields, int startNo, int endNo, List<T> resultList, Map<String, String> externalParam) throws Exception {
+    private static <T extends Object> void createRecords(Sheet sheet, List<Field> fields, int startNo, int endNo, int titleRow, List<T> resultList, Map<String, String> externalParam) throws Exception {
         for (int rowNo = startNo; rowNo < endNo; rowNo++) {
-            Row row = sheet.createRow(rowNo + 1 - startNo);
+
+            Row row = sheet.createRow(titleRow + rowNo - startNo);
             // 得到导出对象.
             Object vo = resultList.get(rowNo);
             for (int cellNum = 0; cellNum < fields.size(); cellNum++) {

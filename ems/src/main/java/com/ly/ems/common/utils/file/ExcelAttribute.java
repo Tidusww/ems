@@ -22,7 +22,7 @@ public @interface ExcelAttribute {
      *
      * @return
      */
-    String dataKey() default "";
+    String paramKey() default "";
 
     /**
      * 是否为纯标题列，是的话就不会从结果集中查找该列数据

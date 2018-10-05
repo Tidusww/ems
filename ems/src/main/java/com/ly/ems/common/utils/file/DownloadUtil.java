@@ -93,9 +93,9 @@ public class DownloadUtil {
      * @param fileName
      * @throws IOException
      */
-    public static void downloadBigExcel(Class<?> clazz, List<?> resultList, String fileName) {
+    public static void downloadBigExcel(Class<?> clazz, List<?> resultList, String fileName, Map<String, String> externalParam) {
         // 生成workbook
-        Workbook workbook = ExcelUtil.generateBigWorkbook(clazz, resultList);
+        Workbook workbook = ExcelUtil.generateBigWorkbook(clazz, resultList, externalParam);
         // 输出
         outputExcelWithTempFile(workbook, fileName);
     }

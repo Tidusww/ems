@@ -77,7 +77,10 @@ public class SalaryController {
 //                        FileUtil.FILE_SUFFIX_XLSX));
 
         // 自定义excel，返回路径
-        Workbook workbook = ExcelUtil.generateBigWorkbook(SalaryExport.class, salaryVoList);
+        Map<String, String> externalParam = new HashMap<String, String>();
+        externalParam.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+
+        Workbook workbook = ExcelUtil.generateBigWorkbook(SalaryExport.class, salaryVoList, externalParam);
         String path = FileUtil.generateFileByWorkbook(workbook, String.format("download%s", FileUtil.FILE_SUFFIX_XLSX));
 
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");
