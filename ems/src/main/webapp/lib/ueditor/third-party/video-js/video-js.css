@@ -5,10 +5,10 @@ Create your own skin at http://designer.videojs.com
 */
 /* SKIN
 ================================================================================
-The main class content for all skin-specific styles. To make your own skin,
-replace all occurances of 'vjs-default-skin' with a new content. Then add your new
-skin content to your video tag instead of the default skin.
-e.g. <video class="video-js my-skin-content">
+The main class name for all skin-specific styles. To make your own skin,
+replace all occurances of 'vjs-default-skin' with a new name. Then add your new
+skin name to your video tag instead of the default skin.
+e.g. <video class="video-js my-skin-name">
 */
 .vjs-default-skin {
   color: #cccccc;
