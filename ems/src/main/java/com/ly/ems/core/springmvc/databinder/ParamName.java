@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 public @interface ParamName {
 
     /**
-     * The name of the request parameter to bind to.
+     * The content of the request parameter to bind to.
      */
     String value();
 

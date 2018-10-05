@@ -2,6 +2,7 @@ package com.ly.ems.common.utils.file;
 
 
 import com.ly.ems.core.exception.EMSBusinessException;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -37,10 +38,10 @@ public class DownloadUtil {
      * @throws EMSBusinessException
      * @throws IOException
      */
-    public static void downloadFile(String filePath, String fileName) throws EMSBusinessException {
+    public static void downloadFile(String filePath, String fileName) {
         // 0. prepare
         if (StringUtils.isEmpty(filePath)) {
-            throw new EMSBusinessException("文件路径为空");
+            throw new EMSRuntimeException("文件路径为空");
         }
 
         // 加载文件
@@ -128,7 +129,7 @@ public class DownloadUtil {
      * @param downloadName
      * @throws EMSBusinessException
      */
-    private static void outputFile(File file, String downloadName) throws EMSBusinessException {
+    private static void outputFile(File file, String downloadName) {
         if (file == null) {
             return;
         }
@@ -147,7 +148,7 @@ public class DownloadUtil {
 
         } catch (Exception e) {
             LOGGER.error("输出Excel出错", e);
-            throw new EMSBusinessException("输出Excel出错");
+            throw new EMSRuntimeException("输出Excel出错");
         } finally {
             if (inputStream != null) {
                 try {
@@ -216,7 +217,7 @@ public class DownloadUtil {
      * @throws EMSBusinessException
      * @throws IOException
      */
-    private static void outputExcelWithTempFile(Workbook workbook, String downloadName) throws EMSBusinessException {
+    private static void outputExcelWithTempFile(Workbook workbook, String downloadName) {
         if (workbook == null) {
             return;
         }
@@ -232,7 +233,7 @@ public class DownloadUtil {
             outputFile(tempFile, downloadName);
         } catch (Exception e) {
             LOGGER.error("输出Excel出错", e);
-            throw new EMSBusinessException("输出Excel出错");
+            throw new EMSRuntimeException("输出Excel出错");
         } finally {
             if (tempFile != null) {
                 boolean deleted = tempFile.delete();

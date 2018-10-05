@@ -7,7 +7,7 @@ package com.ly.ems.core.exception;
 /**
  * 业务异常
  */
-public class EMSBusinessException extends RuntimeException {
+public class EMSBusinessException extends Exception {
 
     public EMSBusinessException() {
     }

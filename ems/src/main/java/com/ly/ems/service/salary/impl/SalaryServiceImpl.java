@@ -3,6 +3,7 @@ package com.ly.ems.service.salary.impl;
 import com.github.pagehelper.PageInfo;
 import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.core.exception.EMSBusinessException;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.base.mapper.JobMapper;
 import com.ly.ems.dao.salary.ExtendSalaryMapper;
 import com.ly.ems.model.attendance.AttendanceConditions;
@@ -57,13 +58,13 @@ public class SalaryServiceImpl implements SalaryService {
         // 必须选定月份
         Date attendanceMonth = conditions.getMonth();
         if (attendanceMonth == null) {
-            throw new EMSBusinessException("查看工资数据前必须先选定月份!");
+            throw new EMSRuntimeException("查看工资数据前必须先选定月份!");
         }
 
         // 考勤数据必须存在
         String monthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
         if (!this.checkSalaryExist(monthString)) {
-            throw new EMSBusinessException(String.format("月份%s的工资数据不存在，请先生成数据!", monthString));
+            throw new EMSRuntimeException(String.format("月份%s的工资数据不存在，请先生成数据!", monthString));
         }
 
         // 查询数据
@@ -84,7 +85,7 @@ public class SalaryServiceImpl implements SalaryService {
     public void generateSalaries(SalaryCondition conditions) {
         Date month = conditions.getMonth();
         if (month == null) {
-            throw new EMSBusinessException("生成工资数据前必须先选定月份!");
+            throw new EMSRuntimeException("生成工资数据前必须先选定月份!");
         }
 
         String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);

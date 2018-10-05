@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.common.utils.RandomUtil;
 import com.ly.ems.core.exception.EMSBusinessException;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.attendance.ExtendAttendanceMapper;
 import com.ly.ems.dao.base.ExtendEmployeeMapper;
 import com.ly.ems.model.attendance.AttendanceConditions;
@@ -51,13 +52,13 @@ public class AttendanceServiceImpl implements AttendanceService {
         // 必须选定月份
         Date attendanceMonth = conditions.getAttendanceMonth();
         if (attendanceMonth == null) {
-            throw new EMSBusinessException("查看考勤数据前必须先选定月份!");
+            throw new EMSRuntimeException("查看考勤数据前必须先选定月份!");
         }
 
         // 考勤数据必须存在
         String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
         if (!this.checkAttendanceExist(attendanceMonthString)) {
-            throw new EMSBusinessException(String.format("月份%s的考勤数据不存在，请先生成数据!", attendanceMonthString));
+            throw new EMSRuntimeException(String.format("月份%s的考勤数据不存在，请先生成数据!", attendanceMonthString));
         }
 
         // 查询数据
@@ -78,19 +79,19 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void generateAttendances(AttendanceConditions conditions) {
         Date attendanceMonth = conditions.getAttendanceMonth();
         if (attendanceMonth == null) {
-            throw new EMSBusinessException("生成考勤数据前必须先选定月份!");
+            throw new EMSRuntimeException("生成考勤数据前必须先选定月份!");
         }
 
         String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
         if (this.checkAttendanceExist(attendanceMonthString)) {
-            throw new EMSBusinessException(String.format("月份%s的考勤数据已存在!", attendanceMonthString));
+            throw new EMSRuntimeException(String.format("月份%s的考勤数据已存在!", attendanceMonthString));
         }
 
         try {
             this.createAttendanceTable(attendanceMonth);
         } catch (Exception e) {
             LOGGER.error("创建考勤表失败", e);
-            throw new EMSBusinessException("创建考勤表失败");
+            throw new EMSRuntimeException("创建考勤表失败");
         }
 
         // 获取当月有派遣关系的员工

@@ -86,6 +86,6 @@
     <!--&lt;!&ndash;&lt;!&ndash; 启用shrio授权注解拦截方式 &ndash;&gt;-->
     <!--<aop:config proxy-target-class="true"></aop:config>-->
     <!--<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">-->
-        <!--<property name="securityManager" ref="securityManager"/>-->
+        <!--<property content="securityManager" ref="securityManager"/>-->
     <!--</bean>&ndash;&gt;-->
 </beans>

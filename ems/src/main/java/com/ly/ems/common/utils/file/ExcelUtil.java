@@ -2,8 +2,8 @@ package com.ly.ems.common.utils.file;
 
 import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.common.utils.ReflectUtil;
-import com.ly.ems.core.exception.EMSBusinessException;
 
+import com.ly.ems.core.exception.EMSRuntimeException;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jxls.reader.ReaderBuilder;
 import org.jxls.reader.XLSReadStatus;
@@ -51,7 +52,7 @@ public class ExcelUtil implements Serializable {
             return readStatus.isStatusOK();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new EMSBusinessException("从Excel读取数据出错");
+            throw new EMSRuntimeException("从Excel读取数据出错");
         }
     }
 
@@ -72,7 +73,7 @@ public class ExcelUtil implements Serializable {
             System.out.println("生成Excel成功，耗时：" + (System.currentTimeMillis() - s));
         } catch (Exception e) {
             LOGGER.error("生成Excel出错", e);
-            throw new EMSBusinessException("生成Excel出错");
+            throw new EMSRuntimeException("生成Excel出错");
         }
         return workbook;
     }
@@ -85,7 +86,7 @@ public class ExcelUtil implements Serializable {
      * @param resultList 数据
      * @return
      */
-    public static <T> Workbook generateBigWorkbook(Class<?> clazz, List<T> resultList) {
+    public static <T> Workbook generateBigWorkbook(Class<?> clazz, List<T> resultList, Map<String, String> externalParam) {
         try {
             // 数据源数量
             int listSize = 0;
@@ -103,22 +104,22 @@ public class ExcelUtil implements Serializable {
 
             // 输出每个工作簿的内容、并输出标题
             for (int i = 0; i <= sheetNo; i++) {
-                // 创建工作簿
+                // 1. 创建工作簿
                 Sheet sheet = workbook.createSheet();
                 workbook.setSheetName(i, "Sheet" + (i + 1));
 
-                // 创建标题行
-                createTitles(sheet, fields);
+                // 2. 创建标题行
+                int maxRow = createTitles(sheet, fields, externalParam);
 
-                // 创建内容列
+                // 3. 创建内容列
                 int startNo = i * sheetSize;
                 int endNo = Math.min(startNo + sheetSize, listSize);
-                createRecords(sheet, fields, startNo, endNo, resultList);
+                createRecords(sheet, fields, startNo, endNo, resultList, externalParam);
             }
             return workbook;
         } catch (Exception e) {
-            LOGGER.warn("Excel writeExcelFromList Exception" + e);
-            return null;
+            LOGGER.error("生成excel失败", e);
+            throw new EMSRuntimeException("生成excel失败");
         }
     }
 
@@ -139,38 +140,113 @@ public class ExcelUtil implements Serializable {
     }
 
     /**
-     * util：创建标题行
-     * @param fields
-     * @param sheet
+     * util：创建标题行（支持创建复杂表头）
+     *
+     * @param sheet  工作簿
+     * @param fields 导出定义类的字段
+     * @return maxRow 标题所占用的行数
      */
-    private static void createTitles(Sheet sheet, List<Field> fields) {
-        Row row = sheet.createRow(0);
+    private static int createTitles(Sheet sheet, List<Field> fields, Map<String, String> externalParam) {
+        // 创建纯标题字段最大行数
+        int maxRow = findMaxRowByFields(fields);
+        if (maxRow != -1) {
+            // 至少为0
+            for (int rowNum = 0; rowNum <= maxRow; rowNum++) {
+                sheet.createRow(rowNum);
+            }
+        }
+        maxRow++;
+        // 数据标题字段开始的行数
+        Row titleRow = sheet.createRow(maxRow);
+
+        // 生成标题
         for (int cellNum = 0; cellNum < fields.size(); cellNum++) {
             // 获取每列标题field
             Field field = fields.get(cellNum);
-
             // 获取注解信息
             ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
+            boolean isTitle = attr.isTitle();
+            if (isTitle) {
+                // 纯标题列
+                String titleRegion = attr.titleRegion();
 
-            // 根据指定的顺序获得列号
-            int col = cellNum;
-            if (StringUtils.isNotBlank(attr.column())) {
-                col = getExcelColNum(attr.column());
+                // 配置复杂表头
+                if (!StringUtils.isEmpty(titleRegion)) {
+                    String[] titleRegions = titleRegion.split(",");
+
+                    Integer startRow = Integer.parseInt(titleRegions[0]);
+                    Integer endRow = Integer.parseInt(titleRegions[1]);
+                    Integer startCol = getExcelColNum(titleRegions[2]);
+                    Integer endCol = getExcelColNum(titleRegions[3]);
+
+                    // 创建对应的单元格
+                    Row row = sheet.getRow(startRow);
+                    Cell cell = titleRow.createCell(startCol);
+                    // 设置列中写入内容为String类型
+                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    // 写入列名
+                    cell.setCellValue(attr.content());
+
+                    // 合并单元格
+                    sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
+                }
+
+            } else {
+                // 数据标题
+
+
+                // 根据指定的顺序获得列号
+                int col = cellNum;
+                if (StringUtils.isNotBlank(attr.column())) {
+                    col = getExcelColNum(attr.column());
+                }
+
+                // 创建列
+                Cell cell = titleRow.createCell(col);
+                // 设置列中写入内容为String类型
+                cell.setCellType(Cell.CELL_TYPE_STRING);
+                // 写入列名
+                cell.setCellValue(attr.content());
+                // 设置宽度
+                sheet.setColumnWidth(col, (int) ((attr.content().getBytes().length <= 4 ? 6 : attr.content().getBytes().length) * 1.5 * 256));
             }
-
-            // 创建列
-            Cell cell = row.createCell(col);
-            // 设置列中写入内容为String类型
-            cell.setCellType(Cell.CELL_TYPE_STRING);
-            // 写入列名
-            cell.setCellValue(attr.name());
-            // 设置宽度
-            sheet.setColumnWidth(col, (int) ((attr.name().getBytes().length <= 4 ? 6 : attr.name().getBytes().length) * 1.5 * 256));
         }
+    }
+
+
+    /**
+     * 根据纯标题字段返回标题所占的最大行(0\1\2)
+     *
+     * @param fields
+     * @return -1代表没有找到纯标题字段
+     */
+    private static int findMaxRowByFields(List<Field> fields) {
+        int maxRow = -1;
+        for (int cellNum = 0; cellNum < fields.size(); cellNum++) {
+            // 获取每列标题field
+            Field field = fields.get(cellNum);
+            // 获取注解信息
+            ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
+            boolean isTitle = attr.isTitle();
+            if (isTitle) {
+                // 纯标题列
+                String titleRegion = attr.titleRegion();
+
+                if (!StringUtils.isEmpty(titleRegion)) {
+                    String[] titleRegions = titleRegion.split(",");
+                    Integer endRow = Integer.parseInt(titleRegions[1]);
+                    if (endRow > maxRow) {
+                        maxRow = endRow;
+                    }
+                }
+            }
+        }
+        return maxRow;
     }
 
     /**
      * util：根据结果集、输出指定行数的内容
+     *
      * @param sheet
      * @param fields
      * @param startNo
@@ -178,7 +254,7 @@ public class ExcelUtil implements Serializable {
      * @param resultList
      * @throws Exception
      */
-    private static <T extends Object> void createRecords(Sheet sheet, List<Field> fields, int startNo, int endNo, List<T> resultList) throws Exception{
+    private static <T extends Object> void createRecords(Sheet sheet, List<Field> fields, int startNo, int endNo, List<T> resultList, Map<String, String> externalParam) throws Exception {
         for (int rowNo = startNo; rowNo < endNo; rowNo++) {
             Row row = sheet.createRow(rowNo + 1 - startNo);
             // 得到导出对象.
@@ -190,6 +266,10 @@ public class ExcelUtil implements Serializable {
                 field.setAccessible(true);
 
                 ExcelAttribute attr = field.getAnnotation(ExcelAttribute.class);
+
+                if (attr.isTitle()) {
+                    continue;
+                }
 
                 // 根据指定的顺序获得列号
                 int col = cellNum;

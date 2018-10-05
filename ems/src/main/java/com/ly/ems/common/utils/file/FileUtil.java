@@ -1,6 +1,7 @@
 package com.ly.ems.common.utils.file;
 
 import com.ly.ems.core.exception.EMSBusinessException;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.model.common.constant.FileTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -248,7 +249,7 @@ public class FileUtil {
         } catch (Exception e) {
             LOGGER.error("生成文件失败", e);
             deleteFile(request, download_path);
-            throw new EMSBusinessException("生成Excel出错");
+            throw new EMSRuntimeException("生成Excel出错");
         }
         return download_path;
     }
