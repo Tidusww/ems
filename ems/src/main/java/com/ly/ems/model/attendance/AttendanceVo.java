@@ -50,10 +50,8 @@ public class AttendanceVo extends Attendance {
      */
     public Integer getAttendanceDays() throws NoSuchFieldException {
         Integer attendanceTimes = 0;
-        final String fieldPrefix = AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE;
-        for (int i = 0; i < 31; i++) {
-            String index = String.valueOf(i+1);
-            String fieldName = fieldPrefix + index;
+        for (int i = 1; i <= 31; i++) {
+            String fieldName = String.format("%s%d", AttendanceConstant.ATTENDANCE_STATUS_FIELD_PRE, i);
             AttendanceStatusEnum status = (AttendanceStatusEnum)ReflectUtil.getFieldValueByFieldName(fieldName, this);
             if(status == AttendanceStatusEnum.ATTENDANCE || status == AttendanceStatusEnum.OVERTIME) {
                 attendanceTimes ++;
