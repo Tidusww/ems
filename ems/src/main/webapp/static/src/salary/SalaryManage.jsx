@@ -61,22 +61,19 @@ class SalaryManage extends React.Component {
                 title: '工种名称', dataIndex: 'jobName', key: 'jobName', width: 100
             },
             {
-                title: '基本工资（元）', dataIndex: 'basicSalary', key: 'basicSalary', width: 120
+                title: '出勤天数', dataIndex: 'attendanceDays', key: 'attendanceDays', width: 100
             },
             {
-                title: '加班工资（元）', dataIndex: 'overtimeSalary', key: 'overtimeSalary', width: 120
+                title: '日工资（元/日）', dataIndex: 'jobSalary', key: 'jobSalary', width: 150
             },
             {
-                title: '计量工资（元）', dataIndex: 'calculateSalary', key: 'calculateSalary', width: 120
+                title: '社保补贴（元/日）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 150
             },
             {
-                title: '高温补贴（元）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 120
+                title: '住房补贴（元/日）', dataIndex: 'houseFundAllowance', key: 'houseFundAllowance', width: 150
             },
             {
-                title: '社保补贴（元）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 120
-            },
-            {
-                title: '公积金补贴（元）', dataIndex: 'houseFundAllowance', key: 'houseFundAllowance', width: 140
+                title: '高温津贴（元/日）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 150
             },
             {
                 title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120
@@ -92,10 +89,10 @@ class SalaryManage extends React.Component {
                 title: '个人公积金（元）', dataIndex: 'personalHouseFund', key: 'personalHouseFund', width: 140
             },
             {
-                title: '其他扣除（元）', dataIndex: 'otherDeduction', key: 'otherDeduction', width: 120
+                title: '应付个税（元）', dataIndex: 'payTaxes', key: 'payTaxes', width: 120
             },
             {
-                title: '应付个税（元）', dataIndex: 'payTaxes', key: 'payTaxes', width: 120
+                title: '其他扣除（元）', dataIndex: 'otherDeduction', key: 'otherDeduction', width: 120
             },
             {
                 title: '实发工资（元）', dataIndex: 'realSalary', key: 'realSalary', width: 120
@@ -326,7 +323,7 @@ class SalaryManage extends React.Component {
                         columns={this.columns}
                         pagination={pagination}
                         rowSelection={rowSelection}
-                        scroll={{x: 2222}}//列的总宽度+62(有选择框)
+                        scroll={{x: 2322}}//列的总宽度+62(有选择框)
                         onRow={(record) => ({
                         onClick: () => {
                             this.selectRow(record);

@@ -89,16 +89,16 @@ public class SalaryServiceImpl implements SalaryService {
         }
 
         String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
-//        if (this.checkSalaryExist(monthString)) {
-//            throw new EMSBusinessException(String.format("月份%s的工资数据已存在!", monthString));
-//        }
-//
-//        try {
-//            this.createSalaryTable(month);
-//        } catch (Exception e) {
-//            LOGGER.error("创建考勤表失败", e);
-//            throw new EMSBusinessException("创建考勤表失败");
-//        }
+        if (this.checkSalaryExist(monthString)) {
+            throw new EMSRuntimeException(String.format("月份%s的工资数据已存在!", monthString));
+        }
+
+        try {
+            this.createSalaryTable(month);
+        } catch (Exception e) {
+            LOGGER.error("创建考勤表失败", e);
+            throw new EMSRuntimeException("创建考勤表失败");
+        }
 
         // 获取考勤数据
         AttendanceConditions attendanceConditions = new AttendanceConditions();
@@ -128,6 +128,7 @@ public class SalaryServiceImpl implements SalaryService {
             // 为考勤信息生成工资信息
             List<Salary> salaryList = new ArrayList<Salary>();
             for (AttendanceVo attendanceVo : attendanceVoPage) {
+                // https://www.processon.com/mindmap/5b33aea5e4b063f71f4bceb5
                 Salary salary = this.generateSalaryForAttendance(attendanceVo, month);
                 if (salary != null) {
                     salaryList.add(salary);
@@ -191,11 +192,11 @@ public class SalaryServiceImpl implements SalaryService {
             Job job = jobMapper.selectByPrimaryKey(attendanceVo.getJobId());
             double jobSalary = job.getSalary().doubleValue();
             // 2.日社保补贴=40元/天（40元/天为自设参数）
-            double socialSecurityAllowance = 30 * systemConfigService.getSocialSecurityAllowance();
+            double socialSecurityAllowance = systemConfigService.getSocialSecurityAllowance();
             // 3.日住房补贴=10元/天（10元/天为自设参数）
-            double houseFundAllowance = 30 * systemConfigService.getHouseFundAllowance();
+            double houseFundAllowance = systemConfigService.getHouseFundAllowance();
             // 4.日高温津贴：7.5元/天（自设参数）
-            double hotAllowance = systemConfigService.isHotAllowanceDate(attendanceMonth) ? (attendanceDays * systemConfigService.getHotAllowance()) : 0.d;
+            double hotAllowance = systemConfigService.isHotAllowanceDate(attendanceMonth) ? systemConfigService.getHotAllowance() : 0.d;
             // 5.其他收入=应付工资-（日工资+日社保补贴+日住房补贴+日高温津贴）*工作天数
             double otherIncome = 0.d;
 
