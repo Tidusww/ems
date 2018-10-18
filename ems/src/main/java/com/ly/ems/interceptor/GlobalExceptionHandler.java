@@ -27,21 +27,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public AjaxResult processException(Exception exception) {
-        LOGGER.error("系统异常", exception);
+//        LOGGER.error("系统异常", exception);
         return AjaxResult.fail("系统异常");
     }
 
     @ExceptionHandler(EMSRuntimeException.class)
     @ResponseBody
     public AjaxResult processRuntimeException(EMSRuntimeException runtimeException) {
-        LOGGER.error("运行异常", runtimeException);
+//        LOGGER.error("运行异常", runtimeException);
         return AjaxResult.fail(runtimeException.getMessage());
     }
 
     @ExceptionHandler(EMSBusinessException.class)
     @ResponseBody
     public AjaxResult processBusinessException(EMSBusinessException businessException) {
-        LOGGER.error("业务异常", businessException);
+//        LOGGER.error("业务异常", businessException);
         return AjaxResult.fail(businessException.getMessage());
     }
 

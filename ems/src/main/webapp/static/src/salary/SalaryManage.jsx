@@ -231,6 +231,7 @@ class SalaryManage extends React.Component {
                 if (result.success) {
                     const data = result.data;
                     this.setState({dataSource: data.dataSource, total: data.total});
+                    message.success(result.msg, 3);
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);

@@ -12,6 +12,7 @@ import com.ly.ems.model.salary.export.SalaryExport;
 import com.ly.ems.service.salary.SalaryService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,8 @@ import java.util.Map;
 @RequestMapping(value = "/salary", name = "工资信息管理")
 public class SalaryController {
     private Logger LOGGER = LoggerFactory.getLogger(SalaryController.class);
+
+    private static final String SALARY_EXPORT_TEMPLATE_PATH = "/excel/template/工资模板表.xlsx";
 
     @Autowired
     SalaryService salaryService;
@@ -77,12 +82,29 @@ public class SalaryController {
 //                        FileUtil.FILE_SUFFIX_XLSX));
 
         // 自定义excel，返回路径
-        Map<String, String> externalParam = new HashMap<String, String>();
-        externalParam.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        param.put("companyName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
 
-        Workbook workbook = ExcelUtil.generateBigWorkbook(SalaryExport.class, salaryVoList, externalParam);
+        // 读取模板
+        XSSFWorkbook wb = null;
+        try {
+            String targetFilePath = request.getSession().getServletContext().getRealPath(SALARY_EXPORT_TEMPLATE_PATH);
+            File fi = new File(targetFilePath);
+            FileInputStream is = new FileInputStream(fi);
+            wb = new XSSFWorkbook(is);
+        } catch (Exception e) {
+            LOGGER.error("读取模板excel失败", e);
+            return AjaxResult.fail("生成excel失败");
+        }
+
+        // 生成excel
+        Workbook workbook = ExcelUtil.generateBigWorkbook(wb, SalaryExport.class, salaryVoList, param);
         String path = FileUtil.generateFileByWorkbook(workbook, String.format("download%s", FileUtil.FILE_SUFFIX_XLSX));
 
+
+        // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");
         Map<String, String> fileData = new HashMap<String, String>();
         fileData.put("fileName", excelName);
