@@ -185,62 +185,52 @@ public class SalaryServiceImpl implements SalaryService {
     private Salary generateSalaryForAttendance(AttendanceVo attendanceVo, Date attendanceMonth) {
         Salary salary = new Salary();
         try {
-            Job job = jobMapper.selectByPrimaryKey(attendanceVo.getJobId());
-            double jobSalary = job.getSalary().doubleValue();
             Integer attendanceDays = attendanceVo.getAttendanceDays();
 
-            // 1.基本工资：本地最低月工资标准（手动）
-            double basicSalary = systemConfigService.getBasicSalary();
-            // 2.加班工资：工种工资*（总出勤天数-21.75）*2
-            double overtimeSalary = Math.max(jobSalary * (attendanceDays - 21.75d) * 2, 0);
-            // 3.计量工资：工种工资*出勤天数-基本工资-加班工资
-            double calculateSalary = jobSalary * attendanceDays - basicSalary - overtimeSalary;
-            // 4.高温费：不同地区不同时段，出勤天数*日高温费标准（手动）
-            double hotAllowance = 0.d;
-            if (systemConfigService.isHotAllowanceDate(attendanceMonth)) {
-                hotAllowance = attendanceDays * systemConfigService.getHotAllowance();
-            }
-            // 5.社保补贴
+            // 1.日工资=工种的工资标准（自设参数）
+            Job job = jobMapper.selectByPrimaryKey(attendanceVo.getJobId());
+            double jobSalary = job.getSalary().doubleValue();
+            // 2.日社保补贴=40元/天（40元/天为自设参数）
             double socialSecurityAllowance = 30 * systemConfigService.getSocialSecurityAllowance();
-            // 6.住房补贴
+            // 3.日住房补贴=10元/天（10元/天为自设参数）
             double houseFundAllowance = 30 * systemConfigService.getHouseFundAllowance();
-            // 7.其他收入
+            // 4.日高温津贴：7.5元/天（自设参数）
+            double hotAllowance = systemConfigService.isHotAllowanceDate(attendanceMonth) ? (attendanceDays * systemConfigService.getHotAllowance()) : 0.d;
+            // 5.其他收入=应付工资-（日工资+日社保补贴+日住房补贴+日高温津贴）*工作天数
             double otherIncome = 0.d;
-            // 8.应付工资(税前)
-            double payableSalary = basicSalary + overtimeSalary + calculateSalary + hotAllowance + socialSecurityAllowance + houseFundAllowance + otherIncome;
 
-            // 9.个人部分社保
+            // 6.应付工资=（日工资+日社保补贴+日住房补贴+日高温津贴）*工作天数+其他收入
+            double payableSalary = (jobSalary + socialSecurityAllowance + houseFundAllowance + hotAllowance) * attendanceDays + otherIncome;
+
+            // 7.个人部分社保
             double personalSocialSecurityAllowance = 0.d;
-            // 10.个人部分公积金
+            // 8.个人部分公积金
             double personalHouseFundAllowance = 0.d;
-
-            // 11.其他扣除
-            double otherDeduction = 0.d;
-
-            // 12.实发工资：【8】-【9】-【10】-【11】-【应付个税】
-            // 个税
+            // 9.个税
             double payTaxes = this.getPayTaxes(payableSalary);
-            double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - otherDeduction - payTaxes;
+            // 10.其他扣除
+            double otherDeduction = 0.d;
+            // 11.实发工资：【6】-【7】-【8】-【9】-【10】
+            double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - -payTaxes - otherDeduction;
 
-            // 13.单位社保
+            // 12.单位社保
             double companySocialSecurityAllowance = 0.d;
-            // 14.单位公积金
+            // 13.单位公积金
             double companyHouseFundAllowance = 0.d;
 
             // 1
-            salary.setBasicSalary(new BigDecimal(basicSalary));
-            salary.setOvertimeSalary(new BigDecimal(overtimeSalary));
-            salary.setCalculateSalary(new BigDecimal(calculateSalary));
-            salary.setHotAllowance(new BigDecimal(hotAllowance));
+            salary.setAttendanceDays(attendanceDays);
+            salary.setJobSalary(new BigDecimal(jobSalary));
             salary.setSocialSecurityAllowance(new BigDecimal(socialSecurityAllowance));
             salary.setHouseFundAllowance(new BigDecimal(houseFundAllowance));
+            salary.setHotAllowance(new BigDecimal(hotAllowance));
             salary.setOtherIncome(new BigDecimal(otherIncome));
             salary.setPayableSalary(new BigDecimal(payableSalary));
             // 2
             salary.setPersonalSocialSecurity(new BigDecimal(personalSocialSecurityAllowance));
             salary.setPersonalHouseFund(new BigDecimal(personalHouseFundAllowance));
-            salary.setOtherDeduction(new BigDecimal(otherDeduction));
             salary.setPayTaxes(new BigDecimal(payTaxes));
+            salary.setOtherDeduction(new BigDecimal(otherDeduction));
             salary.setRealSalary(new BigDecimal(realSalary));
             // 3
             salary.setCompanySocialSecurity(new BigDecimal(companySocialSecurityAllowance));
