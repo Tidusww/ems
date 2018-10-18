@@ -19,91 +19,85 @@ public class Salary {
     private Integer employeeId;
 
     /**
-     * 1、最低月基本工资
+     * 出勤天数
      */
-    @Column(name = "`basic_salary`")
-    private BigDecimal basicSalary;
+    @Column(name = "`attendance_days`")
+    private Integer attendanceDays;
 
     /**
-     * 2、加班工资：工种工资*（总出勤天数-21.75）*2
+     * 1.日工资=工种的工资标准
      */
-    @Column(name = "`overtime_salary`")
-    private BigDecimal overtimeSalary;
+    @Column(name = "`job_salary`")
+    private BigDecimal jobSalary;
 
     /**
-     * 3、计量工资：工种工资*出勤天数-基本工资-加班工资
-     */
-    @Column(name = "`calculate_salary`")
-    private BigDecimal calculateSalary;
-
-    /**
-     * 4、高温费：总出勤天数*每日高温费
-     */
-    @Column(name = "`hot_allowance`")
-    private BigDecimal hotAllowance;
-
-    /**
-     * 5、社保补贴：30*每日社保
+     * 2.日社保补贴
      */
     @Column(name = "`social_security_allowance`")
     private BigDecimal socialSecurityAllowance;
 
     /**
-     * 6、住房补贴：30*每日住房
+     * 3.日住房补贴
      */
     @Column(name = "`house_fund_allowance`")
     private BigDecimal houseFundAllowance;
 
     /**
-     * 7、其他收入（手动）
+     * 4.日高温津贴
+     */
+    @Column(name = "`hot_allowance`")
+    private BigDecimal hotAllowance;
+
+    /**
+     * 5、其他收入（手动）
      */
     @Column(name = "`other_income`")
     private BigDecimal otherIncome;
 
     /**
-     * 8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
+     * 6、应付工资（含税工资）：（【1】+【2】+【3】+【4】）* 出勤天数 +【5】
      */
     @Column(name = "`payable_salary`")
     private BigDecimal payableSalary;
 
     /**
-     * 9、个人部分社保(手动)
+     * 7、个人部分社保(手动)
      */
     @Column(name = "`personal_social_security`")
     private BigDecimal personalSocialSecurity;
 
     /**
-     * 10、个人部分公积金(手动)
+     * 8、个人部分公积金(手动)
      */
     @Column(name = "`personal_house_fund`")
     private BigDecimal personalHouseFund;
 
     /**
-     * 11、其他扣除：借支或扣费（手动）
-     */
-    @Column(name = "`other_deduction`")
-    private BigDecimal otherDeduction;
-
-    /**
-     * 应付个税：最新税法
+     * 9、应付个税
      */
     @Column(name = "`pay_taxes`")
     private BigDecimal payTaxes;
 
     /**
-     * 12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
+     * 10、其他扣除：借支或扣费（手动）
+     */
+    @Column(name = "`other_deduction`")
+    private BigDecimal otherDeduction;
+
+    /**
+     * 11、实发工资：【6】-【7】-【8】-【9】-【10】
      */
     @Column(name = "`real_salary`")
     private BigDecimal realSalary;
 
     /**
-     * 13、单位社保(手动)
+     * 12、单位社保(手动)
      */
     @Column(name = "`company_social_security`")
     private BigDecimal companySocialSecurity;
 
     /**
-     * 14、单位公积金(手动)
+     * 13、单位公积金(手动)
      */
     @Column(name = "`company_house_fund`")
     private BigDecimal companyHouseFund;
@@ -165,270 +159,252 @@ public class Salary {
     }
 
     /**
-     * 获取1、最低月基本工资
+     * 获取出勤天数
      *
-     * @return basic_salary - 1、最低月基本工资
+     * @return attendance_days - 出勤天数
      */
-    public BigDecimal getBasicSalary() {
-        return basicSalary;
+    public Integer getAttendanceDays() {
+        return attendanceDays;
     }
 
     /**
-     * 设置1、最低月基本工资
+     * 设置出勤天数
      *
-     * @param basicSalary 1、最低月基本工资
+     * @param attendanceDays 出勤天数
      */
-    public void setBasicSalary(BigDecimal basicSalary) {
-        this.basicSalary = basicSalary;
+    public void setAttendanceDays(Integer attendanceDays) {
+        this.attendanceDays = attendanceDays;
     }
 
     /**
-     * 获取2、加班工资：工种工资*（总出勤天数-21.75）*2
+     * 获取1.日工资=工种的工资标准
      *
-     * @return overtime_salary - 2、加班工资：工种工资*（总出勤天数-21.75）*2
+     * @return job_salary - 1.日工资=工种的工资标准
      */
-    public BigDecimal getOvertimeSalary() {
-        return overtimeSalary;
+    public BigDecimal getJobSalary() {
+        return jobSalary;
     }
 
     /**
-     * 设置2、加班工资：工种工资*（总出勤天数-21.75）*2
+     * 设置1.日工资=工种的工资标准
      *
-     * @param overtimeSalary 2、加班工资：工种工资*（总出勤天数-21.75）*2
+     * @param jobSalary 1.日工资=工种的工资标准
      */
-    public void setOvertimeSalary(BigDecimal overtimeSalary) {
-        this.overtimeSalary = overtimeSalary;
+    public void setJobSalary(BigDecimal jobSalary) {
+        this.jobSalary = jobSalary;
     }
 
     /**
-     * 获取3、计量工资：工种工资*出勤天数-基本工资-加班工资
+     * 获取2.日社保补贴
      *
-     * @return calculate_salary - 3、计量工资：工种工资*出勤天数-基本工资-加班工资
-     */
-    public BigDecimal getCalculateSalary() {
-        return calculateSalary;
-    }
-
-    /**
-     * 设置3、计量工资：工种工资*出勤天数-基本工资-加班工资
-     *
-     * @param calculateSalary 3、计量工资：工种工资*出勤天数-基本工资-加班工资
-     */
-    public void setCalculateSalary(BigDecimal calculateSalary) {
-        this.calculateSalary = calculateSalary;
-    }
-
-    /**
-     * 获取4、高温费：总出勤天数*每日高温费
-     *
-     * @return hot_allowance - 4、高温费：总出勤天数*每日高温费
-     */
-    public BigDecimal getHotAllowance() {
-        return hotAllowance;
-    }
-
-    /**
-     * 设置4、高温费：总出勤天数*每日高温费
-     *
-     * @param hotAllowance 4、高温费：总出勤天数*每日高温费
-     */
-    public void setHotAllowance(BigDecimal hotAllowance) {
-        this.hotAllowance = hotAllowance;
-    }
-
-    /**
-     * 获取5、社保补贴：30*每日社保
-     *
-     * @return social_security_allowance - 5、社保补贴：30*每日社保
+     * @return social_security_allowance - 2.日社保补贴
      */
     public BigDecimal getSocialSecurityAllowance() {
         return socialSecurityAllowance;
     }
 
     /**
-     * 设置5、社保补贴：30*每日社保
+     * 设置2.日社保补贴
      *
-     * @param socialSecurityAllowance 5、社保补贴：30*每日社保
+     * @param socialSecurityAllowance 2.日社保补贴
      */
     public void setSocialSecurityAllowance(BigDecimal socialSecurityAllowance) {
         this.socialSecurityAllowance = socialSecurityAllowance;
     }
 
     /**
-     * 获取6、住房补贴：30*每日住房
+     * 获取3.日住房补贴
      *
-     * @return house_fund_allowance - 6、住房补贴：30*每日住房
+     * @return house_fund_allowance - 3.日住房补贴
      */
     public BigDecimal getHouseFundAllowance() {
         return houseFundAllowance;
     }
 
     /**
-     * 设置6、住房补贴：30*每日住房
+     * 设置3.日住房补贴
      *
-     * @param houseFundAllowance 6、住房补贴：30*每日住房
+     * @param houseFundAllowance 3.日住房补贴
      */
     public void setHouseFundAllowance(BigDecimal houseFundAllowance) {
         this.houseFundAllowance = houseFundAllowance;
     }
 
     /**
-     * 获取7、其他收入（手动）
+     * 获取4.日高温津贴
      *
-     * @return other_income - 7、其他收入（手动）
+     * @return hot_allowance - 4.日高温津贴
+     */
+    public BigDecimal getHotAllowance() {
+        return hotAllowance;
+    }
+
+    /**
+     * 设置4.日高温津贴
+     *
+     * @param hotAllowance 4.日高温津贴
+     */
+    public void setHotAllowance(BigDecimal hotAllowance) {
+        this.hotAllowance = hotAllowance;
+    }
+
+    /**
+     * 获取5、其他收入（手动）
+     *
+     * @return other_income - 5、其他收入（手动）
      */
     public BigDecimal getOtherIncome() {
         return otherIncome;
     }
 
     /**
-     * 设置7、其他收入（手动）
+     * 设置5、其他收入（手动）
      *
-     * @param otherIncome 7、其他收入（手动）
+     * @param otherIncome 5、其他收入（手动）
      */
     public void setOtherIncome(BigDecimal otherIncome) {
         this.otherIncome = otherIncome;
     }
 
     /**
-     * 获取8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
+     * 获取6、应付工资（含税工资）：（【1】+【2】+【3】+【4】）* 出勤天数 +【5】
      *
-     * @return payable_salary - 8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
+     * @return payable_salary - 6、应付工资（含税工资）：（【1】+【2】+【3】+【4】）* 出勤天数 +【5】
      */
     public BigDecimal getPayableSalary() {
         return payableSalary;
     }
 
     /**
-     * 设置8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
+     * 设置6、应付工资（含税工资）：（【1】+【2】+【3】+【4】）* 出勤天数 +【5】
      *
-     * @param payableSalary 8、应付工资（含税工资）：【1】+【2】+【3】+【4】+【5】+【6】+【7】
+     * @param payableSalary 6、应付工资（含税工资）：（【1】+【2】+【3】+【4】）* 出勤天数 +【5】
      */
     public void setPayableSalary(BigDecimal payableSalary) {
         this.payableSalary = payableSalary;
     }
 
     /**
-     * 获取9、个人部分社保(手动)
+     * 获取7、个人部分社保(手动)
      *
-     * @return personal_social_security - 9、个人部分社保(手动)
+     * @return personal_social_security - 7、个人部分社保(手动)
      */
     public BigDecimal getPersonalSocialSecurity() {
         return personalSocialSecurity;
     }
 
     /**
-     * 设置9、个人部分社保(手动)
+     * 设置7、个人部分社保(手动)
      *
-     * @param personalSocialSecurity 9、个人部分社保(手动)
+     * @param personalSocialSecurity 7、个人部分社保(手动)
      */
     public void setPersonalSocialSecurity(BigDecimal personalSocialSecurity) {
         this.personalSocialSecurity = personalSocialSecurity;
     }
 
     /**
-     * 获取10、个人部分公积金(手动)
+     * 获取8、个人部分公积金(手动)
      *
-     * @return personal_house_fund - 10、个人部分公积金(手动)
+     * @return personal_house_fund - 8、个人部分公积金(手动)
      */
     public BigDecimal getPersonalHouseFund() {
         return personalHouseFund;
     }
 
     /**
-     * 设置10、个人部分公积金(手动)
+     * 设置8、个人部分公积金(手动)
      *
-     * @param personalHouseFund 10、个人部分公积金(手动)
+     * @param personalHouseFund 8、个人部分公积金(手动)
      */
     public void setPersonalHouseFund(BigDecimal personalHouseFund) {
         this.personalHouseFund = personalHouseFund;
     }
 
     /**
-     * 获取11、其他扣除：借支或扣费（手动）
+     * 获取9、应付个税
      *
-     * @return other_deduction - 11、其他扣除：借支或扣费（手动）
-     */
-    public BigDecimal getOtherDeduction() {
-        return otherDeduction;
-    }
-
-    /**
-     * 设置11、其他扣除：借支或扣费（手动）
-     *
-     * @param otherDeduction 11、其他扣除：借支或扣费（手动）
-     */
-    public void setOtherDeduction(BigDecimal otherDeduction) {
-        this.otherDeduction = otherDeduction;
-    }
-
-    /**
-     * 获取应付个税：最新税法
-     *
-     * @return pay_taxes - 应付个税：最新税法
+     * @return pay_taxes - 9、应付个税
      */
     public BigDecimal getPayTaxes() {
         return payTaxes;
     }
 
     /**
-     * 设置应付个税：最新税法
+     * 设置9、应付个税
      *
-     * @param payTaxes 应付个税：最新税法
+     * @param payTaxes 9、应付个税
      */
     public void setPayTaxes(BigDecimal payTaxes) {
         this.payTaxes = payTaxes;
     }
 
     /**
-     * 获取12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
+     * 获取10、其他扣除：借支或扣费（手动）
      *
-     * @return real_salary - 12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
+     * @return other_deduction - 10、其他扣除：借支或扣费（手动）
+     */
+    public BigDecimal getOtherDeduction() {
+        return otherDeduction;
+    }
+
+    /**
+     * 设置10、其他扣除：借支或扣费（手动）
+     *
+     * @param otherDeduction 10、其他扣除：借支或扣费（手动）
+     */
+    public void setOtherDeduction(BigDecimal otherDeduction) {
+        this.otherDeduction = otherDeduction;
+    }
+
+    /**
+     * 获取11、实发工资：【6】-【7】-【8】-【9】-【10】
+     *
+     * @return real_salary - 11、实发工资：【6】-【7】-【8】-【9】-【10】
      */
     public BigDecimal getRealSalary() {
         return realSalary;
     }
 
     /**
-     * 设置12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
+     * 设置11、实发工资：【6】-【7】-【8】-【9】-【10】
      *
-     * @param realSalary 12、实发工资：【8】-【9】-【10】-【11】-【应付个税】
+     * @param realSalary 11、实发工资：【6】-【7】-【8】-【9】-【10】
      */
     public void setRealSalary(BigDecimal realSalary) {
         this.realSalary = realSalary;
     }
 
     /**
-     * 获取13、单位社保(手动)
+     * 获取12、单位社保(手动)
      *
-     * @return company_social_security - 13、单位社保(手动)
+     * @return company_social_security - 12、单位社保(手动)
      */
     public BigDecimal getCompanySocialSecurity() {
         return companySocialSecurity;
     }
 
     /**
-     * 设置13、单位社保(手动)
+     * 设置12、单位社保(手动)
      *
-     * @param companySocialSecurity 13、单位社保(手动)
+     * @param companySocialSecurity 12、单位社保(手动)
      */
     public void setCompanySocialSecurity(BigDecimal companySocialSecurity) {
         this.companySocialSecurity = companySocialSecurity;
     }
 
     /**
-     * 获取14、单位公积金(手动)
+     * 获取13、单位公积金(手动)
      *
-     * @return company_house_fund - 14、单位公积金(手动)
+     * @return company_house_fund - 13、单位公积金(手动)
      */
     public BigDecimal getCompanyHouseFund() {
         return companyHouseFund;
     }
 
     /**
-     * 设置14、单位公积金(手动)
+     * 设置13、单位公积金(手动)
      *
-     * @param companyHouseFund 14、单位公积金(手动)
+     * @param companyHouseFund 13、单位公积金(手动)
      */
     public void setCompanyHouseFund(BigDecimal companyHouseFund) {
         this.companyHouseFund = companyHouseFund;

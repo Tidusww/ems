@@ -7,18 +7,17 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
-    <result column="basic_salary" jdbcType="DECIMAL" property="basicSalary" />
-    <result column="overtime_salary" jdbcType="DECIMAL" property="overtimeSalary" />
-    <result column="calculate_salary" jdbcType="DECIMAL" property="calculateSalary" />
-    <result column="hot_allowance" jdbcType="DECIMAL" property="hotAllowance" />
+    <result column="attendance_days" jdbcType="INTEGER" property="attendanceDays" />
+    <result column="job_salary" jdbcType="DECIMAL" property="jobSalary" />
     <result column="social_security_allowance" jdbcType="DECIMAL" property="socialSecurityAllowance" />
     <result column="house_fund_allowance" jdbcType="DECIMAL" property="houseFundAllowance" />
+    <result column="hot_allowance" jdbcType="DECIMAL" property="hotAllowance" />
     <result column="other_income" jdbcType="DECIMAL" property="otherIncome" />
     <result column="payable_salary" jdbcType="DECIMAL" property="payableSalary" />
     <result column="personal_social_security" jdbcType="DECIMAL" property="personalSocialSecurity" />
     <result column="personal_house_fund" jdbcType="DECIMAL" property="personalHouseFund" />
-    <result column="other_deduction" jdbcType="DECIMAL" property="otherDeduction" />
     <result column="pay_taxes" jdbcType="DECIMAL" property="payTaxes" />
+    <result column="other_deduction" jdbcType="DECIMAL" property="otherDeduction" />
     <result column="real_salary" jdbcType="DECIMAL" property="realSalary" />
     <result column="company_social_security" jdbcType="DECIMAL" property="companySocialSecurity" />
     <result column="company_house_fund" jdbcType="DECIMAL" property="companyHouseFund" />
@@ -31,9 +30,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, employee_id, basic_salary, overtime_salary, calculate_salary, hot_allowance,
-    social_security_allowance, house_fund_allowance, other_income, payable_salary, personal_social_security,
-    personal_house_fund, other_deduction, pay_taxes, real_salary, company_social_security,
-    company_house_fund, enable, create_date, update_date, update_user_id
+    id, employee_id, attendance_days, job_salary, social_security_allowance, house_fund_allowance,
+    hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
+    pay_taxes, other_deduction, real_salary, company_social_security, company_house_fund,
+    enable, create_date, update_date, update_user_id
   </sql>
 </mapper>
