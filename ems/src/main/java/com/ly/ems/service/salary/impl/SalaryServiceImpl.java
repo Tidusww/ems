@@ -2,7 +2,6 @@ package com.ly.ems.service.salary.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.ly.ems.common.utils.DateUtil;
-import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.base.mapper.JobMapper;
 import com.ly.ems.dao.salary.ExtendSalaryMapper;
@@ -221,7 +220,7 @@ public class SalaryServiceImpl implements SalaryService {
 
             // 1
             salary.setAttendanceDays(attendanceDays);
-            salary.setJobSalary(new BigDecimal(jobSalary));
+            salary.setDailySalary(new BigDecimal(jobSalary));
             salary.setSocialSecurityAllowance(new BigDecimal(socialSecurityAllowance));
             salary.setHouseFundAllowance(new BigDecimal(houseFundAllowance));
             salary.setHotAllowance(new BigDecimal(hotAllowance));

@@ -38,7 +38,7 @@ public class SalaryExport {
     private String attendanceDays;
 
     @ExcelAttribute(content = "日工资", column = "G")
-    private BigDecimal basicSalary;
+    private BigDecimal dailySalary;
     @ExcelAttribute(content = "日社保补贴", column = "H")
     private BigDecimal socialSecurityAllowance;
     @ExcelAttribute(content = "日住房补贴", column = "I")

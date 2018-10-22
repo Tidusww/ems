@@ -16,7 +16,7 @@
             LEFT JOIN ly_project p ON p.id = dr.project_id
             LEFT JOIN ly_company c ON c.id = p.company_id
         ) dr
-        WHERE 1=1
+        WHERE dr.enable=1
         <if test="groupName != null and groupName != ''"> AND dr.group_name like CONCAT('%', #{groupName, jdbcType=VARCHAR}, '%') </if>
         <if test="projectName != null and projectName != ''"> AND dr.project_name like CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%') </if>
         <if test="companyName != null and companyName != ''"> AND dr.company_name like CONCAT('%', #{companyName, jdbcType=VARCHAR}, '%') </if>

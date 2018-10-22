@@ -27,8 +27,8 @@ public class Salary {
     /**
      * 1.日工资=工种的工资标准
      */
-    @Column(name = "`job_salary`")
-    private BigDecimal jobSalary;
+    @Column(name = "`daily_salary`")
+    private BigDecimal dailySalary;
 
     /**
      * 2.日社保补贴
@@ -181,17 +181,17 @@ public class Salary {
      *
      * @return job_salary - 1.日工资=工种的工资标准
      */
-    public BigDecimal getJobSalary() {
-        return jobSalary;
+    public BigDecimal getDailySalary() {
+        return dailySalary;
     }
 
     /**
      * 设置1.日工资=工种的工资标准
      *
-     * @param jobSalary 1.日工资=工种的工资标准
+     * @param dailySalary 1.日工资=工种的工资标准
      */
-    public void setJobSalary(BigDecimal jobSalary) {
-        this.jobSalary = jobSalary;
+    public void setDailySalary(BigDecimal dailySalary) {
+        this.dailySalary = dailySalary;
     }
 
     /**

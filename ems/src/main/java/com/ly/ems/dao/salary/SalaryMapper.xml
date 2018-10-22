@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="employee_id" jdbcType="INTEGER" property="employeeId" />
     <result column="attendance_days" jdbcType="INTEGER" property="attendanceDays" />
-    <result column="job_salary" jdbcType="DECIMAL" property="jobSalary" />
+    <result column="daily_salary" jdbcType="DECIMAL" property="dailySalary" />
     <result column="social_security_allowance" jdbcType="DECIMAL" property="socialSecurityAllowance" />
     <result column="house_fund_allowance" jdbcType="DECIMAL" property="houseFundAllowance" />
     <result column="hot_allowance" jdbcType="DECIMAL" property="hotAllowance" />
@@ -30,7 +30,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, employee_id, attendance_days, job_salary, social_security_allowance, house_fund_allowance,
+    id, employee_id, attendance_days, daily_salary, social_security_allowance, house_fund_allowance,
     hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
     pay_taxes, other_deduction, real_salary, company_social_security, company_house_fund,
     enable, create_date, update_date, update_user_id

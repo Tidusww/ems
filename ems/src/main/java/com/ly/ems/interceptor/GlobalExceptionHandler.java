@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public AjaxResult processException(Exception exception) {
-//        LOGGER.error("系统异常", exception);
+        LOGGER.error("系统异常", exception);
         return AjaxResult.fail("系统异常");
     }
 

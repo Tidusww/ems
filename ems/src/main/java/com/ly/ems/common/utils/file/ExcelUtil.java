@@ -4,6 +4,8 @@ import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.common.utils.ReflectUtil;
 
 import com.ly.ems.core.exception.EMSRuntimeException;
+import com.ly.ems.core.mybatis.BaseCodeValueEnum;
+import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -113,8 +115,10 @@ public class ExcelUtil implements Serializable {
             // 输出每个工作簿的内容、并输出标题
             for (int i = 0; i < sheetNo; i++) {
                 // 1. 创建工作簿
-                Sheet sheet = workbook.createSheet();
-                workbook.setSheetName(i, "Sheet" + (i + 1));
+//                Sheet sheet = workbook.createSheet();
+//                workbook.setSheetName(i, "Sheet" + (i + 1));
+                // 使用导出模板中的sheet
+                Sheet sheet = workbook.getSheetAt(i);
 
                 // 2. 输出固定单元格数据
                 fillFixedData(sheet, fields, param);
@@ -397,6 +401,10 @@ public class ExcelUtil implements Serializable {
                 if (value != null) {
                     if (classType.isAssignableFrom(Date.class)) {
                         valueString = DateFormatUtils.format((Date) value, DateUtil.YYYY_MM_DD);
+                    } else if(classType.isAssignableFrom(BaseKeyValueEnum.class)) {
+                        valueString = ((BaseKeyValueEnum)value).getValue();
+                    } else if(classType.isAssignableFrom(BaseCodeValueEnum.class)) {
+                        valueString = ((BaseCodeValueEnum)value).getValue();
                     } else {
                         valueString = String.valueOf(value);
                     }

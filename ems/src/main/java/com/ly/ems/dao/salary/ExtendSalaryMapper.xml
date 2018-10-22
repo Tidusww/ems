@@ -3,7 +3,12 @@
 <mapper namespace="com.ly.ems.dao.salary.ExtendSalaryMapper">
     <resultMap id="SalaryVoMap" type="com.ly.ems.model.salary.SalaryVo"
                extends="com.ly.ems.dao.salary.SalaryMapper.BaseResultMap">
+        <result column="num_in_group" property="numInGroup" jdbcType="VARCHAR"/>
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="job_id" property="jobId" jdbcType="INTEGER" />
+        <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
         <result column="group_id" property="groupId" jdbcType="INTEGER" />
         <result column="group_name" property="groupName" jdbcType="VARCHAR"/>
         <result column="project_id" property="projectId" jdbcType="INTEGER" />
@@ -15,12 +20,23 @@
 
     <select id="getSalariesByConditions" resultMap="SalaryVoMap">
         SELECT * FROM (
-            SELECT s.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
+            SELECT (@numInGroup := case when @gid=g.id then @numInGroup + 1 else 1 end )  num_in_group,
+                    s.*,
+                    e.employee_name, e.id_card, e.gender,
+                    j.id job_id, j.job_name,
+                    g.id group_id, g.group_name,
+                    p.id project_id, p.project_name,
+                    c.id company_id, c.company_name
             FROM ${salaryTableName} s
             LEFT JOIN ly_employee e ON s.employee_id = e.id
-            LEFT JOIN ly_group g ON e.group_id = g.id
             LEFT JOIN ly_job j ON e.job_id = j.id
-        ) a
+            LEFT JOIN ly_group g ON e.group_id = g.id
+            LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id
+            LEFT JOIN ly_project p ON p.id = dr.project_id
+            LEFT JOIN ly_company c ON c.id = p.company_id,
+            (SELECT  @numInGroup := 0, @gid := 0) AS numVar
+            order by g.id, s.id
+            ) a
         WHERE 1=1 AND a.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">
             AND employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
@@ -53,7 +69,7 @@
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.employeeId}, #{item.enable}, #{item.attendanceDays},
-            #{item.jobSalary}, #{item.hotAllowance}, #{item.socialSecurityAllowance},
+            #{item.dailySalary}, #{item.hotAllowance}, #{item.socialSecurityAllowance},
             #{item.houseFundAllowance}, #{item.otherIncome}, #{item.payableSalary}, #{item.personalSocialSecurity},
             #{item.personalHouseFund}, #{item.otherDeduction}, #{item.payTaxes}, #{item.realSalary},
             #{item.companySocialSecurity},#{item.companyHouseFund})

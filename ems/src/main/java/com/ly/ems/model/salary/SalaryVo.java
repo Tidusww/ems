@@ -1,11 +1,16 @@
 package com.ly.ems.model.salary;
 
+import com.ly.ems.model.base.employee.constant.GenderEnum;
+
 /**
  * Created by tidus on 2018/10/2.
  */
 public class SalaryVo extends Salary {
 
+    private String numInGroup;
     private String employeeName;
+    private String idCard;
+    private GenderEnum gender;
     private Integer jobId;
     private String jobName;
     private Integer groupId;
@@ -15,12 +20,36 @@ public class SalaryVo extends Salary {
     private Integer companyId;
     private String companyName;
 
+    public String getNumInGroup() {
+        return numInGroup;
+    }
+
+    public void setNumInGroup(String numInGroup) {
+        this.numInGroup = numInGroup;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
     }
 
     public Integer getJobId() {
@@ -85,5 +114,17 @@ public class SalaryVo extends Salary {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+
+    /**
+     * 性别
+     * @return
+     */
+    public String getGenderValue() {
+        if(this.getGender() == null) {
+            return "";
+        }
+        return this.getGender().getValue();
     }
 }

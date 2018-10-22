@@ -3,6 +3,7 @@ package com.ly.ems.common.utils.file;
 import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.model.common.constant.FileTypeEnum;
+import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -26,7 +28,8 @@ public class FileUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
     public static final String PREFIX_EXCEL_TEMP = "export_temp_";
-    public static final String PATH_EXCEL_TEMP = "/excel/";
+    public static final String PATH_EXCEL_TEMP = "/excel/temp/";
+    public static final String PATH_EXCEL_EXPORT = "/excel/export/";
 
     public static final String FILE_SUFFIX_XLS = ".xls";
     public static final String FILE_SUFFIX_XLSX = ".xlsx";
@@ -173,6 +176,7 @@ public class FileUtil {
 
     /**
      * 生成临时文件夹
+     *
      * @param dirFullPath
      * @return
      * @throws IOException
@@ -184,8 +188,8 @@ public class FileUtil {
 
         if (!tempDir.exists()) {
             created = tempDir.mkdir();
-        }else {
-            if(!tempDir.isDirectory()) {
+        } else {
+            if (!tempDir.isDirectory()) {
                 deleted = tempDir.delete();
                 created = tempDir.mkdir();
             }
@@ -226,6 +230,7 @@ public class FileUtil {
 
     /**
      * 根据workbook生成文件，并返回下载地址
+     *
      * @param workbook
      * @param fileName
      * @return
@@ -233,8 +238,8 @@ public class FileUtil {
     public static String generateFileByWorkbook(Workbook workbook, String fileName) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
-        String download_path = "/excel/export/" + getFileUniqueName(fileName);
-        String targetFilePath = request.getSession().getServletContext().getRealPath(download_path);
+        String downloadPath = PATH_EXCEL_EXPORT + getFileUniqueName(fileName);
+        String targetFilePath = request.getSession().getServletContext().getRealPath(downloadPath);
 
         try {
             File tempFile = new File(targetFilePath);
@@ -248,10 +253,44 @@ public class FileUtil {
 
         } catch (Exception e) {
             LOGGER.error("生成文件失败", e);
-            deleteFile(request, download_path);
+            deleteFile(request, downloadPath);
             throw new EMSRuntimeException("生成Excel出错");
         }
-        return download_path;
+        return downloadPath;
+    }
+
+
+    /**
+     * 根据模板生成excel，返回路径
+     *
+     * @param templatePath
+     * @param beanParams
+     * @param fileName
+     * @return
+     */
+    public static String generateJxlsFile(String templatePath, Map beanParams, String fileName) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+
+        String templateFullPath = request.getSession().getServletContext().getRealPath(templatePath);
+        String downloadPath = PATH_EXCEL_EXPORT + getFileUniqueName(fileName);
+        String targetFilePath = request.getSession().getServletContext().getRealPath(downloadPath);
+
+
+        try {
+            File tempFile = new File(targetFilePath);
+            if (!tempFile.exists()) {
+                tempFile.createNewFile();
+            }
+            XLSTransformer transformer = new XLSTransformer();
+            transformer.transformXLS(templateFullPath, beanParams, targetFilePath);
+        } catch (Exception e) {
+            LOGGER.error("根据模板生成excel失败", e);
+            deleteFile(request, downloadPath);
+            throw new EMSRuntimeException("生成Excel出错");
+        }
+
+        return downloadPath;
     }
 
 }

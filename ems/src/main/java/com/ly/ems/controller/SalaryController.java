@@ -10,8 +10,10 @@ import com.ly.ems.model.salary.SalaryCondition;
 import com.ly.ems.model.salary.SalaryVo;
 import com.ly.ems.model.salary.export.SalaryExport;
 import com.ly.ems.service.salary.SalaryService;
+import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,7 @@ import java.util.Map;
 public class SalaryController {
     private Logger LOGGER = LoggerFactory.getLogger(SalaryController.class);
 
+    private static final String SALARY_EXPORT_PREFIX = "salary";
     private static final String SALARY_EXPORT_TEMPLATE_PATH = "/excel/template/工资模板表.xlsx";
 
     @Autowired
@@ -81,27 +84,38 @@ public class SalaryController {
 //                        DateFormatUtils.format(condition.getMonth(), DateUtil.YYYYMM),
 //                        FileUtil.FILE_SUFFIX_XLSX));
 
-        // 自定义excel，返回路径
-        Map<String, String> param = new HashMap<String, String>();
+        // jxls 导出
+        Map<String, Object> param = new HashMap<String, Object>();
         param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("companyName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        param.put("itemList", salaryVoList);
 
         // 读取模板
-        XSSFWorkbook wb = null;
-        try {
-            String targetFilePath = request.getSession().getServletContext().getRealPath(SALARY_EXPORT_TEMPLATE_PATH);
-            File fi = new File(targetFilePath);
-            FileInputStream is = new FileInputStream(fi);
-            wb = new XSSFWorkbook(is);
-        } catch (Exception e) {
-            LOGGER.error("读取模板excel失败", e);
-            return AjaxResult.fail("生成excel失败");
-        }
+//        XSSFWorkbook wb = null;
+//        try {
+//            String targetFilePath = request.getSession().getServletContext().getRealPath(SALARY_EXPORT_TEMPLATE_PATH);
+//            File file = new File(targetFilePath);
+//            FileInputStream is = new FileInputStream(fi);
+//            Workbook wb =WorkbookFactory.create(file);
+//            wb = new XSSFWorkbook(is);
+//        } catch (Exception e) {
+//            LOGGER.error("读取模板excel失败", e);
+//            return AjaxResult.fail("生成excel失败");
+//        }
 
         // 生成excel
-        Workbook workbook = ExcelUtil.generateBigWorkbook(wb, SalaryExport.class, salaryVoList, param);
-        String path = FileUtil.generateFileByWorkbook(workbook, String.format("download%s", FileUtil.FILE_SUFFIX_XLSX));
+//        Workbook workbook = ExcelUtil.generateBigWorkbook(wb, SalaryExport.class, salaryVoList, param);
+//        String path = FileUtil.generateFileByWorkbook(workbook, String.format("%s%s", SALARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX));
+
+
+
+
+        // 母版 SALARY_EXPORT_TEMPLATE_PATH
+        // 参数
+        // 目标地址
+        String downloadName = String.format("%s%s", SALARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
+        String path = FileUtil.generateJxlsFile(SALARY_EXPORT_TEMPLATE_PATH, param, downloadName);
 
 
         // 返回结果
