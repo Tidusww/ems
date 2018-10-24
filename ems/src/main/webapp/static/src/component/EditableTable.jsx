@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Form, Table, Input, Button} from 'antd';
 import clonedeep from 'lodash.clonedeep';
 import isEqual from 'lodash/fp/isEqual';
-require('../css/editable.css');
+require('css/editable.css');
 
 const FormItem = Form.Item;
 const noop = () => {

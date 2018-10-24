@@ -1,5 +1,6 @@
 import 'css/core.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Input, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import { Constants } from 'core/Const.jsx';
@@ -8,16 +9,16 @@ import { Constants } from 'core/Const.jsx';
 
 class EditableCell extends React.Component {
     static propTypes = {
-        value: React.PropTypes.string.isRequired,       //单元格值
-        isEditing: React.PropTypes.string.isRequired,   //是否正在编辑
-        operation: React.PropTypes.string.isRequired,   //接受的操作:保存 / 取消
-        cellType: React.PropTypes.string.isRequired,    //单元格类型
-        defaultValue: React.PropTypes.string,           //编辑时value为空的默认值
-        valueMap: React.PropTypes.object,               //Select类型用到的下拉数据
-        dateFormat: React.PropTypes.string,             //DatePicker类型的日期格式
-        timeFormat: React.PropTypes.string,             //DatePicker类型的时间格式
-        save: React.PropTypes.func,                     //保存的回调
-        cancel: React.PropTypes.func                    //取消的回调
+        value: PropTypes.string.isRequired,       //单元格值
+        isEditing: PropTypes.string.isRequired,   //是否正在编辑
+        operation: PropTypes.string.isRequired,   //接受的操作:保存 / 取消
+        cellType: PropTypes.string.isRequired,    //单元格类型
+        defaultValue: PropTypes.string,           //编辑时value为空的默认值
+        valueMap: PropTypes.object,               //Select类型用到的下拉数据
+        dateFormat: PropTypes.string,             //DatePicker类型的日期格式
+        timeFormat: PropTypes.string,             //DatePicker类型的时间格式
+        save: PropTypes.func,                     //保存的回调
+        cancel: PropTypes.func                    //取消的回调
     };
 
     constructor (props) {

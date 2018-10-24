@@ -11,6 +11,7 @@
  *  <ConditionSelect conditionCode="" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
  **/
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Select, Spin, message } from 'antd';
 import { CommonHelper } from 'core/Common.jsx';
 
@@ -19,8 +20,8 @@ const { Option } = Select;
 
 class ConditionSelect extends React.Component {
     static propTypes = {
-        conditionCode: React.PropTypes.string,
-        onChange: React.PropTypes.func
+        conditionCode: PropTypes.string,
+        onChange: PropTypes.func
     };
 
     constructor(props) {

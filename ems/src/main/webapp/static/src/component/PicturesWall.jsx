@@ -1,14 +1,15 @@
 import 'css/core.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Upload, Icon, Modal} from 'antd';
 
 
 class PicturesWall extends React.Component {
     static propTypes = {
-        actionUrl: React.PropTypes.string.isRequired,
-        maxPicture: React.PropTypes.number.isRequired,
-        fileList: React.PropTypes.array,
-        onPictureChange: React.PropTypes.func
+        actionUrl: PropTypes.string.isRequired,
+        maxPicture: PropTypes.number.isRequired,
+        fileList: PropTypes.array,
+        onPictureChange: PropTypes.func
     };
 
     constructor (props) {

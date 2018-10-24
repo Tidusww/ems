@@ -23,12 +23,13 @@
 
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Transfer, Spin, message } from 'antd';
 
 class WrappedTransfer extends React.Component {
     static propTypes = {
-        dataSourceCode: React.PropTypes.string,
-        value: React.PropTypes.array
+        dataSourceCode: PropTypes.string,
+        value: PropTypes.array
     };
 
     constructor (props) {

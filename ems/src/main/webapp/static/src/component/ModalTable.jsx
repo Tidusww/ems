@@ -17,23 +17,24 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Table, Button, message } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 
 class ModalTable extends React.Component {
     static propTypes = {
-        title: React.PropTypes.string,
-        visible: React.PropTypes.bool,
-        width: React.PropTypes.string,
-
-        // conditionConfigCode: React.PropTypes.string.required,
-        // searchUrl: React.PropTypes.string.required,
-        // keyId: React.PropTypes.string.required,
-        // column: React.PropTypes.array.required,
-        // multiSelect: React.PropTypes.bool.required,
-
-        handleConfirm: React.PropTypes.func,
-        handleCancel: React.PropTypes.func
+        title: PropTypes.string,
+        visible: PropTypes.bool,
+        width: PropTypes.string,
+    
+        // conditionConfigCode: PropTypes.string.required,
+        // searchUrl: PropTypes.string.required,
+        // keyId: PropTypes.string.required,
+        // column: PropTypes.array.required,
+        // multiSelect: PropTypes.bool.required,
+    
+        handleConfirm: PropTypes.func,
+        handleCancel: PropTypes.func
     };
 
     constructor(props) {

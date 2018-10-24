@@ -1,5 +1,6 @@
 import 'css/core.css';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Spin, Button, Input, Select, DatePicker, MonthPicker, message, Collapse} from 'antd';
 import moment from 'moment';
 import {Constants} from 'core/Const.jsx';
@@ -12,12 +13,12 @@ const { Option } = Select;
 
 class ConditionContainer extends React.Component {
     static propTypes = {
-        configCode: React.PropTypes.string.isRequired,
-        conditionValues: React.PropTypes.array,
-        onItemChange: React.PropTypes.func,
-        onItemPressEnter: React.PropTypes.func,
-        onButtonClick: React.PropTypes.func,
-        conditionDidLoad: React.PropTypes.func
+        configCode: PropTypes.string.isRequired,
+        conditionValues: PropTypes.array,
+        onItemChange: PropTypes.func,
+        onItemPressEnter: PropTypes.func,
+        onButtonClick: PropTypes.func,
+        conditionDidLoad: PropTypes.func
     };
 
     constructor(props) {

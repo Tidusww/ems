@@ -116,6 +116,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Button, Input, Form, Row, Col } from 'antd';
 import moment from 'moment';
 
@@ -125,17 +126,17 @@ const FormItem = Form.Item;
 
 class ModalForm extends React.Component {
     static propTypes = {
-        title: React.PropTypes.string,
-        visible: React.PropTypes.bool,
-        width: React.PropTypes.string,
-        formFields: React.PropTypes.array,
-        formData: React.PropTypes.object,
-        formDataIdKey: React.PropTypes.string,
-        isSubmitting: React.PropTypes.bool,
-        saveFormRef: React.PropTypes.func,
-        handleFormFieldsChange: React.PropTypes.func,
-        handleSubmit: React.PropTypes.func,
-        handleCancel: React.PropTypes.func
+        title: PropTypes.string,
+        visible: PropTypes.bool,
+        width: PropTypes.string,
+        formFields: PropTypes.array,
+        formData: PropTypes.object,
+        formDataIdKey: PropTypes.string,
+        isSubmitting: PropTypes.bool,
+        saveFormRef: PropTypes.func,
+        handleFormFieldsChange: PropTypes.func,
+        handleSubmit: PropTypes.func,
+        handleCancel: PropTypes.func
     };
 
     constructor(props) {
@@ -210,10 +211,10 @@ class ModalForm extends React.Component {
 
 class InnerForm extends React.Component {
     static propTypes = {
-        formFields: React.PropTypes.array,
-        formData: React.PropTypes.object,
-        formDataIdKey: React.PropTypes.string,
-        isSubmitting: React.PropTypes.bool
+        formFields: PropTypes.array,
+        formData: PropTypes.object,
+        formDataIdKey: PropTypes.string,
+        isSubmitting: PropTypes.bool
     };
 
     constructor(props) {
