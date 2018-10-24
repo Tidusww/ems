@@ -8,6 +8,7 @@ const Constants = {
 
     //EditableCellType
     CONST_EDITABLE_CELL_TYPE_INPUT: "Input",
+    CONST_EDITABLE_CELL_TYPE_NUMBER: "Number",
     CONST_EDITABLE_CELL_TYPE_SELECT: "Select",
     CONST_EDITABLE_CELL_TYPE_DATE_PICKER: "DatePicker",
 

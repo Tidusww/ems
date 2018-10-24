@@ -1,0 +1,101 @@
+.hermes-editable-table-block .hermes-edit-btn-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.hermes-editable-table-block .hermes-edit-btn-group button {
+    display: none;
+}
+
+.hermes-editable-table-block .hermes-edit-btn-group button:first-of-type {
+    display: inline-block;
+}
+
+.hermes-editable-table-block .hermes-edit-btn-group button:last-of-type {
+    margin-left: 10px;
+}
+
+.hermes-editable-table-block .hermes-edit-btn-group.toggleBtn button {
+    display: inline-block;
+}
+
+.hermes-editable-table-block .hermes-edit-btn-group.toggleBtn button:first-of-type {
+    display: none;
+}
+
+.hermes-editable-table-block .ant-table-tbody td {
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+.hermes-editable-table-block .ant-table-tbody textarea {
+    resize: none;
+}
+
+.hermes-editable-table-block .hermes-editable-td {
+    position: relative;
+    line-height: 32px;
+}
+
+.hermes-editable-table-block .hermes-editable-origin {
+    position: relative;
+    z-index: 3;
+    opacity: 1;
+}
+
+.hermes-editable-table-block .hermes-editable-form-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.hermes-editable-table-block .hermes-editable-form-item .ant-select-selection__rendered {
+    height: 32px;
+}
+
+.hermes-editable-table-block .edit-row-wrapper {
+    display: inline;
+}
+
+.hermes-editable-table-block .hermes-edit-row .handel-row-edit {
+    display: none;
+}
+
+.hermes-editable-table-block .hermes-edit-row .edit-row-btn {
+    color: #00558B;
+    cursor: pointer;
+}
+
+.hermes-editable-table-block .hermes-edit-row .edit-row-btn.disabled {
+    color: #c8c8c8;
+    cursor: not-allowed;
+}
+
+.hermes-editable-table-block.table-editing .hermes-editable-origin,
+.hermes-editable-table-block .row-editing .hermes-editable-origin {
+    z-index: 1;
+    opacity: 0;
+}
+
+.hermes-editable-table-block.table-editing .hermes-editable-form-item,
+.hermes-editable-table-block .row-editing .hermes-editable-form-item {
+    display: block;
+}
+
+.hermes-editable-table-block.table-editing .ant-table-tbody td,
+.hermes-editable-table-block .row-editing td {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.hermes-editable-table-block .row-editing .ft-bar {
+    margin: 0 8px;
+    color: #ccc;
+}
