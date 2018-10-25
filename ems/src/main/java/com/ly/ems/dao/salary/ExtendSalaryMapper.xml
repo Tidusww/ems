@@ -75,4 +75,33 @@
             #{item.companySocialSecurity},#{item.companyHouseFund})
         </foreach>
     </insert>
+
+
+    <sql id="Update_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        social_security_allowance, house_fund_allowance,
+        hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
+        pay_taxes, other_deduction, real_salary, company_social_security, company_house_fund,
+        enable, create_date, update_date, update_user_id
+    </sql>
+    <update id="updateSalaryById">
+        UPDATE ${salaryTableName}
+        <set >
+            social_security_allowance = #{salary.socialSecurityAllowance, jdbcType=DECIMAL},
+            house_fund_allowance = #{salary.houseFundAllowance, jdbcType=DECIMAL},
+            hot_allowance = #{salary.hotAllowance, jdbcType=DECIMAL},
+            other_income = #{salary.otherIncome, jdbcType=DECIMAL},
+            payable_salary = #{salary.payableSalary, jdbcType=DECIMAL},
+            personal_social_security = #{salary.personalSocialSecurity, jdbcType=DECIMAL},
+            personal_house_fund = #{salary.personalHouseFund, jdbcType=DECIMAL},
+            pay_taxes = #{salary.payTaxes, jdbcType=DECIMAL},
+            other_deduction = #{salary.otherDeduction, jdbcType=DECIMAL},
+            real_salary = #{salary.realSalary, jdbcType=DECIMAL},
+            company_social_security = #{salary.companySocialSecurity, jdbcType=DECIMAL},
+            company_house_fund = #{salary.companyHouseFund, jdbcType=DECIMAL},
+        </set>
+        WHERE id = #{salary.id, jdbcType=INTEGER}
+    </update>
 </mapper>

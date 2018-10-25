@@ -1,9 +1,13 @@
 import React from 'react';
-import {Table, message, Modal, Input, InputNumber, Spin, Button} from 'antd';
+import {Table, message, Modal, Input, InputNumber, Spin, Button, Popconfirm, Form} from 'antd';
 import {ConditionContainer} from 'component/ConditionContainer.jsx';
+import {EditableTable} from 'component/EditableTable.jsx';
+import {EditableCell} from 'component/EditableCell.jsx';
 import {CommonHelper} from 'core/Common.jsx';
+import {Constants} from 'core/Const.jsx';
 
 const confirm = Modal.confirm;
+const EditableContext = React.createContext();
 
 class SalaryManage extends React.Component {
     constructor(props) {
@@ -20,15 +24,7 @@ class SalaryManage extends React.Component {
                 current: 1,
                 pageSize: 10
             },
-            modalForm: {
-                form: undefined,
-                modalTitle: "",
-                modalVisible: false,
-                modalWidth: "40%",
-                formData: {},
-                formDataIdKey: "id",
-                isSubmitting: false
-            }
+            editingKey: ''
         };
         this.configuration = {
             //提示
@@ -41,8 +37,7 @@ class SalaryManage extends React.Component {
             keyId: "id",
             selectionType: "radio",
             getUrl: `${_ctx_}/salary/get`,
-            saveUrl: `${_ctx_}/salary`,
-            disableUrl: `${_ctx_}/`,
+            updateUrl: `${_ctx_}/salary/update`,
             generateUrl: `${_ctx_}/salary/generate`,
             exportSalariesUrl: `${_ctx_}/salary/exportSalaries`,
 
@@ -64,7 +59,7 @@ class SalaryManage extends React.Component {
                 title: '出勤天数', dataIndex: 'attendanceDays', key: 'attendanceDays', width: 100
             },
             {
-                title: '日工资（元/日）', dataIndex: 'jobSalary', key: 'jobSalary', width: 150
+                title: '日工资（元/日）', dataIndex: 'dailySalary', key: 'dailySalary', width: 150
             },
             {
                 title: '社保补贴（元/日）', dataIndex: 'socialSecurityAllowance', key: 'socialSecurityAllowance', width: 150
@@ -76,7 +71,15 @@ class SalaryManage extends React.Component {
                 title: '高温津贴（元/日）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 150
             },
             {
-                title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120
+                title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120,
+                editable: true, formItem: (getFieldDecorator, id, text) => {
+                    return (getFieldDecorator(id, {
+                        initialValue: text,
+                        // rules: rules
+                    })(
+                        <InputNumber min={0} step={0.1}/>
+                    ));
+                }
             },
             {
                 title: '应付工资（元）', dataIndex: 'payableSalary', key: 'payableSalary', width: 120
@@ -174,16 +177,6 @@ class SalaryManage extends React.Component {
     onSelectionChange = (selectedRowKeys, selectedRows) => {
         this.setState({selectedRowKeys, selectedRows});
     };
-    selectRow = (record) => {
-        const selectedRowKeys = [...this.state.selectedRowKeys];
-        if (selectedRowKeys.indexOf(record.id) >= 0) {
-            selectedRowKeys.splice(selectedRowKeys.indexOf(record.id), 1);
-        } else {
-            selectedRowKeys.push(record.id);
-        }
-        this.setState({selectedRowKeys});
-    };
-
 
     /**
      *  增删查改
@@ -283,6 +276,38 @@ class SalaryManage extends React.Component {
     }
 
     /**
+     * 编辑
+     */
+    doUpdate = (changeData, index) => {
+        this.setState({isLoading: true});
+        const param = Object.assign({},
+            changeData,
+            {month: this.state.dataParam.monthSelect});
+        $.ajax({
+            url: this.configuration.updateUrl,
+            type: 'POST',
+            data: param,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                console.log("请求成功:" + result);
+                this.setState({isLoading: false});
+
+                if (result.success) {
+                    message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG, 3);
+                } else {
+                    message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 5);
+                }
+                this.doSearch();
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
+    }
+
+    /**
      * helper method
      */
     clearSelection = () => {
@@ -315,7 +340,7 @@ class SalaryManage extends React.Component {
                         onItemPressEnter={this.handleItemPressEnter}
                         onButtonClick={this.handleButtonClick}
                     />
-                    <Table
+                    <EditableTable
                         bordered
                         title={()=>`工资列表`}
                         rowKey={this.configuration.keyId}
@@ -323,13 +348,13 @@ class SalaryManage extends React.Component {
                         dataSource={this.state.dataSource}
                         columns={this.columns}
                         pagination={pagination}
-                        rowSelection={rowSelection}
-                        scroll={{x: 2322}}//列的总宽度+62(有选择框)
-                        onRow={(record) => ({
-                        onClick: () => {
-                            this.selectRow(record);
-                        },
-                    })}
+                        scroll={{x: 2270}}//列的总宽度+62(有选择框)
+                        empty
+                        rowEdit
+                        onSaveRow={(changedData, index) => {
+                            console.log('EditableTable 单行编辑，第', index, '行 内容：', changedData);
+                            this.doUpdate(changedData, index);
+                        }}
                     />
                 </Spin>
                 <Modal

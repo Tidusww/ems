@@ -5,7 +5,9 @@ import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.common.utils.file.DownloadUtil;
 import com.ly.ems.common.utils.file.ExcelUtil;
 import com.ly.ems.common.utils.file.FileUtil;
+import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.common.PageableResult;
+import com.ly.ems.model.salary.Salary;
 import com.ly.ems.model.salary.SalaryCondition;
 import com.ly.ems.model.salary.SalaryVo;
 import com.ly.ems.model.salary.export.SalaryExport;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +69,13 @@ public class SalaryController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST, name = "更新工资信息")
+    public AjaxResult updateSalary(Salary salary, Date month) {
+        salaryService.updateSalary(salary, month);
+        return AjaxResult.success("更新工资信息成功");
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/exportSalaries", name = "导出工资信息")
     public AjaxResult exportSalaries(HttpServletRequest request, HttpServletResponse response, SalaryCondition condition) {
         // 不分页
@@ -91,32 +101,8 @@ public class SalaryController {
         param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("itemList", salaryVoList);
 
-        // 读取模板
-//        XSSFWorkbook wb = null;
-//        try {
-//            String targetFilePath = request.getSession().getServletContext().getRealPath(SALARY_EXPORT_TEMPLATE_PATH);
-//            File file = new File(targetFilePath);
-//            FileInputStream is = new FileInputStream(fi);
-//            Workbook wb =WorkbookFactory.create(file);
-//            wb = new XSSFWorkbook(is);
-//        } catch (Exception e) {
-//            LOGGER.error("读取模板excel失败", e);
-//            return AjaxResult.fail("生成excel失败");
-//        }
-
-        // 生成excel
-//        Workbook workbook = ExcelUtil.generateBigWorkbook(wb, SalaryExport.class, salaryVoList, param);
-//        String path = FileUtil.generateFileByWorkbook(workbook, String.format("%s%s", SALARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX));
-
-
-
-
-        // 母版 SALARY_EXPORT_TEMPLATE_PATH
-        // 参数
-        // 目标地址
         String downloadName = String.format("%s%s", SALARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
         String path = FileUtil.generateJxlsFile(SALARY_EXPORT_TEMPLATE_PATH, param, downloadName);
-
 
         // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");

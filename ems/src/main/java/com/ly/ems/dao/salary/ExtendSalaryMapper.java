@@ -39,4 +39,13 @@ public interface ExtendSalaryMapper {
      * @param list
      */
     void batchInsert(@Param("salaryTableName")String salaryTableName, @Param("list") List<Salary> list);
+
+    /**
+     * 更新单条工资信息，被更新的字段为：
+     *【2】~【13】
+     * @param salaryTableName
+     * @param salary
+     * @return
+     */
+    int updateSalaryById(@Param("salaryTableName")String salaryTableName, @Param("salary")Salary salary);
 }

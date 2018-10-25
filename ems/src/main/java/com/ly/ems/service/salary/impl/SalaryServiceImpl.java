@@ -5,6 +5,7 @@ import com.ly.ems.common.utils.DateUtil;
 import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.base.mapper.JobMapper;
 import com.ly.ems.dao.salary.ExtendSalaryMapper;
+import com.ly.ems.dao.salary.SalaryMapper;
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceVo;
 import com.ly.ems.model.base.job.Job;
@@ -42,6 +43,8 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Autowired
     JobMapper jobMapper;
+    @Autowired
+    SalaryMapper salaryMapper;
     @Autowired
     ExtendSalaryMapper extendSalaryMapper;
 
@@ -144,6 +147,32 @@ public class SalaryServiceImpl implements SalaryService {
 
     }
 
+    /**
+     * 更新工资信息，并重新计算该条工资的内容
+     * 可更新的字段有：
+     * 【2】日社保补贴、【3】日住房补贴、【4】日高温津贴、【5】其他收入
+     * 【7】社保费、【8】住房公积金、【10】其他扣除、【12】单位社保、【13】单位公积金
+     *
+     * @param salary
+     */
+    @Override
+    public void updateSalary(Salary salary, Date month) {
+        try {
+            String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
+            String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+            Salary updateSalary = this.calculateSalary(salary, month);
+            int row = extendSalaryMapper.updateSalaryById(salaryTableName, updateSalary);
+            if(row != 1) {
+                LOGGER.error(String.format("expected update row should be 1 but found %d", row));
+                throw new EMSRuntimeException("更新工资信息失败");
+            }
+        } catch (Exception e) {
+            LOGGER.error(String.format("计算工资信息失败，工资记录id：【%d】", salary.getId()), e);
+            throw new EMSRuntimeException("更新工资信息失败");
+        }
+    }
+
+
     @Override
     public void saveSalaries(List<Salary> salaryList, String monthString) {
 
@@ -189,7 +218,7 @@ public class SalaryServiceImpl implements SalaryService {
 
             // 1.日工资=工种的工资标准（自设参数）
             Job job = jobMapper.selectByPrimaryKey(attendanceVo.getJobId());
-            double jobSalary = job.getSalary().doubleValue();
+            double dailySalary = job.getSalary().doubleValue();
             // 2.日社保补贴=40元/天（40元/天为自设参数）
             double socialSecurityAllowance = systemConfigService.getSocialSecurityAllowance();
             // 3.日住房补贴=10元/天（10元/天为自设参数）
@@ -200,7 +229,7 @@ public class SalaryServiceImpl implements SalaryService {
             double otherIncome = 0.d;
 
             // 6.应付工资=（日工资+日社保补贴+日住房补贴+日高温津贴）*工作天数+其他收入
-            double payableSalary = (jobSalary + socialSecurityAllowance + houseFundAllowance + hotAllowance) * attendanceDays + otherIncome;
+            double payableSalary = (dailySalary + socialSecurityAllowance + houseFundAllowance + hotAllowance) * attendanceDays + otherIncome;
 
             // 7.个人部分社保
             double personalSocialSecurityAllowance = 0.d;
@@ -211,7 +240,7 @@ public class SalaryServiceImpl implements SalaryService {
             // 10.其他扣除
             double otherDeduction = 0.d;
             // 11.实发工资：【6】-【7】-【8】-【9】-【10】
-            double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - -payTaxes - otherDeduction;
+            double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - payTaxes - otherDeduction;
 
             // 12.单位社保
             double companySocialSecurityAllowance = 0.d;
@@ -220,7 +249,7 @@ public class SalaryServiceImpl implements SalaryService {
 
             // 1
             salary.setAttendanceDays(attendanceDays);
-            salary.setDailySalary(new BigDecimal(jobSalary));
+            salary.setDailySalary(new BigDecimal(dailySalary));
             salary.setSocialSecurityAllowance(new BigDecimal(socialSecurityAllowance));
             salary.setHouseFundAllowance(new BigDecimal(houseFundAllowance));
             salary.setHotAllowance(new BigDecimal(hotAllowance));
@@ -248,6 +277,64 @@ public class SalaryServiceImpl implements SalaryService {
 
     /**
      * util-4
+     * 为每条出勤记录生成工资记录
+     *
+     * @param salary
+     */
+    private Salary calculateSalary(Salary salary, Date month) {
+        // TODO 从数据库获取出勤天数
+        Integer attendanceDays = salary.getAttendanceDays();
+
+        // 6.应付工资=（日工资+日社保补贴+日住房补贴+日高温津贴）*工作天数+其他收入
+        double payableSalary = (salary.getDailySalary().doubleValue()
+                + salary.getSocialSecurityAllowance().doubleValue()
+                + (systemConfigService.isHotAllowanceDate(month) ? salary.getHotAllowance().doubleValue() : 0.d)
+                + salary.getHotAllowance().doubleValue()) * attendanceDays;
+        payableSalary += salary.getOtherIncome().doubleValue();
+
+        // 7.个人部分社保
+        double personalSocialSecurityAllowance = salary.getPersonalSocialSecurity().doubleValue();
+        // 8.个人部分公积金
+        double personalHouseFundAllowance = salary.getPersonalHouseFund().doubleValue();
+        // 9.个税
+        double payTaxes = this.getPayTaxes(payableSalary);
+        // 10.其他扣除
+        double otherDeduction = salary.getOtherDeduction().doubleValue();
+
+        // 11.实发工资：【6】-【7】-【8】-【9】-【10】
+        double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - payTaxes - otherDeduction;
+
+
+
+        /**
+         * 设置需要更新的工资信息
+         */
+        Salary updateSalary = new Salary();
+        // 确保修改的字段在控制范围内
+        updateSalary.setId(salary.getId());
+        // 【2】~【5】
+        updateSalary.setSocialSecurityAllowance(salary.getSocialSecurityAllowance());
+        updateSalary.setHouseFundAllowance(salary.getHouseFundAllowance());
+        updateSalary.setHotAllowance(salary.getHotAllowance());
+        updateSalary.setOtherIncome(salary.getOtherIncome());
+        // 【6】
+        updateSalary.setPayableSalary(new BigDecimal(payableSalary));
+        // 【7】~【10】
+        updateSalary.setPersonalSocialSecurity(new BigDecimal(personalSocialSecurityAllowance));
+        updateSalary.setPersonalHouseFund(new BigDecimal(personalHouseFundAllowance));
+        updateSalary.setPayTaxes(new BigDecimal(payTaxes));
+        updateSalary.setOtherDeduction(new BigDecimal(otherDeduction));
+        // 【11】
+        updateSalary.setRealSalary(new BigDecimal(realSalary));
+        // 【12】、【13】
+        updateSalary.setCompanySocialSecurity(salary.getCompanySocialSecurity());
+        updateSalary.setCompanyHouseFund(salary.getCompanyHouseFund());
+
+        return updateSalary;
+    }
+
+    /**
+     * util-5
      * 根据应付工资（税前）计算应付个税
      *
      * @param payableSalary
@@ -274,5 +361,6 @@ public class SalaryServiceImpl implements SalaryService {
             return payableTaxesSalary * 0.45d - 15160;
         }
     }
+
 
 }

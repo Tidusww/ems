@@ -51,7 +51,7 @@ class EditableTable extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        console.log("EditableTable WillReceiveProps, %o", nextProps);
+        // console.log("EditableTable WillReceiveProps, %o", nextProps);
     };
 
     shouldComponentUpdate(nextProps, nextState) {
