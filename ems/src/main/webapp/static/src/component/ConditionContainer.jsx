@@ -1,15 +1,15 @@
 import 'css/core.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Spin, Button, Input, Select, DatePicker, MonthPicker, message, Collapse} from 'antd';
+import {Spin, Button, Input, Select, DatePicker, message, Collapse} from 'antd';
 import moment from 'moment';
 import {Constants} from 'core/Const.jsx';
-import { CommonHelper } from 'core/Common.jsx'
+import {CommonHelper} from 'core/Common.jsx'
 
 
 const Panel = Collapse.Panel;
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const {RangePicker, MonthPicker} = DatePicker;
+const {Option} = Select;
 
 class ConditionContainer extends React.Component {
     static propTypes = {
@@ -31,7 +31,7 @@ class ConditionContainer extends React.Component {
             shouldUpdate: false,
             conditionItems: [],                             //所有条件字段
             parentConditionKeys: [],                        //被作为父下拉框的字段
-            conditionValues: this.props.conditionValues||{} //保存所有条件的值
+            conditionValues: this.props.conditionValues || {} //保存所有条件的值
         };
 
         /**
@@ -54,12 +54,12 @@ class ConditionContainer extends React.Component {
                 }
             });
 
-            if(!conditionValues[conditionKey] || conditionValues[conditionKey] != value){
+            if (!conditionValues[conditionKey] || conditionValues[conditionKey] != value) {
                 //值发生变化才通知
                 conditionValues[conditionKey] = value;
                 this.props.onItemChange(conditionKey, value);
                 this.state.shouldUpdate = true;
-                this.setState({conditionValues: conditionValues}, ()=>{
+                this.setState({conditionValues: conditionValues}, ()=> {
                     this.state.shouldUpdate = false;
                 });
             }
@@ -85,12 +85,12 @@ class ConditionContainer extends React.Component {
         this.getCondition();
     };
     componentWillReceiveProps = (nextProps) => {
-        if(nextProps.conditionValues != this.props.conditionValues){
+        if (nextProps.conditionValues != this.props.conditionValues) {
             this.setState({conditionValues: nextProps.conditionValues})
         }
     };
     shouldComponentUpdate = (nextProps, nextState) => {
-        if(this.state.shouldUpdate || nextState.conditionItems !== this.state.conditionItems){
+        if (this.state.shouldUpdate || nextState.conditionItems !== this.state.conditionItems) {
             // console.log("condition should update");
             return true;
         }
@@ -101,8 +101,8 @@ class ConditionContainer extends React.Component {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        if( prevState.conditionItems != this.state.conditionItems ) {
-            if (this.props.conditionDidLoad){
+        if (prevState.conditionItems != this.state.conditionItems) {
+            if (this.props.conditionDidLoad) {
                 this.props.conditionDidLoad();
             }
         }
@@ -116,7 +116,7 @@ class ConditionContainer extends React.Component {
      */
     getCondition = () => {
         this.setState({isLoading: true});
-        
+
         $.ajax({
             url: `${_ctx_}/conditionConfig/getConditions`,
             type: 'GET',
@@ -174,7 +174,7 @@ class ConditionContainer extends React.Component {
 
     parseButton = (item, key, parsePrimary) => {
         const extMap = CommonHelper.getExtMap(item.conditionExt);
-        if(parsePrimary){
+        if (parsePrimary) {
             return extMap["type"] == "primary" ? (
                 <Button key={item.conditionCode}
                         type={extMap["type"]}
@@ -211,7 +211,7 @@ class ConditionContainer extends React.Component {
         )
     };
     parseSelectOptions = (item) => {
-        if(!item.keyValueMaps){
+        if (!item.keyValueMaps) {
             return null;
         }
 
@@ -247,22 +247,33 @@ class ConditionContainer extends React.Component {
     parseDatePicker = (item, key) => {
         const extMap = CommonHelper.getExtMap(item.conditionExt);
         const defaultMoment = moment().hour(0).minute(0).second(0);
-        return (
+        const {type, format, showTimeFormat} = extMap;
+
+
+        return type === 'month' ? (
+            <MonthPicker
+                key={item.conditionCode}
+                allowClear
+                placeholder={item.conditionPlaceholder}
+                format={format}
+                onChange={(value, dateString)=>this.onItemChange(item.conditionKey, dateString)}
+                defaultValue={defaultMoment}
+            />
+        ) : (
             <DatePicker
                 key={item.conditionCode}
                 allowClear
                 placeholder={item.conditionPlaceholder}
-                format={extMap["format"]}
-                showTime={extMap["showTimeFormat"] ? {
-                    format: extMap["showTimeFormat"],
-                    defaultValue: moment('00:00:00', extMap["showTimeFormat"])
+                format={format}
+                showTime={showTimeFormat ? {
+                    format: showTimeFormat,
+                    defaultValue: moment('00:00:00', showTimeFormat)
                 } : false}
                 onChange={(value, dateString)=>this.onItemChange(item.conditionKey, dateString)}
-                /* defaultValue={defaultMoment} */
+                defaultValue={defaultMoment}
             />
         );
     };
-
 
 
     /**
