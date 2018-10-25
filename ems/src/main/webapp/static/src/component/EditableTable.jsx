@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Form, Table, Input, Button} from 'antd';
 import clonedeep from 'lodash.clonedeep';
 import isEqual from 'lodash/fp/isEqual';
+import concat from 'lodash/fp/concat';
 require('css/editable.css');
 
 const FormItem = Form.Item;
@@ -153,6 +154,8 @@ class EditableTable extends React.Component {
                 title: rowEdit.title || '操作',
                 key: rowEdit.key || 'operation',
                 dataIndex: rowEdit.dataIndex || 'operation',
+                fixed: 'left',
+                width: 120,
                 render: (text, record, index) => {
                     const originRender = rowEdit.render;
                     const {rowEditing, tableEditing, savingRow, editRowIndex} = this.state;
@@ -180,8 +183,19 @@ class EditableTable extends React.Component {
             if (rowEdit.width) operation.width = rowEdit.width;
             if (rowEdit.className) operation.className = rowEdit.className;
             if (rowEdit.fixed) operation.className = rowEdit.fixed;
-            columns.push(operation);
+            // 放到第一列
+            tableProps.columns = concat([operation], columns);
+            // columns.push(operation);
+
+
+
+            // 3.1、调整宽度
+            const {scroll} = tableProps;
+            if(scroll) {
+                scroll.x += operation.width
+            }
         }
+
 
         return tableProps;
     }
@@ -294,7 +308,8 @@ class EditableTable extends React.Component {
                     });
                     this.setState({
                         savingRow: false,
-                        rowEditing: false
+                        rowEditing: false,
+                        editRowIndex: -1
                     });
                 });
             }
