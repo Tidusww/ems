@@ -106,25 +106,24 @@ class ConditionSelect extends React.Component {
     getConditionItem = () => {
         this.setState({isLoading: true});
 
-        const that = this;
         $.ajax({
             url: `${_ctx_}/conditionConfig/getSelectItem`,
             type: 'GET',
             data: {conditionCode: this.props.conditionCode},
             async: true,
             dataType: "json",
-            success: function (result) {
+            success: (result) => {
                 if (result.success) {
-                    that.handleConditionItemResult(result.data)
+                    this.handleConditionItemResult(result.data)
                 } else {
                     message.error(`加载ConditionSelect失败:${result.msg}`, 3);
-                    that.handleGetConditionItemFailed(result);
+                    this.handleGetConditionItemFailed(result);
                 }
 
             },
-            error: function (result) {
+            error: (result) => {
                 message.error(`加载ConditionSelect失败:${result.msg}`, 3);
-                that.handleGetConditionItemFailed(result);
+                this.handleGetConditionItemFailed(result);
             }
         });
     };

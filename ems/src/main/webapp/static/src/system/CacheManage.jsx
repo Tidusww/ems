@@ -92,7 +92,7 @@ class CacheManage extends React.Component {
             data: data,
             async: true,
             dataType: "json",
-            success: function (result) {
+            success: (result) => {
                 if (result.success) {
                     message.success("操作成功", 3);
                     handleSuccess();
@@ -101,7 +101,7 @@ class CacheManage extends React.Component {
                     handleFail();
                 }
             },
-            error: function (result) {
+            error: (result) => {
                 message.error("操作失败，请重试，或与管理员联系", 3);
                 handleFail();
             }

@@ -234,28 +234,27 @@ class JobManage extends React.Component {
     doSearch = () => {
         this.clearSelection();
         this.setState({isLoading: true});
-
-        const _this = this;
+        
         $.ajax({
             url: this.configuration.getUrl,
             type: 'GET',
             data: this.state.dataParam,
             async: true,
             dataType: "json",
-            success: function (result) {
-                _this.setState({isLoading: false});
+            success: (result) => {
+                this.setState({isLoading: false});
                 if (result.success) {
                     const data = result.data;
-                    _this.setState({dataSource: data.dataSource, total: data.total});
+                    this.setState({dataSource: data.dataSource, total: data.total});
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);
                 }
             },
-            error: function (result) {
-                _this.setState({isLoading: false});
+            error: (result) => {
+                this.setState({isLoading: false});
                 console.log("请求出错" + result);
-                message.error(_this.configuration.OPERATION_FAILED_MSG, 3);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
             }
         });
     };
@@ -275,22 +274,22 @@ class JobManage extends React.Component {
         });
     };
     doSave = () => {
-        const that = this;
+        
         $.ajax({
             url: this.configuration.saveUrl,
             type: 'POST',
             data: this.state.modalForm.formData,
             async: true,
             dataType: "json",
-            success: function (result) {
+            success: (result) => {
                 if (result.success) {
-                    that.saveSuccess(result);
+                    this.saveSuccess(result);
                 } else {
-                    that.saveFail(result);
+                    this.saveFail(result);
                 }
             },
-            error: function (result) {
-                that.saveFail(result);
+            error: (result) => {
+                this.saveFail(result);
             }
         });
     };
@@ -323,22 +322,21 @@ class JobManage extends React.Component {
         });
     };
     doDisable = () => {
-        const that = this;
         $.ajax({
             url: this.configuration.disableUrl,
             type: 'POST',
             data: {id: this.state.selectedRowKeys[0]},
             async: true,
             dataType: "json",
-            success: function (result) {
+            success: (result) => {
                 if (result.success) {
-                    that.disableSuccess(result);
+                    this.disableSuccess(result);
                 } else {
-                    that.disableFail(result);
+                    this.disableFail(result);
                 }
             },
-            error: function (result) {
-                that.disableFail(result);
+            error: (result) => {
+                this.disableFail(result);
             }
         });
     };

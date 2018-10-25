@@ -116,27 +116,26 @@ class ConditionContainer extends React.Component {
      */
     getCondition = () => {
         this.setState({isLoading: true});
-
-        const that = this;
+        
         $.ajax({
             url: `${_ctx_}/conditionConfig/getConditions`,
             type: 'GET',
             data: {configCode: this.props.configCode},
             async: true,
             dataType: "json",
-            success: function (result) {
+            success: (result) => {
                 //console.log("请求成功:" + result);
                 if (result.success) {
-                    that.handleConditionsResult(result.data)
+                    this.handleConditionsResult(result.data)
                 } else {
                     message.error(`条件组件初始化失败:${result.msg}`, 3);
-                    that.handleGetConditionFailed(result);
+                    this.handleGetConditionFailed(result);
                 }
 
             },
-            error: function (result) {
+            error: (result) => {
                 message.error(`条件组件初始化失败:${result.msg}`, 3);
-                that.handleGetConditionFailed(result);
+                this.handleGetConditionFailed(result);
             }
         });
     }
