@@ -34,6 +34,13 @@ public interface ExtendSalaryMapper {
      */
     void createSalaryTable(@Param("salaryTableName")String salaryTableName);
 
+
+    /**
+     * 删除指定月份的考勤表
+     * @param salaryTableName
+     */
+    void dropSalaryTable(@Param("salaryTableName")String salaryTableName);
+
     /**
      * 批量插入考勤信息
      * @param list

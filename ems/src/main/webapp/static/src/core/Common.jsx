@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { EditableCell } from 'component/EditableCell.jsx'
 import {Constants} from 'core/Const.jsx';
 
@@ -102,6 +103,14 @@ const CommonHelper = {
 
         return newUrl;
     },
+    parseMomentValueToStringInDataObject: (dataObject, format) => {
+        Object.keys(dataObject).map(key => {
+            const value = dataObject[key];
+            if (value instanceof moment) {
+                dataObject[key] = value.format(format);
+            }
+        });
+    }
 };
 
 exports.CommonHelper = CommonHelper;

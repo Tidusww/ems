@@ -147,9 +147,9 @@ public class ReflectUtil {
         SystemConfig sc = new SystemConfig();
         sc.setEnable(EnableEnum.ENABLED);
         sc.setId(1);
-        sc.setConfigType(SystemConfigTypeEnum.BASIC_SALARY);
+        sc.setConfigType(SystemConfigTypeEnum.HOUSE_FUND_ALLOWANCE);
         sc.setConfigValue("100");
-        sc.setConfigDesc("基本工资");
+        sc.setConfigDesc("住房补贴");
 
         System.out.println(getFieldValueByFieldName("configDesc", sc));
     }

@@ -2,12 +2,10 @@ import React from 'react';
 import {Table, message, Modal, Input, InputNumber, Spin, Button, Popconfirm, Form} from 'antd';
 import {ConditionContainer} from 'component/ConditionContainer.jsx';
 import {EditableTable} from 'component/EditableTable.jsx';
-import {EditableCell} from 'component/EditableCell.jsx';
 import {CommonHelper} from 'core/Common.jsx';
 import {Constants} from 'core/Const.jsx';
 
 const confirm = Modal.confirm;
-const EditableContext = React.createContext();
 
 class SalaryManage extends React.Component {
     constructor(props) {
@@ -72,8 +70,8 @@ class SalaryManage extends React.Component {
             },
             {
                 title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120,
-                editable: true, formItem: (getFieldDecorator, id, text) => {
-                    return (getFieldDecorator(id, {
+                editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
+                    return (getFieldDecorator(itemKey, {
                         initialValue: text,
                         // rules: rules
                     })(
@@ -222,9 +220,8 @@ class SalaryManage extends React.Component {
             success: (result) => {
                 this.setState({isLoading: false});
                 if (result.success) {
-                    const data = result.data;
-                    this.setState({dataSource: data.dataSource, total: data.total});
                     message.success(result.msg, 3);
+                    this.doSearch();
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);
@@ -348,7 +345,7 @@ class SalaryManage extends React.Component {
                         dataSource={this.state.dataSource}
                         columns={this.columns}
                         pagination={pagination}
-                        scroll={{x: 2270}}//列的总宽度+62(有选择框)
+                        scroll={{x: 2120}}//列的总宽度+62(有选择框)
                         empty
                         rowEdit
                         onSaveRow={(changedData, index) => {

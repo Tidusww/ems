@@ -40,6 +40,12 @@
         ${attendanceTableName} like ly_attendance_template
     </update>
 
+    <update id="dropAttendanceTable" parameterType="String">
+        drop table
+        -- if not exists
+        ${attendanceTableName}
+    </update>
+
     <insert id="batchInsert">
         INSERT INTO ${attendanceTableName} (
             employee_id, attendance_status_1, attendance_status_2, attendance_status_3, attendance_status_4,

@@ -35,6 +35,12 @@ public interface ExtendAttendanceMapper {
     void createAttendanceTable(@Param("attendanceTableName")String attendanceTableName);
 
     /**
+     * 删除指定月份的考勤表
+     * @param attendanceTableName
+     */
+    void dropAttendanceTable(@Param("attendanceTableName")String attendanceTableName);
+
+    /**
      * 批量插入考勤信息
      * @param list
      */

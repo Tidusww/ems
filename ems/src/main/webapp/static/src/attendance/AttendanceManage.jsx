@@ -351,8 +351,8 @@ class AttendanceManage extends React.Component {
             success: (result) => {
                 this.setState({isLoading: false});
                 if (result.success) {
-                    const data = result.data;
-                    this.setState({dataSource: data.dataSource, total: data.total});
+                    message.success(result.msg, 3);
+                    this.doSearch();
                 } else {
                     console.log("请求出错");
                     message.error(result.msg, 3);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ly.ems.dao.config.ExtendSystemConfigMapper" >
+
+    <resultMap id="ConfigVoMap" type="com.ly.ems.model.config.SystemConfigVo" extends="com.ly.ems.dao.config.SystemConfigMapper.BaseResultMap">
+
+    </resultMap>
+
+    <select id="selectByConditions" parameterType="com.ly.ems.model.config.SystemConfigCondition" resultMap="ConfigVoMap">
+        SELECT * FROM ly_system_config sc
+        WHERE 1=1
+
+        <if test="configType != null"> AND sc.config_type like CONCAT('%', #{configType, jdbcType=VARCHAR}, '%') </if>
+
+
+        ORDER BY sc.update_date DESC
+    </select>
+
+
+</mapper>

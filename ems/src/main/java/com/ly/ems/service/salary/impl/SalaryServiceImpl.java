@@ -98,52 +98,59 @@ public class SalaryServiceImpl implements SalaryService {
         try {
             this.createSalaryTable(month);
         } catch (Exception e) {
-            LOGGER.error("创建考勤表失败", e);
-            throw new EMSRuntimeException("创建考勤表失败");
+            LOGGER.error("创建工资表失败", e);
+            throw new EMSRuntimeException("创建工资表失败");
         }
 
-        // 获取考勤数据
-        AttendanceConditions attendanceConditions = new AttendanceConditions();
-        attendanceConditions.setAttendanceMonth(month);
-        PageableResult<AttendanceVo> pageableResult = attendanceService.getAttendances(attendanceConditions);
-        List<AttendanceVo> attendanceVoList = pageableResult.getDataSource();
+        try {
+            // 获取考勤数据
+            AttendanceConditions attendanceConditions = new AttendanceConditions();
+            attendanceConditions.setAttendanceMonth(month);
+            PageableResult<AttendanceVo> pageableResult = attendanceService.getAttendances(attendanceConditions);
+            List<AttendanceVo> attendanceVoList = pageableResult.getDataSource();
 
 
-        LOGGER.info(String.format("共查询到%d条考勤信息，开始生成%s的工资信息...", attendanceVoList.size(), monthString));
-        long startTime = System.currentTimeMillis();
+            LOGGER.info(String.format("共查询到%d条考勤信息，开始生成%s的工资信息...", attendanceVoList.size(), monthString));
+            long startTime = System.currentTimeMillis();
 
-        // 分页生成
-        int totalSize = 0;
-        boolean isContinue = true;
-        int pageIndex = 1;
-        int pageSize = 500;
-        while (isContinue) {
-            // 分页获取考勤信息
-            int formIndex = (pageIndex - 1) * pageSize;
-            int toIndex = pageIndex * pageSize;
-            if (toIndex > attendanceVoList.size()) {
-                toIndex = attendanceVoList.size();
-                isContinue = false;
-            }
-            List<AttendanceVo> attendanceVoPage = attendanceVoList.subList(formIndex, toIndex);
-
-            // 为考勤信息生成工资信息
-            List<Salary> salaryList = new ArrayList<Salary>();
-            for (AttendanceVo attendanceVo : attendanceVoPage) {
-                // https://www.processon.com/mindmap/5b33aea5e4b063f71f4bceb5
-                Salary salary = this.generateSalaryForAttendance(attendanceVo, month);
-                if (salary != null) {
-                    salaryList.add(salary);
+            // 分页生成
+            int totalSize = 0;
+            boolean isContinue = true;
+            int pageIndex = 1;
+            int pageSize = 500;
+            while (isContinue) {
+                // 分页获取考勤信息
+                int formIndex = (pageIndex - 1) * pageSize;
+                int toIndex = pageIndex * pageSize;
+                if (toIndex > attendanceVoList.size()) {
+                    toIndex = attendanceVoList.size();
+                    isContinue = false;
                 }
+                List<AttendanceVo> attendanceVoPage = attendanceVoList.subList(formIndex, toIndex);
+
+                // 为考勤信息生成工资信息
+                List<Salary> salaryList = new ArrayList<Salary>();
+                for (AttendanceVo attendanceVo : attendanceVoPage) {
+                    // https://www.processon.com/mindmap/5b33aea5e4b063f71f4bceb5
+                    Salary salary = this.generateSalaryForAttendance(attendanceVo, month);
+                    if (salary != null) {
+                        salaryList.add(salary);
+                    }
+                }
+                if (!salaryList.isEmpty()) {
+                    String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+                    extendSalaryMapper.batchInsert(salaryTableName, salaryList);
+                }
+                totalSize += salaryList.size();
             }
-            if (!salaryList.isEmpty()) {
-                String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
-                extendSalaryMapper.batchInsert(salaryTableName, salaryList);
-            }
-            totalSize += salaryList.size();
+
+            LOGGER.info(String.format("生成工资信息完毕，共生成%d条工资信息，耗时%dms。", totalSize, System.currentTimeMillis() - startTime));
+        } catch (Exception e) {
+            LOGGER.error("生成工资信息失败", e);
+            this.dropSalaryTable(month);
+            throw new EMSRuntimeException("生成工资信息失败");
         }
 
-        LOGGER.info(String.format("生成工资信息完毕，共生成%d条工资信息，耗时%dms。", totalSize, System.currentTimeMillis() - startTime));
 
     }
 
@@ -162,7 +169,7 @@ public class SalaryServiceImpl implements SalaryService {
             String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
             Salary updateSalary = this.calculateSalary(salary, month);
             int row = extendSalaryMapper.updateSalaryById(salaryTableName, updateSalary);
-            if(row != 1) {
+            if (row != 1) {
                 LOGGER.error(String.format("expected update row should be 1 but found %d", row));
                 throw new EMSRuntimeException("更新工资信息失败");
             }
@@ -192,7 +199,7 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     /**
-     * util-2
+     * util-2.1
      * 创建指定月份的考勤表
      *
      * @param month
@@ -202,6 +209,18 @@ public class SalaryServiceImpl implements SalaryService {
         String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
         String tableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
         extendSalaryMapper.createSalaryTable(tableName);
+    }
+    /**
+     * util-2.2
+     * 删除指定月份的考勤表
+     *
+     * @param month
+     * @return
+     */
+    private void dropSalaryTable(Date month) {
+        String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
+        String tableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+        extendSalaryMapper.dropSalaryTable(tableName);
     }
 
     /**
@@ -303,7 +322,6 @@ public class SalaryServiceImpl implements SalaryService {
 
         // 11.实发工资：【6】-【7】-【8】-【9】-【10】
         double realSalary = payableSalary - personalSocialSecurityAllowance - personalHouseFundAllowance - payTaxes - otherDeduction;
-
 
 
         /**

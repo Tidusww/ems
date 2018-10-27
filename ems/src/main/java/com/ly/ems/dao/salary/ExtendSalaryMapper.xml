@@ -59,9 +59,15 @@
         ${salaryTableName} like ly_salary_template
     </update>
 
+    <update id="dropSalaryTable" parameterType="String">
+        create table
+        -- if not exists
+        ${salaryTableName}
+    </update>
+
     <insert id="batchInsert">
         INSERT INTO ${salaryTableName} (
-        employee_id, enable, attendance_days, job_salary, hot_allowance, social_security_allowance,
+        employee_id, enable, attendance_days, daily_salary, hot_allowance, social_security_allowance,
         house_fund_allowance, other_income, payable_salary, personal_social_security,
         personal_house_fund, other_deduction, pay_taxes, real_salary, company_social_security,
         company_house_fund

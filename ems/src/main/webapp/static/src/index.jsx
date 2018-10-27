@@ -28,6 +28,7 @@ import {DispatchManage} from 'dispatch/DispatchManage.jsx'
 import {AttendanceManage} from 'attendance/AttendanceManage.jsx'
 import {SalaryManage} from 'salary/SalaryManage.jsx'
 
+import {SystemConfig} from 'system/SystemConfig.jsx'
 import {CacheManage} from 'system/CacheManage.jsx'
 
 //菜单组件
@@ -53,15 +54,16 @@ const ProjectManageComponent = ({match}) => (
 const DispatchManageComponent = ({match}) => (
     <DispatchManage />
 );
-
 const AttendanceManageComponent = ({match}) => (
     <AttendanceManage />
 );
-
 const SalaryManageComponent = ({match}) => (
     <SalaryManage />
 );
 
+const SystemConfigComponent = ({match}) => (
+    <SystemConfig />
+);
 const CacheManageComponent = ({match}) => (
     <CacheManage />
 );

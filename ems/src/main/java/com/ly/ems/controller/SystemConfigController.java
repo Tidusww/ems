@@ -1,6 +1,11 @@
 package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
+import com.ly.ems.model.common.PageableResult;
+import com.ly.ems.model.config.SystemConfig;
+import com.ly.ems.model.config.SystemConfigCondition;
+import com.ly.ems.model.config.SystemConfigVo;
+import com.ly.ems.service.config.SystemConfigService;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import org.slf4j.Logger;
@@ -25,6 +30,25 @@ public class SystemConfigController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SystemConfigController.class);
     @Autowired
     private CacheManager ehcacheManager;
+
+    @Autowired
+    private SystemConfigService systemConfigService;
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/config/getConfigs", name = "分页查询系统参数")
+    public AjaxResult getEmployees(SystemConfigCondition conditions) {
+        PageableResult<SystemConfigVo> pageableResult = systemConfigService.getConfigs(conditions);
+        return AjaxResult.success(pageableResult);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/config/saveConfig", method = RequestMethod.POST, name = "更新系统参数")
+    public AjaxResult saveSystemConfig(SystemConfig systemConfig) {
+        systemConfigService.saveSystemConfig(systemConfig);
+        return AjaxResult.success("更新系统参数成功");
+    }
 
 
     @ResponseBody

@@ -257,7 +257,7 @@ class ConditionContainer extends React.Component {
                 placeholder={item.conditionPlaceholder}
                 format={format}
                 onChange={(value, dateString)=>this.onItemChange(item.conditionKey, dateString)}
-                defaultValue={defaultMoment}
+                // defaultValue={defaultMoment}
             />
         ) : (
             <DatePicker
@@ -270,7 +270,7 @@ class ConditionContainer extends React.Component {
                     defaultValue: moment('00:00:00', showTimeFormat)
                 } : false}
                 onChange={(value, dateString)=>this.onItemChange(item.conditionKey, dateString)}
-                defaultValue={defaultMoment}
+                // defaultValue={defaultMoment}
             />
         );
     };

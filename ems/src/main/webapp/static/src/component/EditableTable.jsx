@@ -77,7 +77,7 @@ class EditableTable extends React.Component {
             this.state.tables = nextTableProps;
             return true;
         }
-        
+
         return true;
     }
 
@@ -121,10 +121,17 @@ class EditableTable extends React.Component {
                             </div>
                             <FormItem className="hermes-editable-form-item">
                                 {
-                                    //     col.formItem ?
-                                    //         col.formItem(getFieldProps, col.dataIndex + (index + 1), text)
-                                    //         : <Input {...getFieldProps(col.dataIndex + (index + 1), {initialValue: text})} />
-                                    col.formItem(getFieldDecorator, col.dataIndex + (index + 1), text)
+                                    col.formItem ?
+                                        col.formItem(getFieldDecorator, col.dataIndex + (index + 1), text, record, index, col.dataIndex) :
+                                        (
+                                            getFieldDecorator(id, {
+                                                initialValue: text,
+                                                // rules: rules
+                                            })(
+                                                <Input/>
+                                            )
+                                        )
+
 
                                 }
                             </FormItem>
@@ -188,10 +195,9 @@ class EditableTable extends React.Component {
             // columns.push(operation);
 
 
-
             // 3.1、调整宽度
             const {scroll} = tableProps;
-            if(scroll) {
+            if (scroll) {
                 scroll.x += operation.width
             }
         }
@@ -283,6 +289,7 @@ class EditableTable extends React.Component {
                     savingRow: true
                 });
 
+                // 将内部form数据赋值到dataSource中
                 const dataSource = this.state.tables.dataSource[idx];
                 Object.keys(dataSource).map((dataIndex) => {
                     if (values[dataIndex + (idx + 1)]) {

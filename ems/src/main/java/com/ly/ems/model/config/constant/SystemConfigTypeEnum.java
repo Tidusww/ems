@@ -12,7 +12,6 @@ public enum SystemConfigTypeEnum implements BaseCodeValueEnum {
     OVERTIME_DAY("OVERTIME_DAY", "强制上班日"),
     HOT_ALLOWANCE_BEGIN_MONTH("HOT_ALLOWANCE_BEGIN_MONTH", "高温补贴发放开始月份（含）"),
     HOT_ALLOWANCE_END_MONTH("HOT_ALLOWANCE_END_MONTH", "高温补贴发放结束月份（含）"),
-    BASIC_SALARY("BASIC_SALARY", "基本工资（元/月）"),
     HOT_ALLOWANCE("HOT_ALLOWANCE", "高温补贴（元/日）"),
     SOCIAL_SECURITY_ALLOWANCE("SOCIAL_SECURITY_ALLOWANCE", "社保补贴（元/日）"),
     HOUSE_FUND_ALLOWANCE("HOUSE_FUND_ALLOWANCE", "住房补贴（元/日）");
@@ -35,7 +34,7 @@ public enum SystemConfigTypeEnum implements BaseCodeValueEnum {
         this.code = code;
     }
 
-    @JsonValue
+//    @JsonValue
     @Override
     public String getValue() {
         return this.value;
