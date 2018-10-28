@@ -51,11 +51,14 @@ class EditableTable extends React.Component {
         this.cancelRow = this.cancelRow.bind(this);
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        // console.log("EditableTable WillReceiveProps, %o", nextProps);
+    componentDidMount = () => {
+        console.log("EditableTable DidMount:%o", this.props);
     };
-
+    componentWillReceiveProps = (nextProps) => {
+        console.log("EditableTable WillReceiveProps, %o", nextProps);
+    };
     shouldComponentUpdate(nextProps, nextState) {
+        console.log("EditableTable shouldComponentUpdate, %o, %o", nextProps, nextState);
         const nextTableProps = this.handleTableProps(nextProps);
 
         // 1、编辑、保存状态改变
@@ -80,6 +83,9 @@ class EditableTable extends React.Component {
 
         return true;
     }
+    componentDidUpdate = (prevProps, prevState) => {
+        console.log("EditableTable DidUpdate");
+    };
 
     /**
      * 根据props还原出antd table适用的props
@@ -289,8 +295,9 @@ class EditableTable extends React.Component {
                     savingRow: true
                 });
 
-                // 将内部form数据赋值到dataSource中
-                const dataSource = this.state.tables.dataSource[idx];
+                // 将内部form数据覆盖到指定行的数据源上
+                // 注意这里不能修改到state中的数据源，避免如果form中的数据可能不为String导致的Table错误
+                const dataSource = clonedeep(this.state.tables.dataSource[idx]);
                 Object.keys(dataSource).map((dataIndex) => {
                     if (values[dataIndex + (idx + 1)]) {
                         dataSource[dataIndex] = values[dataIndex + (idx + 1)];
@@ -298,7 +305,7 @@ class EditableTable extends React.Component {
                     return dataSource[dataIndex];
                 });
                 const savePro = async() => {
-                    await this.props.onSaveRow(clonedeep(dataSource), idx);
+                    await this.props.onSaveRow(dataSource, idx);
                 };
 
                 savePro().then(() => {

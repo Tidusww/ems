@@ -94,9 +94,13 @@ public class SystemConfigServiceImpl implements SystemConfigService {
             SystemConfig configCondition = new SystemConfig();
             configCondition.setConfigType(systemConfig.getConfigType());
             SystemConfig oneSystemConfig = this.getOneSystemConfigByConfigType(configCondition);
+            if(oneSystemConfig == null) {
+                // 一般不会出现
+                throw new EMSRuntimeException("当前系统参数不存在，请刷新后再操作");
+            }
             if (!oneSystemConfig.getId().equals(systemConfig.getId())) {
                 // 一般不会出现
-                throw new EMSRuntimeException("当前系统参数已存在，请进行编辑操作");
+                throw new EMSRuntimeException("当前系统参数存在重复数据，请刷新后再操作");
             }
             SystemConfig updateSystemConfig = new SystemConfig();
             // 以防万一，id和type都取从数据库查询出的数据，确保数据唯一
@@ -107,7 +111,40 @@ public class SystemConfigServiceImpl implements SystemConfigService {
             systemConfigMapper.updateByPrimaryKeySelective(updateSystemConfig);
         }
     }
-
+    /**
+     * 保存可以有多条但不能值重复的参数
+     *
+     * @param systemConfig
+     */
+    private void saveNormalConfig(SystemConfig systemConfig) {
+        if (systemConfig.getId() == null) {
+            // 新增
+            SystemConfig configCondition = new SystemConfig();
+            configCondition.setConfigType(systemConfig.getConfigType());
+            configCondition.setConfigValue(systemConfig.getConfigValue());// 类型-值不能重复
+            SystemConfig oneSystemConfig = this.getOneSystemConfigByConfigType(configCondition);
+            if (oneSystemConfig != null) {
+                throw new EMSRuntimeException("当前系统参数值已存在，请输入其他参数值或编辑该参数");
+            }
+            systemConfigMapper.insertSelective(systemConfig);
+        } else {
+            // 修改
+            SystemConfig configCondition = new SystemConfig();
+            configCondition.setConfigType(systemConfig.getConfigType());
+            configCondition.setConfigValue(systemConfig.getConfigValue());// 值不能重复
+            SystemConfig oneSystemConfig = this.getOneSystemConfigByConfigType(configCondition);
+            if (oneSystemConfig != null && !oneSystemConfig.getId().equals(systemConfig.getId())) {
+                // 当前已存在另一条类型-值都一样的记录，不允许
+                throw new EMSRuntimeException("当前系统参数与已有的重复，请确认");
+            }
+            SystemConfig updateSystemConfig = new SystemConfig();
+            updateSystemConfig.setId(systemConfig.getId());
+            updateSystemConfig.setConfigType(systemConfig.getConfigType());
+            updateSystemConfig.setConfigValue(systemConfig.getConfigValue());
+            updateSystemConfig.setConfigDesc(systemConfig.getConfigDesc());
+            systemConfigMapper.updateByPrimaryKeySelective(updateSystemConfig);
+        }
+    }
     private SystemConfig getOneSystemConfigByConfigType(SystemConfig configCondition) {
         // 查询当前是否已有配置
         SystemConfig one = null;
@@ -120,40 +157,6 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         return one;
     }
 
-    /**
-     * 保存可以有多条但不能值重复的参数
-     *
-     * @param systemConfig
-     */
-    private void saveNormalConfig(SystemConfig systemConfig) {
-        if (systemConfig.getId() == null) {
-            // 新增
-            SystemConfig configCondition = new SystemConfig();
-            configCondition.setConfigType(systemConfig.getConfigType());
-            configCondition.setConfigValue(systemConfig.getConfigValue());// 值不能重复
-            SystemConfig oneSystemConfig = this.getOneSystemConfigByConfigType(configCondition);
-            if (oneSystemConfig != null) {
-                throw new EMSRuntimeException("当前系统参数值已存在，请输入其他参数值或编辑该参数");
-            }
-            systemConfigMapper.insertSelective(systemConfig);
-        } else {
-            // 修改
-            SystemConfig configCondition = new SystemConfig();
-            configCondition.setConfigType(systemConfig.getConfigType());
-            configCondition.setConfigValue(systemConfig.getConfigValue());// 值不能重复
-            SystemConfig oneSystemConfig = this.getOneSystemConfigByConfigType(configCondition);
-            if (!oneSystemConfig.getId().equals(systemConfig.getId())) {
-                // 当前已存在另一条类型-值都一样的记录，不允许
-                throw new EMSRuntimeException("当前系统参数与已有的重复，请确认");
-            }
-            SystemConfig updateSystemConfig = new SystemConfig();
-            updateSystemConfig.setId(systemConfig.getId());
-            updateSystemConfig.setConfigType(systemConfig.getConfigType());
-            updateSystemConfig.setConfigValue(systemConfig.getConfigValue());
-            updateSystemConfig.setConfigDesc(systemConfig.getConfigDesc());
-            systemConfigMapper.updateByPrimaryKeySelective(updateSystemConfig);
-        }
-    }
 
     /**
      * 1、是否节假日

@@ -275,10 +275,10 @@ class SalaryManage extends React.Component {
     /**
      * 编辑
      */
-    doUpdate = (changeData, index) => {
+    doUpdate = (changedData, index) => {
         this.setState({isLoading: true});
         const param = Object.assign({},
-            changeData,
+            changedData,
             {month: this.state.dataParam.monthSelect});
         $.ajax({
             url: this.configuration.updateUrl,
@@ -287,9 +287,7 @@ class SalaryManage extends React.Component {
             async: true,
             dataType: "json",
             success: (result) => {
-                console.log("请求成功:" + result);
                 this.setState({isLoading: false});
-
                 if (result.success) {
                     message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG, 3);
                 } else {

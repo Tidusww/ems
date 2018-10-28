@@ -66,6 +66,7 @@ class SystemConfig extends React.Component {
             {
                 title: '参数值', dataIndex: 'configValue', key: 'configValue', width: 200,
                 editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
+                    // 由于在editableTable中编辑时显示的是一个picker，需要转换为moment
                     const configType = record.configType;
                     if (this.configuration.dateTypes.indexOf(configType) != -1) {
                         return (getFieldDecorator(itemKey, {
@@ -376,6 +377,32 @@ class SystemConfig extends React.Component {
         });
     };
 
+
+    doUpdate = (changedData, index) => {
+        this.setState({isLoading: true});
+        const param = Object.assign({}, changedData);
+        $.ajax({
+            url: this.configuration.saveUrl,
+            type: 'POST',
+            data: param,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                this.setState({isLoading: false});
+                if (result.success) {
+                    message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG, 3);
+                } else {
+                    message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
+                }
+                this.doSearch();
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
+    };
+
     handleUpdate = () => {
         if (this.state.selectedRows.length <= 0) {
             message.info(this.configuration.NOT_SELECT_MSG);
@@ -391,13 +418,10 @@ class SystemConfig extends React.Component {
         });
     };
     doSave = () => {
-        this.doUpdate(this.state.modalForm.formData)
-    };
-    doUpdate = (changeData, index) => {
         $.ajax({
             url: this.configuration.saveUrl,
             type: 'POST',
-            data: changeData,
+            data: this.state.modalForm.formData,
             async: true,
             dataType: "json",
             success: (result) => {
@@ -413,7 +437,7 @@ class SystemConfig extends React.Component {
         });
     };
     saveSuccess = (result) => {
-        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
+        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG, 3);
         this.handleCancel(true);
     };
     saveFail = (result) => {

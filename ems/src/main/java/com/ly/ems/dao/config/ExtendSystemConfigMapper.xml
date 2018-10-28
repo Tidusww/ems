@@ -10,7 +10,7 @@
         SELECT * FROM ly_system_config sc
         WHERE 1=1
 
-        <if test="configType != null"> AND sc.config_type like CONCAT('%', #{configType, jdbcType=VARCHAR}, '%') </if>
+        <if test="configType != null"> AND sc.config_type = #{configType, jdbcType=VARCHAR} </if>
 
 
         ORDER BY sc.update_date DESC
