@@ -117,13 +117,16 @@ public class AttendanceServiceImpl implements AttendanceService {
                     Attendance attendance = this.generateAttendanceForEmployeeRamdonly(employeeVo, attendanceMonth);
                     attendanceList.add(attendance);
                 }
-                String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-                extendAttendanceMapper.batchInsert(attendanceTableName, attendanceList);
+
+                if(attendanceList.size() > 0) {
+                    String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
+                    extendAttendanceMapper.batchInsert(attendanceTableName, attendanceList);
+                }
             }
         } catch (Exception e) {
             LOGGER.error("生成考勤记录失败", e);
             this.dropAttendanceTable(attendanceMonth);
-            throw new EMSRuntimeException("创建考勤表失败");
+            throw new EMSRuntimeException("生成考勤记录失败");
         }
 
 

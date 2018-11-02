@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table, message, Modal, Input, InputNumber} from 'antd';
+import { CommonHelper } from 'core/Common.jsx';
 import {ConditionContainer} from 'component/ConditionContainer.jsx';
 import {ModalForm} from 'component/ModalForm.jsx'
 
@@ -253,7 +254,7 @@ class DispatchManage extends React.Component {
                     rowSelection={rowSelection}
                     onRow={(record) => ({
                         onClick: () => {
-                            this.selectRow(record);
+                            CommonHelper.selectRow(this, record);
                         },
                     })}
                 />

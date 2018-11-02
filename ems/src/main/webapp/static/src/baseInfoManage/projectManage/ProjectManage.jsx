@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Table, message, Modal, Input, DatePicker } from 'antd';
+import { CommonHelper } from 'core/Common.jsx';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 import { ModalForm } from 'component/ModalForm.jsx'
 import { ConditionSelect } from 'component/ConditionSelect.jsx'
@@ -292,12 +293,17 @@ class ProjectManage extends React.Component {
     };
 
     handleUpdate = () => {
-        if(this.state.selectedRows.length <= 0){
+        if(this.state.selectedRowKeys.length <= 0){
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
         let formData = {};
-        Object.assign(formData, this.state.selectedRows[0]);
+        const rowData = this.state.dataSource.filter((row)=>{
+            if(row.id == this.state.selectedRowKeys[0]) {
+                return row;
+            }
+        })[0];
+        Object.assign(formData, rowData);
 
         this.setModalFormState({
             modalTitle: "编辑项目",
@@ -425,7 +431,7 @@ class ProjectManage extends React.Component {
                     rowSelection={rowSelection}
                     onRow={(record) => ({
                         onClick: () => {
-                            this.selectRow(record);
+                            CommonHelper.selectRow(this, record);
                         },
                     })}
                 />

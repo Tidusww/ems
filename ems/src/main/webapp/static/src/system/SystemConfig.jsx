@@ -403,20 +403,7 @@ class SystemConfig extends React.Component {
         });
     };
 
-    handleUpdate = () => {
-        if (this.state.selectedRows.length <= 0) {
-            message.info(this.configuration.NOT_SELECT_MSG);
-            return;
-        }
-        let formData = {};
-        Object.assign(formData, this.state.selectedRows[0]);
 
-        CommonHelper.setModalFormState(this, {
-            modalTitle: "编辑项目",
-            formData: formData,
-            modalVisible: true
-        });
-    };
     doSave = () => {
         $.ajax({
             url: this.configuration.saveUrl,
@@ -447,50 +434,6 @@ class SystemConfig extends React.Component {
         });
     };
 
-    handleDisable = () => {
-        if (this.state.selectedRows.length <= 0) {
-            message.info(this.configuration.NOT_SELECT_MSG);
-            return;
-        }
-        confirm({
-            title: '确定作废该项目?',
-            content: '',
-            okText: '确定',
-            okType: 'danger',
-            cancelText: '取消',
-            onOk: this.doDisable,
-            onCancel: () => {
-
-            }
-        });
-    };
-    doDisable = () => {
-        $.ajax({
-            url: this.configuration.disableUrl,
-            type: 'POST',
-            data: {id: this.state.selectedRowKeys[0]},
-            async: true,
-            dataType: "json",
-            success: (result) => {
-                if (result.success) {
-                    this.disableSuccess(result);
-                } else {
-                    this.disableFail(result);
-                }
-            },
-            error: (result) => {
-                this.disableFail(result);
-            }
-        });
-    };
-    disableSuccess = (result) => {
-        message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG);
-        this.state.dataParam.current = 1;
-        this.doSearch();
-    };
-    disableFail = (result) => {
-        message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 3);
-    };
 
     /**
      * helper method
