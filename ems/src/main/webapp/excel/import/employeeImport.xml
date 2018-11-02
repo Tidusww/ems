@@ -12,16 +12,14 @@
                 <mapping row="1" col="3">item.location</mapping>
                 <mapping row="1" col="4">item.address</mapping>
                 <mapping row="1" col="5">item.phone</mapping>
-                <!--<mapping row="1" col="6">item.groupId</mapping>-->
-                <!--<mapping row="1" col="7">item.jobId</mapping>-->
-                <mapping row="1" col="8">item.salaryBank</mapping>
-                <mapping row="1" col="9">item.salaryAccount</mapping>
-                <mapping row="1" col="10">item.socialSecurityNo</mapping>
-                <mapping row="1" col="11">item.personalSsAmount</mapping>
-                <mapping row="1" col="12">item.companySsAmount</mapping>
-                <mapping row="1" col="13">item.houseFundAmount</mapping>
-                <mapping row="1" col="14">item.entryDate</mapping>
-                <mapping row="1" col="15">item.contractNo</mapping>
+                <mapping row="1" col="6">item.salaryBank</mapping>
+                <mapping row="1" col="7">item.salaryAccount</mapping>
+                <mapping row="1" col="8">item.socialSecurityNo</mapping>
+                <mapping row="1" col="9">item.personalSsAmount</mapping>
+                <mapping row="1" col="10">item.companySsAmount</mapping>
+                <mapping row="1" col="11">item.houseFundAmount</mapping>
+                <mapping row="1" col="12">item.entryDate</mapping>
+                <mapping row="1" col="13">item.contractNo</mapping>
             </section>
             <loopbreakcondition>
                 <rowcheck offset="0">
