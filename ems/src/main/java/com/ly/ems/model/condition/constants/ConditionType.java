@@ -22,7 +22,8 @@ public enum ConditionType implements BaseKeyValueEnum {
     SELECT(1, "SELECT"),
     BUTTON(2, "BUTTON"),
     DATE(3, "DATE"),
-    RANGE(4, "RANGE");
+    RANGE(4, "RANGE"),
+    UPLOAD(5, "UPLOAD");
 
     private Integer key;
     private String value;

@@ -45,4 +45,18 @@
     <!--p:configLocation="classpath:ehcache.xml"/>-->
     <!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"-->
     <!--p:cacheManager-ref="ehCacheManagerFactory"/>-->
+
+
+    <!--Apache beanUtil的配置-->
+    <!--<bean id="beanUtilsConfig" class="com.ly.ems.core.bean.BeanUtilsConfig">-->
+        <!--<property name="converters">-->
+            <!--<map>-->
+                <!--<entry value-ref="baseEnumConverter" key="com.ly.ems.model.base.employee.constant.SalaryBankEnum"/>-->
+                <!--<entry value-ref="baseEnumConverter" key="com.ly.ems.model.base.employee.constant.LocationEnum"/>-->
+                <!--<entry value-ref="baseEnumConverter" key="com.ly.ems.model.base.employee.constant.GenderEnum"/>-->
+                <!--<entry value-ref="baseEnumConverter" key="com.ly.ems.model.base.employee.constant.EmployeeStatusEnum"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="baseEnumConverter" class="com.ly.ems.core.bean.BaseEnumConverter" />-->
 </beans>

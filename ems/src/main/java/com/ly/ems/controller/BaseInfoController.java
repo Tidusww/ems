@@ -1,12 +1,20 @@
 package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
+import com.ly.ems.common.utils.file.ExcelUtil;
+import com.ly.ems.common.utils.file.FileUtil;
+import com.ly.ems.core.bean.BaseEnumConverter;
+import com.ly.ems.core.bean.DateStringConverter;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
 import com.ly.ems.model.base.employee.EmployeeVo;
+import com.ly.ems.model.base.employee.constant.EmployeeStatusEnum;
+import com.ly.ems.model.base.employee.constant.GenderEnum;
+import com.ly.ems.model.base.employee.constant.LocationEnum;
+import com.ly.ems.model.base.employee.constant.SalaryBankEnum;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.base.group.GroupConditions;
 import com.ly.ems.model.base.group.GroupVo;
@@ -17,14 +25,20 @@ import com.ly.ems.model.base.project.ProjectConditions;
 import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.base.BaseInfoService;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Created by tidus on 2017/11/18.
@@ -33,7 +47,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/base", name = "基础信息管理")
 public class BaseInfoController extends AbstractBaseController {
 
-    private Logger logger = LoggerFactory.getLogger(BaseInfoController.class);
+    private Logger LOGGER = LoggerFactory.getLogger(BaseInfoController.class);
+
+
+    private static final String EMPLOYEE_IMPORT_TEMPLATE = "员工导入模板.xlsx";
+    private static final String EMPLOYEE_IMPORT_XML = "/excel/import/employeeImport.xml";
+    private static final List<String> EXCEL_SUPPORT_TYPES = Arrays.asList(new String[] { ".xls", ".xlsx"});
+    private static final Integer EXCEL_LIMIT_SIZE = 10 * 1024 * 1024;
 
     @Autowired
     BaseInfoService baseInfoService;
@@ -48,35 +68,60 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/employee/save", method = RequestMethod.POST, name = "保存员工")
     public AjaxResult saveEmployee(Employee employee) {
-        try{
-            baseInfoService.saveEmployee(employee);
-        }catch (Exception ex){
-            logger.error("保存员工失败", ex);
-            return AjaxResult.fail("保存员工失败");
-        }
+        baseInfoService.saveEmployee(employee);
         return AjaxResult.success("保存员工成功");
     }
     @ResponseBody
     @RequestMapping(value = "/employee/disable", method = RequestMethod.POST, name = "作废员工")
     public AjaxResult disableEmployee(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableEmployee(id);
-        }catch (Exception ex){
-            logger.error("作废员工失败", ex);
-            return AjaxResult.fail("作废员工失败");
-        }
+        baseInfoService.disableEmployee(id);
         return AjaxResult.success("作废员工成功");
     }
     @ResponseBody
     @RequestMapping(value = "/employee/delete", method = RequestMethod.POST, name = "删除员工")
     public AjaxResult deleteEmployee(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteEmployee(id);
-        }catch (Exception ex){
-            logger.error("删除员工失败", ex);
-            return AjaxResult.fail("删除员工失败");
-        }
+        baseInfoService.deleteEmployee(id);
         return AjaxResult.success("删除员工成功");
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/employee/import", name = "批量导入员工")
+    public AjaxResult importEmployee(MultipartFile file, HttpServletRequest request) throws Exception {
+//        AdminUser user = adminUserService.getCurrentUser();
+
+        String message = FileUtil.validateFile(file, EXCEL_LIMIT_SIZE, EXCEL_SUPPORT_TYPES);
+        if (StringUtils.isNotBlank(message)) {
+            return AjaxResult.fail(message);
+        }
+
+        // 导入的数据
+        InputStream inputXLS = file.getInputStream();
+
+        // 导入规则
+        String template = request.getSession().getServletContext().getRealPath(EMPLOYEE_IMPORT_XML);
+        InputStream inputXML = new FileInputStream(template);
+
+        // 导入时可能出现的类型装换
+        Map<Class, Converter> converterClassMap = new HashMap<Class, Converter>();
+        BaseEnumConverter baseEnumConverter = new BaseEnumConverter();
+        converterClassMap.put(GenderEnum.class, baseEnumConverter);
+        converterClassMap.put(SalaryBankEnum.class, baseEnumConverter);
+        converterClassMap.put(LocationEnum.class, baseEnumConverter);
+        converterClassMap.put(EmployeeStatusEnum.class, baseEnumConverter);
+        converterClassMap.put(Date.class, new DateStringConverter());
+
+        // 数据 payload
+        Map<String, List<Employee>> beans = new HashMap<String, List<Employee>>();
+        List<Employee> employees = new ArrayList<Employee>();
+        beans.put("itemList", employees);
+
+        if(ExcelUtil.getDataFromExcelFile(inputXLS, inputXML, beans, converterClassMap)) {
+            int insertRow = baseInfoService.batchInsertEmployees(employees);
+            return AjaxResult.success(String.format("批量导入员工成功，共导入%d条数据", insertRow));
+        }else {
+            return AjaxResult.fail("批量导入员工失败：读取数据失败");
+        }
+
     }
 
     /**************************************** 2.班组 ****************************************/
@@ -89,34 +134,19 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/group/save", method = RequestMethod.POST, name = "保存班组")
     public AjaxResult saveGroup(Group group, Integer projectId) {
-        try{
-            baseInfoService.saveGroup(group, projectId);
-        }catch (Exception ex){
-            logger.error("保存班组失败", ex);
-            return AjaxResult.fail("保存班组失败");
-        }
+        baseInfoService.saveGroup(group, projectId);
         return AjaxResult.success("保存班组成功");
     }
     @ResponseBody
     @RequestMapping(value = "/group/disable", method = RequestMethod.POST, name = "作废班组")
     public AjaxResult disableGroup(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableGroup(id);
-        }catch (Exception ex){
-            logger.error("作废班组失败", ex);
-            return AjaxResult.fail("作废班组失败");
-        }
+        baseInfoService.disableGroup(id);
         return AjaxResult.success("作废班组成功");
     }
     @ResponseBody
     @RequestMapping(value = "/group/delete", method = RequestMethod.POST, name = "删除班组")
     public AjaxResult deleteGroup(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteGroup(id);
-        }catch (Exception ex){
-            logger.error("删除班组失败", ex);
-            return AjaxResult.fail("删除班组失败");
-        }
+        baseInfoService.deleteGroup(id);
         return AjaxResult.success("删除班组成功");
     }
 
@@ -133,34 +163,19 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/job/save", method = RequestMethod.POST, name = "保存工种")
     public AjaxResult saveJob(Job job) {
-        try{
-            baseInfoService.saveJob(job);
-        }catch (Exception ex){
-            logger.error("保存工种失败", ex);
-            return AjaxResult.fail("保存工种失败");
-        }
+        baseInfoService.saveJob(job);
         return AjaxResult.success("保存工种成功");
     }
     @ResponseBody
     @RequestMapping(value = "/job/disable", method = RequestMethod.POST, name = "作废工种")
     public AjaxResult disableJob(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableJob(id);
-        }catch (Exception ex){
-            logger.error("作废工种失败", ex);
-            return AjaxResult.fail("作废工种失败");
-        }
+        baseInfoService.disableJob(id);
         return AjaxResult.success("作废工种成功");
     }
     @ResponseBody
     @RequestMapping(value = "/job/delete", method = RequestMethod.POST, name = "删除工种")
     public AjaxResult deleteJob(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteJob(id);
-        }catch (Exception ex){
-            logger.error("删除工种失败", ex);
-            return AjaxResult.fail("删除工种失败");
-        }
+        baseInfoService.deleteJob(id);
         return AjaxResult.success("删除工种成功");
     }
 
@@ -174,34 +189,19 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/company/save", method = RequestMethod.POST, name = "保存单位")
     public AjaxResult saveCompany(Company company) {
-        try{
-            baseInfoService.saveCompany(company);
-        }catch (Exception ex){
-            logger.error("保存单位失败", ex);
-            return AjaxResult.fail("保存单位失败");
-        }
+        baseInfoService.saveCompany(company);
         return AjaxResult.success("保存单位成功");
     }
     @ResponseBody
     @RequestMapping(value = "/company/disable", method = RequestMethod.POST, name = "作废单位")
     public AjaxResult disableCompany(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableCompany(id);
-        }catch (Exception ex){
-            logger.error("作废单位失败", ex);
-            return AjaxResult.fail("作废单位失败");
-        }
+        baseInfoService.disableCompany(id);
         return AjaxResult.success("作废单位成功");
     }
     @ResponseBody
     @RequestMapping(value = "/company/delete", method = RequestMethod.POST, name = "删除单位")
     public AjaxResult deleteCompany(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteCompany(id);
-        }catch (Exception ex){
-            logger.error("删除单位失败", ex);
-            return AjaxResult.fail("删除单位失败");
-        }
+        baseInfoService.deleteCompany(id);
         return AjaxResult.success("删除单位成功");
     }
 
@@ -215,34 +215,19 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/project/save", method = RequestMethod.POST, name = "保存项目")
     public AjaxResult saveProject(Project project) {
-        try{
-            baseInfoService.saveProject(project);
-        }catch (Exception ex){
-            logger.error("保存项目失败", ex);
-            return AjaxResult.fail("保存项目失败");
-        }
+        baseInfoService.saveProject(project);
         return AjaxResult.success("保存项目成功");
     }
     @ResponseBody
     @RequestMapping(value = "/project/disable", method = RequestMethod.POST, name = "作废项目")
     public AjaxResult disableProject(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.disableCompany(id);
-        }catch (Exception ex){
-            logger.error("作废项目失败", ex);
-            return AjaxResult.fail("作废项目失败");
-        }
+        baseInfoService.disableCompany(id);
         return AjaxResult.success("作废项目成功");
     }
     @ResponseBody
     @RequestMapping(value = "/project/delete", method = RequestMethod.POST, name = "删除项目")
     public AjaxResult deleteProject(@RequestParam(name = "id") Integer id) {
-        try{
-            baseInfoService.deleteCompany(id);
-        }catch (Exception ex){
-            logger.error("删除项目失败", ex);
-            return AjaxResult.fail("删除项目失败");
-        }
+        baseInfoService.deleteCompany(id);
         return AjaxResult.success("删除项目成功");
     }
 }

@@ -56,10 +56,11 @@
 }
 .app-avatar {
     margin: 16px;
+    background-color: #87d068;
 }
 .app-avatar-arrow {
     position: relative;
-    bottom: 26px;
+    /*bottom: 26px;*/
 }
 
 .app-footer {

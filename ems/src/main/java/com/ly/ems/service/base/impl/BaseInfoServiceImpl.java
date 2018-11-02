@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -77,7 +78,6 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
         return new PageableResult<EmployeeVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
     }
-
     @Override
     public void saveEmployee(Employee employee) {
         if (employee.getId() == null) {
@@ -87,7 +87,6 @@ public class BaseInfoServiceImpl implements BaseInfoService {
             employeeMapper.updateByPrimaryKeySelective(employee);
         }
     }
-
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void disableEmployee(Integer id) {
@@ -96,10 +95,13 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         employee.setEnable(EnableEnum.DISABLED);
         employeeMapper.updateByPrimaryKeySelective(employee);
     }
-
     @Override
     public void deleteEmployee(Integer id) {
         employeeMapper.deleteByPrimaryKey(id);
+    }
+    @Override
+    public int batchInsertEmployees(List<Employee> employeeList) {
+        return extendEmployeeMapper.batchInsert(employeeList);
     }
 
 

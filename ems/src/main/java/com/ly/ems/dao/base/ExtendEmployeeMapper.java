@@ -1,6 +1,7 @@
 package com.ly.ems.dao.base;
 
 import com.ly.ems.core.mybatis.dao.ConditionMapper;
+import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.employee.EmployeeConditions;
 import com.ly.ems.model.base.employee.EmployeeVo;
 import org.apache.ibatis.annotations.Param;
@@ -14,4 +15,10 @@ import java.util.List;
 public interface ExtendEmployeeMapper extends ConditionMapper<EmployeeVo, EmployeeConditions> {
 
     List<EmployeeVo> getDispatchedEmployeeByMonth(@Param("month")Date month);
+
+    /**
+     * 批量插入员工信息
+     * @param list
+     */
+    int batchInsert(@Param("list") List<Employee> list);
 }

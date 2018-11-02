@@ -7,6 +7,7 @@ import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.core.mybatis.BaseCodeValueEnum;
 import com.ly.ems.core.mybatis.BaseKeyValueEnum;
 import net.sf.jxls.transformer.XLSTransformer;
+import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -48,10 +49,18 @@ public class ExcelUtil implements Serializable {
      * @param beans
      * @return
      */
-    public static boolean getDataFromExcelFile(InputStream excelStream, InputStream xmlStream, Map beans) {
+    public static boolean getDataFromExcelFile(InputStream excelStream, InputStream xmlStream, Map beans, Map<Class, Converter> converterClassMap) {
         XLSReader mainReader = null;
         try {
             mainReader = ReaderBuilder.buildFromXML(xmlStream);
+
+            // 添加外面指定添加的类型转换器
+            if (converterClassMap != null && converterClassMap.size() != 0) {
+                for ( Map.Entry<Class, Converter> entry : converterClassMap.entrySet()) {
+                    mainReader.getConvertUtilsBeanProvider().getConvertUtilsBean().register(entry.getValue(), entry.getKey());
+                }
+            }
+
             XLSReadStatus readStatus = mainReader.read(excelStream, beans);
             return readStatus.isStatusOK();
         } catch (Exception e) {
@@ -160,11 +169,11 @@ public class ExcelUtil implements Serializable {
 
                 // 获取指定的单元格
                 Row row = sheet.getRow(regionRow);
-                if(row == null) {
+                if (row == null) {
                     row = sheet.createRow(regionRow);
                 }
                 Cell cell = row.getCell(regionCol);
-                if(cell == null) {
+                if (cell == null) {
                     cell = row.createCell(regionCol);
                 }
 
@@ -401,10 +410,10 @@ public class ExcelUtil implements Serializable {
                 if (value != null) {
                     if (classType.isAssignableFrom(Date.class)) {
                         valueString = DateFormatUtils.format((Date) value, DateUtil.YYYY_MM_DD);
-                    } else if(classType.isAssignableFrom(BaseKeyValueEnum.class)) {
-                        valueString = ((BaseKeyValueEnum)value).getValue();
-                    } else if(classType.isAssignableFrom(BaseCodeValueEnum.class)) {
-                        valueString = ((BaseCodeValueEnum)value).getValue();
+                    } else if (classType.isAssignableFrom(BaseKeyValueEnum.class)) {
+                        valueString = ((BaseKeyValueEnum) value).getValue();
+                    } else if (classType.isAssignableFrom(BaseCodeValueEnum.class)) {
+                        valueString = ((BaseCodeValueEnum) value).getValue();
                     } else {
                         valueString = String.valueOf(value);
                     }

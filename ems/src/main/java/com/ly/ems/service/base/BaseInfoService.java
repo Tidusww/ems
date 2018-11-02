@@ -16,6 +16,11 @@ import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
 import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
+
+import java.util.List;
+import java.util.Map;
+
+
 /**
  * 基础信息
  * Created by tidus on 2017/11/19.
@@ -31,6 +36,7 @@ public interface BaseInfoService {
     void saveEmployee(Employee employee);
     void disableEmployee(Integer id);
     void deleteEmployee(Integer id);
+    int batchInsertEmployees(List<Employee> employeeList);
 
     /**
      * **************** 2.班组 ****************

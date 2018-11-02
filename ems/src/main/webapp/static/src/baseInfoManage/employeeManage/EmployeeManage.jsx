@@ -108,13 +108,13 @@ class EmployeeManage extends React.Component {
     };
     handleButtonClick = (conditionKey) => {
         switch (conditionKey) {
-            case "query":
+            case 'query':
             {
                 this.state.dataParam.current = 1;
                 this.doSearch();
                 break;
             }
-            case "insert":
+            case 'insert':
             {
                 this.setModalFormState({
                     modalTitle: "新增员工",
@@ -123,16 +123,43 @@ class EmployeeManage extends React.Component {
                 });
                 break;
             }
-            case "update":
+            case 'update':
             {
                 this.handleUpdate();
                 break;
             }
-            case "disable":
+            case 'disable':
             {
                 this.handleDisable();
                 break;
             }
+        }
+    };
+    //导入导出
+    onUploadChange = (conditionKey, info)=>{
+        this.setState({isLoading: false});
+        if (info.file.status === 'done' && info.file.response) {
+            if (info.file.response.success) {
+                const result = info.file.response;
+                if (result.success) {
+                    message.success(result.msg, 3);
+                    this.doSearch();
+                } else {
+                    console.log("请求出错");
+                    message.error(result.msg||this.configuration.OPERATION_FAILED_MSG, 3);
+                }
+            } else {
+                message.error(info.file.response.msg);
+            }
+        } else if (info.file.status === 'error') {
+            message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+        }
+    };
+    uploadExt = {
+        import: {
+            text: "批量导入员工",
+            action: `${_ctx_}/base/employee/import`,
+            accept: "application/msexcel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         }
     };
 
@@ -356,7 +383,7 @@ class EmployeeManage extends React.Component {
                     {required: true, message: '请选择性别'}
                 ],
                 item:(
-                    <ConditionSelect conditionCode="GENDER" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                    <ConditionSelect conditionCode="GENDER" disabled={this.state.modalForm.isSubmitting}/>
                 )
             },
             {
@@ -374,7 +401,7 @@ class EmployeeManage extends React.Component {
                     {required: true, message: '请选择地区'}
                 ],
                 item:(
-                    <ConditionSelect conditionCode="LOCATION" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                    <ConditionSelect conditionCode="LOCATION" disabled={this.state.modalForm.isSubmitting}/>
                 )
             },
             {
@@ -402,7 +429,7 @@ class EmployeeManage extends React.Component {
 
                 ],
                 item:(
-                    <ConditionSelect conditionCode="GROUP_SELECT" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                    <ConditionSelect conditionCode="GROUP_SELECT" disabled={this.state.modalForm.isSubmitting}/>
                 )
             },
             {
@@ -411,7 +438,7 @@ class EmployeeManage extends React.Component {
 
                 ],
                 item:(
-                    <ConditionSelect conditionCode="JOB_SELECT" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                    <ConditionSelect conditionCode="JOB_SELECT" disabled={this.state.modalForm.isSubmitting}/>
                 )
             },
 
@@ -421,7 +448,7 @@ class EmployeeManage extends React.Component {
                     {required: true, message: '请选择工资银行'}
                 ],
                 item:(
-                    <ConditionSelect conditionCode="SALARY_BANK" disabled={this.state.modalForm.isSubmitting}></ConditionSelect>
+                    <ConditionSelect conditionCode="SALARY_BANK" disabled={this.state.modalForm.isSubmitting}/>
                 )
             },
             {
@@ -526,6 +553,8 @@ class EmployeeManage extends React.Component {
                     onItemChange={this.handleItemChange}
                     onItemPressEnter={this.handleItemPressEnter}
                     onButtonClick={this.handleButtonClick}
+                    onUploadChange={this.onUploadChange}
+                    uploadExt={this.uploadExt}
                 />
                 <Table
                     bordered

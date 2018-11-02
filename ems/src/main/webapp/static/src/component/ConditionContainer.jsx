@@ -1,7 +1,7 @@
 import 'css/core.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Spin, Button, Input, Select, DatePicker, message, Collapse} from 'antd';
+import {Spin, Button, Input, Select, DatePicker, message, Collapse, Upload} from 'antd';
 import moment from 'moment';
 import {Constants} from 'core/Const.jsx';
 import {CommonHelper} from 'core/Common.jsx'
@@ -64,9 +64,9 @@ class ConditionContainer extends React.Component {
                 });
             }
         };
-        this.handleDatePickerChange = (date, dateString) => {
-            this.setState({value: dateString});
-        };
+        this.onUploadChange = (conditionKey, info) => {
+            this.props.onUploadChange(conditionKey, info);
+        }
         this.onItemPressEnter = (conditionKey) => {
             this.props.onItemPressEnter(conditionKey);
         };
@@ -192,6 +192,32 @@ class ConditionContainer extends React.Component {
             ) : (null);
         }
 
+    };
+
+    /**
+     * 上传
+     */
+    parseUpload = (item, key) => {
+        // 对于页面中存在多个导入按钮的, 传递以key区分的uploadExt对象进来,
+        const uploadExt = this.props.uploadExt[item.conditionKey] || {};
+        const extMap = CommonHelper.getExtMap(item.conditionExt);
+
+        const text = uploadExt.text || item.conditionName;
+        const action = uploadExt.action || (_ctx_+extMap.action);
+        const accept = uploadExt.accept || extMap.accept;
+        return (
+            <Upload key={item.conditionCode}
+                    name="file"
+                    action={action}
+                    accept={accept}
+                    showUploadList={false}
+                    style={{ width:parseInt(extMap["width"])||180 }}
+                    onChange={(info)=>this.onUploadChange(item.conditionKey, info)}>
+                <Button icon={extMap["icon"]}>
+                    {text}
+                </Button>
+            </Upload>
+        );
     };
 
     /**
@@ -363,6 +389,10 @@ class ConditionContainer extends React.Component {
                                                 case Constants.CONST_CONDITION_TYPE_BUTTON:
                                                 {
                                                     return this.parseButton(item, key, false);
+                                                }
+                                                case Constants.CONST_CONDITION_TYPE_UPLOAD:
+                                                {
+                                                    return this.parseUpload(item, key);
                                                 }
                                             }
                                         })) : (<div></div>)

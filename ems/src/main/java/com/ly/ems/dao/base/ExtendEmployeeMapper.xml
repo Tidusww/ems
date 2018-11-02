@@ -32,4 +32,17 @@
 
     </select>
 
+    <insert id="batchInsert">
+        INSERT INTO ly_employee (
+        employee_name, gender, id_card, address, phone, location, salary_bank,
+        salary_account, social_security_no, personal_ss_amount, company_ss_amount, house_fund_amount,
+        entry_date, contract_no
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.employeeName}, #{item.gender}, #{item.idCard}, #{item.address}, #{item.phone}, #{item.location}, #{item.salaryBank},
+            #{item.salaryAccount}, #{item.socialSecurityNo}, #{item.personalSsAmount}, #{item.companySsAmount}, #{item.houseFundAmount},
+            #{item.entryDate}, #{item.contractNo}
+        </foreach>
+    </insert>
 </mapper>
