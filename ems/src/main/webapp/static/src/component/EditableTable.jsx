@@ -84,6 +84,9 @@ class EditableTable extends React.Component {
         // 4、rowEdit 改变
         if (nextProps.rowEdit != this.props.rowEdit) {
             this.state.tables = nextTableProps;
+            this.state.editRowIndex = -1;
+            this.state.rowEditing = false;
+            this.state.savingRow = false;
             return true;
         }
 
