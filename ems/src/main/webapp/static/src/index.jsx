@@ -14,6 +14,7 @@ import moment from 'moment';
 moment.locale('zh-cn');
 
 //Common
+import { Cache } from 'core/Cache.jsx';
 const {SubMenu} = Menu;
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -79,6 +80,27 @@ class App extends React.Component {
         menus: [],
         routeAndComponent: {}
     };
+    /**
+     * 预加载缓存
+     */
+    preLoadCache = () => {
+        // 预加载ATTENDANCE_STATUS的缓存
+        $.ajax({
+            url: `${_ctx_}/conditionConfig/getSelectItem`,
+            type: 'GET',
+            data: {conditionCode: 'ATTENDANCE_STATUS'},
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                if (result.success) {
+                    Cache['ATTENDANCE_STATUS'] = result.data;
+                }
+            },
+            error: (result) => {
+
+            }
+        });
+    };
     handleRequestMenuList = (result) => {
         if (result.success) {
             //成功获取内容
@@ -88,9 +110,12 @@ class App extends React.Component {
             this.setState({loading: false, failed: true});
         }
     };
-    //生命周期
+    /**
+     * 生命周期
+     */
     componentDidMount = () => {
         this.doGetMenu();
+        this.preLoadCache();
     };
     doGetMenu = () => {
         // console.log("props.menuUrl is " + this.props.menuUrl);
