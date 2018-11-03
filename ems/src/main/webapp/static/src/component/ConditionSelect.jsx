@@ -14,6 +14,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select, Spin, message } from 'antd';
 import { CommonHelper } from 'core/Common.jsx';
+import { Cache } from 'core/Cache.jsx';
 
 const { Option } = Select;
 
@@ -106,6 +107,12 @@ class ConditionSelect extends React.Component {
     getConditionItem = () => {
         this.setState({isLoading: true});
 
+        if(Cache[this.props.conditionCode]) {
+            this.setState({isLoading: false});
+            this.handleConditionItemResult(Cache[this.props.conditionCode]);
+            return;
+        }
+
         $.ajax({
             url: `${_ctx_}/conditionConfig/getSelectItem`,
             type: 'GET',
@@ -114,6 +121,7 @@ class ConditionSelect extends React.Component {
             dataType: "json",
             success: (result) => {
                 if (result.success) {
+                    Cache[this.props.conditionCode] = result.data;
                     this.handleConditionItemResult(result.data)
                 } else {
                     message.error(`加载ConditionSelect失败:${result.msg}`, 3);
