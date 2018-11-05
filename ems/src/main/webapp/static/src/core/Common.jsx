@@ -113,6 +113,12 @@ const CommonHelper = {
             }
         });
     },
+    // 获取某月的最大天数
+    getDaysInOneMonth: (year, month) => {
+        var d= new Date(year, month, 0);
+        return d.getDate();
+    },
+    // 配合Table onRow属性，实现点击即选中/取消该行
     selectRow: (context, record) => {
         const selectedRowKeys = [...context.state.selectedRowKeys];
         if (context.configuration.selectionType === 'radio') {
