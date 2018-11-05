@@ -63,7 +63,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         // 查询数据
         String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName);
+        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString);
         PageInfo<AttendanceVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<AttendanceVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -133,10 +133,24 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
 
-    @Override
-    public void saveAttendances(List<Attendance> attendanceList, String monthString) {
-
-
+    /**
+     * 更新出勤信息
+     * @param attendance
+     */
+    public void updateAttendance(Attendance attendance, Date month) {
+        try {
+            String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
+            String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + monthString;
+//            Attendance updateSalary = this.calculateSalary(attendance, month);
+            int row = extendAttendanceMapper.updateAttendanceById(attendanceTableName, attendance);
+            if (row != 1) {
+                LOGGER.error(String.format("expected update row should be 1 but found %d", row));
+                throw new EMSRuntimeException("更新考勤信息失败");
+            }
+        } catch (Exception e) {
+            LOGGER.error("更新考勤信息失败", e);
+            throw new EMSRuntimeException("更新考勤信息失败");
+        }
     }
 
 

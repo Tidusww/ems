@@ -1,8 +1,10 @@
 package com.ly.ems.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -39,7 +41,8 @@ public class PhpController {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    private static final String USER_AGENT = "user-agent";
+    private static final String USER_AGENT = "User-Agent";
+    private static final String REFERER = "Referer";
 
 
     // actions 数组
@@ -73,7 +76,7 @@ public class PhpController {
             String url = String.format("%s/api/get/sign/id/%s?sign=%s", api, uid, ip);
             Map result = null;
             try {
-                result = objectMapper.readValue(request(url), Map.class);
+                result = objectMapper.readValue(request(url, request), Map.class);
                 if (result != null && result.get("success") != null && (Boolean) result.get("success")) {
                     String time = String.valueOf(new Date().getTime() / 1000);
                     String sign = md5(String.format("%s%s%s%s", uid, time, ip, agent));
@@ -84,23 +87,25 @@ public class PhpController {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return displayError();
             }
         } else if (StringUtils.equals(theAction, "next")) {
-            if (StringUtils.isNotEmpty(s) && StringUtils.isNotEmpty(t) && StringUtils.isNotEmpty(n)) {
-                try {
+            try {
+                if (StringUtils.isNotEmpty(s) && StringUtils.isNotEmpty(t) && StringUtils.isNotEmpty(n)) {
                     if (StringUtils.equals(s, md5(String.format("%s%s%s%s", uid, t, ip, agent)))) {
                         if (new Date().getTime() / 1000 - Long.parseLong(t) < 10) {
                             if (StringUtils.equals(n, "1")) {
                                 String url = String.format("%s/api/get/newcheck?id=%s", api, uid);
-                                String result = request(url);
-                                return result.replaceAll("url", String.format("%s?action=do", selfPath));
+                                String result = request(url, request);
+                                return result.replaceAll("\\[\\[url\\]\\]", String.format("%s?action=do", selfPath));
                             }
                         }
                     }
-                    return displayError();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
                 }
+                return displayError();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return displayError();
             }
         } else if (StringUtils.equals(theAction, "do")) {
             String query = "";
@@ -111,7 +116,7 @@ public class PhpController {
                 // TODO
             }
             String url = String.format("%s/api/get/do/id/%s?ip=%s&%s", api, uid, ip, query);
-            return request(url);
+            return request(url, request);
         } else if (StringUtils.equals(theAction, "update")) {
             // TODO
         } else if (StringUtils.equals(theAction, "debug")) {
@@ -120,7 +125,13 @@ public class PhpController {
             System.out.println("selfPath: " + selfPath);
             System.out.println("api: " + api);
             System.out.println("uid: " + uid);
-            return String.format("Version:%s<br/>", version);
+            return String.format("agent:%s<br/>" +
+                            "ip:%s<br/>" +
+                            "selfPath:%s<br/>" +
+                            "api:%s<br/>" +
+                            "uid:%s<br/>" +
+                            "Version:%s<br/>",
+                    agent, ip, selfPath, api, uid, version);
 
         }
 
@@ -199,7 +210,16 @@ public class PhpController {
      */
     private String getAgent(HttpServletRequest request) {
         return request.getHeader(USER_AGENT);
+    }
 
+    /**
+     * 获取 REFERER
+     *
+     * @param request
+     * @return
+     */
+    private String getReferer(HttpServletRequest request) {
+        return request.getHeader(REFERER);
     }
 
     /**
@@ -208,11 +228,31 @@ public class PhpController {
      * @param url
      * @return
      */
-    private String request(String url) {
+    private String request(String url, HttpServletRequest request) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try {
-            CloseableHttpResponse httpResponse = null;
             HttpGet httpGet = new HttpGet(url);
+
+            // 配置
+            // CURLOPT_FOLLOWLOCATION httpClient默认开启重定向
+            // CURLOPT_RETURNTRANSFER 方法最后已返回utf-8编码的String
+            // CURLOPT_TIMEOUT 超时时间 5秒
+            RequestConfig config = RequestConfig.custom().
+                    setSocketTimeout(5000).
+                    setConnectTimeout(5000).
+                    setConnectionRequestTimeout(1000).
+//                    setRedirectsEnabled(true). // 可去掉
+        build();
+            httpGet.setConfig(config);
+
+            // Header
+            // CURLOPT_USERAGENT
+            // CURLOPT_REFERER
+            httpGet.setHeader(USER_AGENT, getAgent(request));
+            httpGet.setHeader(REFERER, getReferer(request));
+
+            // 请求
+            CloseableHttpResponse httpResponse = null;
             httpResponse = httpClient.execute(httpGet);
             try {
                 HttpEntity httpEntity = httpResponse.getEntity();

@@ -6,6 +6,7 @@ import com.ly.ems.model.attendance.AttendanceVo;
 import com.ly.ems.model.attendance.Attendance;
 import com.ly.ems.model.common.PageableResult;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +17,17 @@ public interface AttendanceService {
 
     PageableResult<AttendanceVo> getAttendances(AttendanceConditions conditions);
 
+    /**
+     * 根据所选月份选择自动随机生成考勤信息
+     * @param conditions
+     */
     void generateAttendances(AttendanceConditions conditions);
 
-    void saveAttendances(List<Attendance> attendanceList, String monthString);
+    /**
+     * 更新考勤信息
+     * @param attendance
+     */
+    void updateAttendance(Attendance attendance, Date month);
+
 
 }

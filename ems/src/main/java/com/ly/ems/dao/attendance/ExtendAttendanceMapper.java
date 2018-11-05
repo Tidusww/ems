@@ -19,7 +19,8 @@ public interface ExtendAttendanceMapper {
      * @return
      */
     List<AttendanceVo> getAttendancesByConditions(@Param("conditions")AttendanceConditions conditions,
-                                                  @Param("attendanceTableName")String attendanceTableName);
+                                                  @Param("attendanceTableName")String attendanceTableName,
+                                                  @Param("month")String monthString);
 
     /**
      * 是否存在指定月份的考勤表
@@ -45,4 +46,13 @@ public interface ExtendAttendanceMapper {
      * @param list
      */
     void batchInsert(@Param("attendanceTableName")String attendanceTableName, @Param("list") List<Attendance> list);
+
+    /**
+     * 更新单条考勤信息，被更新的字段为：
+     *【attendanceStatus1】~【attendanceStatus31】
+     * @param attendanceTableName
+     * @param attendance
+     * @return
+     */
+    int updateAttendanceById(@Param("attendanceTableName")String attendanceTableName, @Param("attendance")Attendance attendance);
 }

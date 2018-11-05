@@ -12,7 +12,7 @@
 
     <select id="getAttendancesByConditions" resultMap="AttendanceVoMap">
         SELECT * FROM (
-            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name
+            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name, '${month}' `month`
             FROM ${attendanceTableName} a
             LEFT JOIN ly_employee e ON a.employee_id = e.id
             LEFT JOIN ly_group g ON e.group_id = g.id
@@ -70,4 +70,37 @@
             ,#{item.enable}
         </foreach>
     </insert>
+
+    <sql id="Update_Column_List">
+        attendance_status_1, attendance_status_2, attendance_status_3, attendance_status_4,
+        attendance_status_5, attendance_status_6, attendance_status_7, attendance_status_8,
+        attendance_status_9, attendance_status_10, attendance_status_11, attendance_status_12,
+        attendance_status_13, attendance_status_14, attendance_status_15, attendance_status_16,
+        attendance_status_17, attendance_status_18, attendance_status_19, attendance_status_20,
+        attendance_status_21, attendance_status_22, attendance_status_23, attendance_status_24,
+        attendance_status_25, attendance_status_26, attendance_status_27, attendance_status_28,
+        attendance_status_29, attendance_status_30, attendance_status_31
+    </sql>
+    <update id="updateAttendanceById">
+        UPDATE ${attendanceTableName}
+        <set >
+            attendance_status_1=#{attendance.attendanceStatus1}, attendance_status_2=#{attendance.attendanceStatus2},
+            attendance_status_3=#{attendance.attendanceStatus3}, attendance_status_4=#{attendance.attendanceStatus4},
+            attendance_status_5=#{attendance.attendanceStatus5}, attendance_status_6=#{attendance.attendanceStatus6},
+            attendance_status_7=#{attendance.attendanceStatus7}, attendance_status_8=#{attendance.attendanceStatus8},
+            attendance_status_9=#{attendance.attendanceStatus9}, attendance_status_10=#{attendance.attendanceStatus10},
+            attendance_status_11=#{attendance.attendanceStatus11}, attendance_status_12=#{attendance.attendanceStatus12},
+            attendance_status_13=#{attendance.attendanceStatus13}, attendance_status_14=#{attendance.attendanceStatus14},
+            attendance_status_15=#{attendance.attendanceStatus15}, attendance_status_16=#{attendance.attendanceStatus16},
+            attendance_status_17=#{attendance.attendanceStatus17}, attendance_status_18=#{attendance.attendanceStatus18},
+            attendance_status_19=#{attendance.attendanceStatus19}, attendance_status_20=#{attendance.attendanceStatus20},
+            attendance_status_21=#{attendance.attendanceStatus21}, attendance_status_22=#{attendance.attendanceStatus22},
+            attendance_status_23=#{attendance.attendanceStatus23}, attendance_status_24=#{attendance.attendanceStatus24},
+            attendance_status_25=#{attendance.attendanceStatus25}, attendance_status_26=#{attendance.attendanceStatus26},
+            attendance_status_27=#{attendance.attendanceStatus27}, attendance_status_28=#{attendance.attendanceStatus28},
+            attendance_status_29=#{attendance.attendanceStatus29}, attendance_status_30=#{attendance.attendanceStatus30},
+            attendance_status_31=#{attendance.attendanceStatus31}
+        </set>
+        WHERE id = #{attendance.id, jdbcType=INTEGER}
+    </update>
 </mapper>

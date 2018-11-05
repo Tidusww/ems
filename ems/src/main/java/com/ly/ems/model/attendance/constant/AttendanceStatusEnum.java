@@ -8,7 +8,7 @@ import com.ly.ems.core.mybatis.BaseKeyValueEnum;
  */
 public enum AttendanceStatusEnum implements BaseKeyValueEnum {
     /**
-     * 性别：
+     * 考勤状态：
      * -1: 休假
      * 0: 缺勤
      * 1: 出勤

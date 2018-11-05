@@ -2,10 +2,12 @@ package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
+import com.ly.ems.model.attendance.Attendance;
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceVo;
 import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.common.PageableResult;
+import com.ly.ems.model.salary.Salary;
 import com.ly.ems.service.attendance.AttendanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 
 /**
  * Created by tidus on 2017/11/18.
@@ -47,4 +51,10 @@ public class AttendanceController extends AbstractBaseController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/update", method = RequestMethod.POST, name = "更新考勤信息")
+    public AjaxResult updateAttendance(Attendance attendance, Date month) {
+        attendanceService.updateAttendance(attendance, month);
+        return AjaxResult.success("更新考勤信息成功");
+    }
 }

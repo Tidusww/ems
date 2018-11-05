@@ -84,9 +84,6 @@
 
 
     <sql id="Update_Column_List">
-        <!--
-          WARNING - @mbg.generated
-        -->
         social_security_allowance, house_fund_allowance,
         hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
         pay_taxes, other_deduction, real_salary, company_social_security, company_house_fund,

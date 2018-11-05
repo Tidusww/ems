@@ -56,7 +56,7 @@ class AttendanceManage extends React.Component {
                 },
                 {title: '工种', dataIndex: 'jobName', key: 'jobName', width: 100
                 },
-                {title: '1号', dataIndex: 'attendanceStatusValue1', key: 'attendanceStatusValue1', width: 120,
+                {title: '1号', dataIndex: 'attendanceStatus1', key: 'attendanceStatus1', width: 120,
                     render: (text, record, index, args) => {
                         const propName = 'attendanceStatus1';
                         const valuePropName = 'attendanceStatusValue1';
@@ -64,13 +64,13 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                     return (getFieldDecorator(itemKey, {
-                        initialValue: text,
+                        initialValue: text.toString(),
                         rules: [{required: true, message: '请选择出勤情况'}]
                     })(
                         <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                     ));
                 }
-                },{title: '2号', dataIndex: 'attendanceStatusValue2', key: 'attendanceStatusValue2', width: 120,
+                },{title: '2号', dataIndex: 'attendanceStatus2', key: 'attendanceStatus2', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus2';
                         const valuePropName = 'attendanceStatusValue2';
@@ -84,7 +84,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '3号', dataIndex: 'attendanceStatusValue3', key: 'attendanceStatusValue3', width: 120,
+                },{title: '3号', dataIndex: 'attendanceStatus3', key: 'attendanceStatus3', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus3';
                         const valuePropName = 'attendanceStatusValue3';
@@ -98,7 +98,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '4号', dataIndex: 'attendanceStatusValue4', key: 'attendanceStatusValue4', width: 120,
+                },{title: '4号', dataIndex: 'attendanceStatus4', key: 'attendanceStatus4', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus4';
                         const valuePropName = 'attendanceStatusValue4';
@@ -112,7 +112,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '5号', dataIndex: 'attendanceStatusValue5', key: 'attendanceStatusValue5', width: 120,
+                },{title: '5号', dataIndex: 'attendanceStatus5', key: 'attendanceStatus5', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus5';
                         const valuePropName = 'attendanceStatusValue5';
@@ -126,7 +126,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '6号', dataIndex: 'attendanceStatusValue6', key: 'attendanceStatusValue6', width: 120,
+                },{title: '6号', dataIndex: 'attendanceStatus6', key: 'attendanceStatus6', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus6';
                         const valuePropName = 'attendanceStatusValue6';
@@ -140,7 +140,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '7号', dataIndex: 'attendanceStatusValue7', key: 'attendanceStatusValue7', width: 120,
+                },{title: '7号', dataIndex: 'attendanceStatus7', key: 'attendanceStatus7', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus7';
                         const valuePropName = 'attendanceStatusValue7';
@@ -154,7 +154,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '8号', dataIndex: 'attendanceStatusValue8', key: 'attendanceStatusValue8', width: 120,
+                },{title: '8号', dataIndex: 'attendanceStatus8', key: 'attendanceStatus8', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus8';
                         const valuePropName = 'attendanceStatusValue8';
@@ -168,7 +168,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '9号', dataIndex: 'attendanceStatusValue9', key: 'attendanceStatusValue9', width: 120,
+                },{title: '9号', dataIndex: 'attendanceStatus9', key: 'attendanceStatus9', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus9';
                         const valuePropName = 'attendanceStatusValue9';
@@ -182,7 +182,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '10号', dataIndex: 'attendanceStatusValue10', key: 'attendanceStatusValue10', width: 120,
+                },{title: '10号', dataIndex: 'attendanceStatus10', key: 'attendanceStatus10', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus10';
                         const valuePropName = 'attendanceStatusValue10';
@@ -196,7 +196,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '11号', dataIndex: 'attendanceStatusValue11', key: 'attendanceStatusValue11', width: 120,
+                },{title: '11号', dataIndex: 'attendanceStatus11', key: 'attendanceStatus11', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus11';
                         const valuePropName = 'attendanceStatusValue11';
@@ -210,7 +210,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '12号', dataIndex: 'attendanceStatusValue12', key: 'attendanceStatusValue12', width: 120,
+                },{title: '12号', dataIndex: 'attendanceStatus12', key: 'attendanceStatus12', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus12';
                         const valuePropName = 'attendanceStatusValue12';
@@ -224,7 +224,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '13号', dataIndex: 'attendanceStatusValue13', key: 'attendanceStatusValue13', width: 120,
+                },{title: '13号', dataIndex: 'attendanceStatus13', key: 'attendanceStatus13', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus13';
                         const valuePropName = 'attendanceStatusValue13';
@@ -238,7 +238,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '14号', dataIndex: 'attendanceStatusValue14', key: 'attendanceStatusValue14', width: 120,
+                },{title: '14号', dataIndex: 'attendanceStatus14', key: 'attendanceStatus14', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus14';
                         const valuePropName = 'attendanceStatusValue14';
@@ -252,7 +252,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '15号', dataIndex: 'attendanceStatusValue15', key: 'attendanceStatusValue15', width: 120,
+                },{title: '15号', dataIndex: 'attendanceStatus15', key: 'attendanceStatus15', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus15';
                         const valuePropName = 'attendanceStatusValue15';
@@ -266,7 +266,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '16号', dataIndex: 'attendanceStatusValue16', key: 'attendanceStatusValue16', width: 120,
+                },{title: '16号', dataIndex: 'attendanceStatus16', key: 'attendanceStatus16', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus16';
                         const valuePropName = 'attendanceStatusValue16';
@@ -280,7 +280,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '17号', dataIndex: 'attendanceStatusValue17', key: 'attendanceStatusValue17', width: 120,
+                },{title: '17号', dataIndex: 'attendanceStatus17', key: 'attendanceStatus17', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus17';
                         const valuePropName = 'attendanceStatusValue17';
@@ -294,7 +294,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '18号', dataIndex: 'attendanceStatusValue18', key: 'attendanceStatusValue18', width: 120,
+                },{title: '18号', dataIndex: 'attendanceStatus18', key: 'attendanceStatus18', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus18';
                         const valuePropName = 'attendanceStatusValue18';
@@ -308,7 +308,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '19号', dataIndex: 'attendanceStatusValue19', key: 'attendanceStatusValue19', width: 120,
+                },{title: '19号', dataIndex: 'attendanceStatus19', key: 'attendanceStatus19', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus19';
                         const valuePropName = 'attendanceStatusValue19';
@@ -322,7 +322,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '20号', dataIndex: 'attendanceStatusValue20', key: 'attendanceStatusValue20', width: 120,
+                },{title: '20号', dataIndex: 'attendanceStatus20', key: 'attendanceStatus20', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus20';
                         const valuePropName = 'attendanceStatusValue20';
@@ -336,7 +336,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '21号', dataIndex: 'attendanceStatusValue21', key: 'attendanceStatusValue21', width: 120,
+                },{title: '21号', dataIndex: 'attendanceStatus21', key: 'attendanceStatus21', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus21';
                         const valuePropName = 'attendanceStatusValue21';
@@ -350,7 +350,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '22号', dataIndex: 'attendanceStatusValue22', key: 'attendanceStatusValue22', width: 120,
+                },{title: '22号', dataIndex: 'attendanceStatus22', key: 'attendanceStatus22', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus22';
                         const valuePropName = 'attendanceStatusValue22';
@@ -364,7 +364,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '23号', dataIndex: 'attendanceStatusValue23', key: 'attendanceStatusValue23', width: 120,
+                },{title: '23号', dataIndex: 'attendanceStatus23', key: 'attendanceStatus23', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus23';
                         const valuePropName = 'attendanceStatusValue23';
@@ -378,7 +378,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '24号', dataIndex: 'attendanceStatusValue24', key: 'attendanceStatusValue24', width: 120,
+                },{title: '24号', dataIndex: 'attendanceStatus24', key: 'attendanceStatus24', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus24';
                         const valuePropName = 'attendanceStatusValue24';
@@ -392,7 +392,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '25号', dataIndex: 'attendanceStatusValue25', key: 'attendanceStatusValue25', width: 120,
+                },{title: '25号', dataIndex: 'attendanceStatus25', key: 'attendanceStatus25', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus25';
                         const valuePropName = 'attendanceStatusValue25';
@@ -406,7 +406,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '26号', dataIndex: 'attendanceStatusValue26', key: 'attendanceStatusValue26', width: 120,
+                },{title: '26号', dataIndex: 'attendanceStatus26', key: 'attendanceStatus26', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus26';
                         const valuePropName = 'attendanceStatusValue26';
@@ -420,7 +420,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '27号', dataIndex: 'attendanceStatusValue27', key: 'attendanceStatusValue27', width: 120,
+                },{title: '27号', dataIndex: 'attendanceStatus27', key: 'attendanceStatus27', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus27';
                         const valuePropName = 'attendanceStatusValue27';
@@ -434,7 +434,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '28号', dataIndex: 'attendanceStatusValue28', key: 'attendanceStatusValue28', width: 120,
+                },{title: '28号', dataIndex: 'attendanceStatus28', key: 'attendanceStatus28', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus28';
                         const valuePropName = 'attendanceStatusValue28';
@@ -448,7 +448,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '29号', dataIndex: 'attendanceStatusValue29', key: 'attendanceStatusValue29', width: 120,
+                },{title: '29号', dataIndex: 'attendanceStatus29', key: 'attendanceStatus29', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus29';
                         const valuePropName = 'attendanceStatusValue29';
@@ -462,7 +462,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '30号', dataIndex: 'attendanceStatusValue30', key: 'attendanceStatusValue30', width: 120,
+                },{title: '30号', dataIndex: 'attendanceStatus30', key: 'attendanceStatus30', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus30';
                         const valuePropName = 'attendanceStatusValue30';
@@ -476,7 +476,7 @@ class AttendanceManage extends React.Component {
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
                         ));
                     }
-                },{title: '31号', dataIndex: 'attendanceStatusValue31', key: 'attendanceStatusValue31', width: 120,
+                },{title: '31号', dataIndex: 'attendanceStatus31', key: 'attendanceStatus31', width: 120,
                     render: (text, record, index) => {
                         const propName = 'attendanceStatus31';
                         const valuePropName = 'attendanceStatusValue31';
@@ -532,6 +532,9 @@ class AttendanceManage extends React.Component {
             // 当月天数，超过天数的列不许操作
             const date = value.split('-');
             const daysInCurrentMonth = CommonHelper.getDaysInOneMonth(date[0], date[1]);
+            this.columns
+
+
             console.log("daysInCurrentMonth:%o", daysInCurrentMonth);
             // 防止误修改
             this.setState({monthChanged: true, daysInCurrentMonth: daysInCurrentMonth});
@@ -653,10 +656,10 @@ class AttendanceManage extends React.Component {
                 this.setState({isLoading: false});
                 if (result.success) {
                     message.success(result.msg || this.configuration.OPERATION_SUCCESS_MSG, 3);
+                    this.doSearch();
                 } else {
                     message.error(result.msg || this.configuration.OPERATION_FAILED_MSG, 5);
                 }
-                this.doSearch();
             },
             error: (result) => {
                 this.setState({isLoading: false});
@@ -745,7 +748,6 @@ class AttendanceManage extends React.Component {
                     rowEdit={this.canEdit()}
                     onSaveRow={(changedData, index) => {
                         console.log('EditableTable 单行编辑，第', index, '行 内容：', changedData);
-
                         this.doUpdate(changedData, index);
                     }}
                 />

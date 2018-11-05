@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by tidus on 2018/9/29.
  */
 public class AttendanceVo extends Attendance {
+    private String month;
     private String employeeName;
     private Integer jobId;
     private String jobName;
@@ -23,7 +24,6 @@ public class AttendanceVo extends Attendance {
     public AttendanceVo() {
         super();
     }
-
     public AttendanceVo(Map<String, Object> attendanceMap) {
         super();
         /**
@@ -283,7 +283,13 @@ public class AttendanceVo extends Attendance {
         return super.getAttendanceStatus31().getValue();
     }
 
+    public String getMonth() {
+        return month;
+    }
 
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
     public String getEmployeeName() {
         return employeeName;
