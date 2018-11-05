@@ -69,28 +69,30 @@ class EditableTable extends React.Component {
             return true;
         }
 
-        // 2、table的loading状态改变
-        if (nextTableProps.loading != this.state.tables.loading) {
+        // 2、table的loading状态、columns、dataSource改变
+        if (nextTableProps.loading != this.state.tables.loading
+            || !isEqual(nextTableProps.columns, this.state.tables.columns)
+            || !isEqual(nextTableProps.dataSource, this.state.tables.dataSource)) {
             this.state.tables = nextTableProps;
-            return true;
-        }
-
-        // 3、dataSource改变
-        if (!isEqual(nextTableProps.dataSource, this.state.tables.dataSource)) {
-            this.state.tables = nextTableProps;
+            this.resetTableState();
             return true;
         }
 
         // 4、rowEdit 改变
         if (nextProps.rowEdit != this.props.rowEdit) {
             this.state.tables = nextTableProps;
-            this.state.editRowIndex = -1;
-            this.state.rowEditing = false;
-            this.state.savingRow = false;
+            this.resetTableState();
             return true;
         }
 
         return true;
+    }
+    resetTableState = () => {
+        this.state.editRowIndex = -1;
+        this.state.rowEditing = false
+        this.state.tableEditing = false;
+        this.state.savingRow = false;
+        this.state.savingTable = false;
     }
     componentDidUpdate = (prevProps, prevState) => {
         console.log("EditableTable DidUpdate");
