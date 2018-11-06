@@ -1,10 +1,12 @@
 package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
+import com.ly.ems.common.utils.file.DownloadUtil;
 import com.ly.ems.common.utils.file.ExcelUtil;
 import com.ly.ems.common.utils.file.FileUtil;
 import com.ly.ems.core.bean.BaseEnumConverter;
 import com.ly.ems.core.bean.DateStringConverter;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.base.company.Company;
 import com.ly.ems.model.base.company.CompanyConditions;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
@@ -49,8 +52,8 @@ public class BaseInfoController extends AbstractBaseController {
 
     private Logger LOGGER = LoggerFactory.getLogger(BaseInfoController.class);
 
-
-    private static final String EMPLOYEE_IMPORT_TEMPLATE = "员工导入模板.xlsx";
+    private static final String EMPLOYEE_IMPORT_TEMPLATE_PATH = "/excel/import/员工导入模板.xlsx";
+    private static final String EMPLOYEE_IMPORT_TEMPLATE_NAME = "员工导入模板.xlsx";
     private static final String EMPLOYEE_IMPORT_XML = "/excel/import/employeeImport.xml";
     private static final List<String> EXCEL_SUPPORT_TYPES = Arrays.asList(new String[] { ".xls", ".xlsx"});
     private static final Integer EXCEL_LIMIT_SIZE = 10 * 1024 * 1024;
@@ -84,9 +87,18 @@ public class BaseInfoController extends AbstractBaseController {
         return AjaxResult.success("删除员工成功");
     }
 
+    @GetMapping(value = "/employee/template")
+    public void downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            DownloadUtil.downloadFile(EMPLOYEE_IMPORT_TEMPLATE_PATH, EMPLOYEE_IMPORT_TEMPLATE_NAME);
+        } catch (Exception e) {
+            LOGGER.error("下载模板出错", e);
+            throw new EMSRuntimeException("下载模板出错");
+        }
+    }
     @ResponseBody
     @PostMapping(value = "/employee/import", name = "批量导入员工")
-    public AjaxResult importEmployee(MultipartFile file, HttpServletRequest request) throws Exception {
+    public AjaxResult importEmployee(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        AdminUser user = adminUserService.getCurrentUser();
 
         String message = FileUtil.validateFile(file, EXCEL_LIMIT_SIZE, EXCEL_SUPPORT_TYPES);

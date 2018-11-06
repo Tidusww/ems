@@ -134,6 +134,11 @@ class EmployeeManage extends React.Component {
                 this.handleDisable();
                 break;
             }
+            case 'download':
+            {
+                this.download();
+                break;
+            }
         }
     };
     //导入导出
@@ -162,6 +167,9 @@ class EmployeeManage extends React.Component {
             action: `${_ctx_}/base/employee/import`,
             accept: "application/msexcel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         }
+    };
+    download=()=>{
+        this.refs.ifile.src=`${_ctx_}/base/employee/template`;
     };
 
     /**
@@ -582,6 +590,7 @@ class EmployeeManage extends React.Component {
                     handleCancel={()=>{this.handleCancel(false)}}
                 >
                 </ModalForm>
+                <iframe ref="ifile" style={{display:'none'}}></iframe>
             </div>
         );
     }
