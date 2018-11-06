@@ -69,9 +69,16 @@ class EditableTable extends React.Component {
             return true;
         }
 
-        // 2、table的loading状态、columns、dataSource改变
+        // TODO 假如columns改变的时候，rowEdit没有跟着改变，才需要加上下面这段逻辑，现在不加是暂时没有这种情况出现，所以暂时注释了
+        // // 2、columns比较特殊，只有当每列的editable属性存在不一样时，需要更新table的props，改变column的render函数（因为编辑时wrapForm会修改columns中字段的值，所以不能单纯比较是否相等）
+        // if (this.existNotEqualEditableColumn(nextTableProps.columns)) {
+        //     this.state.tables = nextTableProps; // TODO 关键，更新table的props
+        //     // this.resetTableState();
+        //     return true;
+        // }
+
+        // 3、table的loading状态、dataSource改变
         if (nextTableProps.loading != this.state.tables.loading
-            || !isEqual(nextTableProps.columns, this.state.tables.columns)
             || !isEqual(nextTableProps.dataSource, this.state.tables.dataSource)) {
             this.state.tables = nextTableProps;
             this.resetTableState();
@@ -93,6 +100,17 @@ class EditableTable extends React.Component {
         this.state.tableEditing = false;
         this.state.savingRow = false;
         this.state.savingTable = false;
+    }
+    existNotEqualEditableColumn = (nextColumns) => {
+        let exist = false;
+        nextColumns.forEach((nextColumn) => {
+            this.state.tables.columns.forEach((column) => {
+                if(nextColumn.dataIndex == column.dataIndex && nextColumn.editable != column.editable) {
+                    exist = true;
+                }
+            })
+        });
+        return exist;
     }
     componentDidUpdate = (prevProps, prevState) => {
         console.log("EditableTable DidUpdate");
