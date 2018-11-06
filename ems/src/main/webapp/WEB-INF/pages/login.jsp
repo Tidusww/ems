@@ -19,8 +19,8 @@
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
 
-    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css"/>
-    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/login.css" />
+    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css?v=${staticResourceVersion}"/>
+    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/login.css?v=${staticResourceVersion}" />
 
     <script type="text/javascript" src="${ctx}/lib/jquery/2.1.1/jquery.min.js"></script>
 
@@ -29,8 +29,8 @@
 
 
     <div id="loginContainer"></div>
-    <script type="text/javascript" src="${ctx}/static/dist/common.js"></script>
-    <script type="text/javascript" src="${ctx}/static/dist/login.js"></script>
+    <script type="text/javascript" src="${ctx}/static/dist/common.js?v=${staticResourceVersion}"></script>
+    <script type="text/javascript" src="${ctx}/static/dist/login.js?v=${staticResourceVersion}"></script>
 
 </body>
 </html>

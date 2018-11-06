@@ -23,16 +23,10 @@
     <script type="text/javascript" src="${ctx}/lib/jquery/2.1.1/jquery.js"></script>
     <script type="text/javascript" src="${ctx}/lib/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="${ctx}/lib/ueditor/ueditor.all.min.js"></script>
-    
-    <%--bootstrap--%>
-    <%--<link type="text/css" rel="stylesheet" href="${ctx}/lib/bootstrap/3.3.7/css/bootstrap.css"/>--%>
-    <%--<script type="text/javascript" src="${ctx}/lib/bootstrap/3.3.7/js/bootstrap.js"></script>--%>
 
-
-    <%--PRODUCT--%>
     <%--common--%>
-    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css"/>
-    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/index.css"/>
+    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/common.css?v=${staticResourceVersion}"/>
+    <link type="text/css" rel="stylesheet" href="${ctx}/static/dist/index.css?v=${staticResourceVersion}"/>
 
     <script type="text/javascript">
         var displayName = "${displayName}";
@@ -46,8 +40,8 @@
 
 
 <%--PRODUCT--%>
-<script type="text/javascript" src="${ctx}/static/dist/common.js"></script>
-<script type="text/javascript" src="${ctx}/static/dist/index.js"></script>
+<script type="text/javascript" src="${ctx}/static/dist/common.js?v=${staticResourceVersion}"></script>
+<script type="text/javascript" src="${ctx}/static/dist/index.js?v=${staticResourceVersion}"></script>
 
 
 </body>
