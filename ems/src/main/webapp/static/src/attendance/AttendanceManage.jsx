@@ -24,7 +24,7 @@ class AttendanceManage extends React.Component {
             total: 0,
             dataParam: {
                 current: 1,
-                pageSize: 50
+                pageSize: 5
             }
         };
         this.configuration = {
@@ -721,7 +721,7 @@ class AttendanceManage extends React.Component {
             onChange: (current, pageSize) => this.onPageChange(current, pageSize),
             showTotal: total => `共 ${this.state.total} 条记录`,
             showSizeChanger: true,
-            pageSizeOptions: ['50','100','200','500'],
+            pageSizeOptions: ['5','10'],
             onShowSizeChange: (current, pageSize) => this.onPageChange(current, pageSize)
         };
 

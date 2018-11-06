@@ -40,9 +40,9 @@ class ConditionSelect extends React.Component {
      * 生命周期
      */
     componentDidMount = () => {
-        console.log("ConditionSelect DidMount:%o", this.props);
+        // console.log("ConditionSelect DidMount:%o", this.props);
         if(!this.state.conditionItem){
-            console.log("ConditionSelect LoadData");
+            // console.log("ConditionSelect LoadData");
             this.getConditionItem();
         }
     };
@@ -70,7 +70,7 @@ class ConditionSelect extends React.Component {
 
     };
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("ConditionSelect DidUpdate");
+        // console.log("ConditionSelect DidUpdate");
     };
     componentWillUnmount = () => {
         console.log("ConditionSelect willUnmount");
