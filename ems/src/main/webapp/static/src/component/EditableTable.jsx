@@ -39,7 +39,7 @@ class EditableTable extends React.Component {
             rowEditing: false,
             savingTable: false,
             savingRow: false,
-            tables: this.handleTableProps(this.props),
+            tables: {},
             editRowIndex: -1
         };
 
@@ -49,17 +49,22 @@ class EditableTable extends React.Component {
         this.editRow = this.editRow.bind(this);
         this.saveRow = this.saveRow.bind(this);
         this.cancelRow = this.cancelRow.bind(this);
+        this.handleTableProps = this.handleTableProps.bind(this);
+
+        this.tables = this.handleTableProps(this.props, this.state)
     }
 
     componentDidMount = () => {
         console.log("EditableTable DidMount:%o", this.props);
     };
     componentWillReceiveProps = (nextProps) => {
-        console.log("EditableTable WillReceiveProps, %o", nextProps);
+        // console.log("EditableTable WillReceiveProps, %o", nextProps);
     };
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log("EditableTable shouldComponentUpdate, %o, %o", nextProps, nextState);
-        const nextTableProps = this.handleTableProps(nextProps);
+
+    shouldComponentUpdate = (nextProps, nextState) => {
+        // console.log("EditableTable shouldComponentUpdate, %o, %o", nextProps, nextState);
+
+        const nextTableProps = this.handleTableProps(nextProps, nextState);
 
         // 1、编辑、保存状态改变
         if (nextState.tableEditing != this.state.tableEditing
@@ -96,7 +101,7 @@ class EditableTable extends React.Component {
     }
     resetTableState = () => {
         this.state.editRowIndex = -1;
-        this.state.rowEditing = false
+        this.state.rowEditing = false;
         this.state.tableEditing = false;
         this.state.savingRow = false;
         this.state.savingTable = false;
@@ -105,7 +110,7 @@ class EditableTable extends React.Component {
         let exist = false;
         nextColumns.forEach((nextColumn) => {
             this.state.tables.columns.forEach((column) => {
-                if(nextColumn.dataIndex == column.dataIndex && nextColumn.editable != column.editable) {
+                if (nextColumn.dataIndex == column.dataIndex && nextColumn.editable != column.editable) {
                     exist = true;
                 }
             })
@@ -118,9 +123,10 @@ class EditableTable extends React.Component {
 
     /**
      * 根据props还原出antd table适用的props
+     * 其中columns受当前（或下一次）state（中的editRowIndex）的影响，所以需要传入state
      * @param props
      */
-    handleTableProps(props) {
+    handleTableProps = (props, state) => {
         const {getFieldProps, getFieldDecorator} = props.form;
         const {rowEdit} = props;
 
@@ -144,12 +150,19 @@ class EditableTable extends React.Component {
 
         // 2、处理表字段
         const {columns} = tableProps;
-        columns.map((col) => {
+        columns.forEach((col) => {
             // 2.1、使用 getFieldDecorator 包装字段
             if (col.editable) {
                 const originRender = col.render;
+                const innerState = state;
                 col.render = (text, record, index) => {
-                    return (
+                    return index !== innerState.editRowIndex ? (
+                        <div className="hermes-editable-td">
+                            <div className="hermes-editable-origin">
+                                { originRender ? originRender(text, record, index) : text }
+                            </div>
+                        </div>
+                    ) : (
                         <div className="hermes-editable-td">
                             <div className="hermes-editable-origin">
                                 { originRender ? originRender(text, record, index) : text }
@@ -200,7 +213,7 @@ class EditableTable extends React.Component {
                 width: 120,
                 render: (text, record, index) => {
                     const originRender = rowEdit.render;
-                    const {rowEditing, tableEditing, savingRow, editRowIndex} = this.state;
+                    const {rowEditing, tableEditing, savingRow, editRowIndex} = state;
                     const edit = (
                         <div className="edit-row-wrapper">
                             <span className={`edit-row-btn${tableEditing ? ' disabled' : ''}`}
@@ -241,14 +254,14 @@ class EditableTable extends React.Component {
         return tableProps;
     }
 
-    editTable() {
+    editTable = () => {
         if (this.state.tableEditing) return;
         this.setState({
             tableEditing: true
         });
     }
 
-    saveTable(e) {
+    saveTable = (e) => {
         e.preventDefault();
         if (this.state.savingTable) return;
         this.props.form.validateFields((errors, values) => {
@@ -291,7 +304,7 @@ class EditableTable extends React.Component {
         });
     }
 
-    cancelTable() {
+    cancelTable = () => {
         if (!this.state.tableEditing) return;
         this.setState({
             tableEditing: false
@@ -301,7 +314,7 @@ class EditableTable extends React.Component {
         }
     }
 
-    editRow(idx) {
+    editRow = (idx) => {
         if (this.state.tableEditing) return;
 
         let rowClassName = (record, index) => {
@@ -315,7 +328,7 @@ class EditableTable extends React.Component {
         });
     }
 
-    saveRow(idx, e) {
+    saveRow = (idx, e) => {
         e.preventDefault();
         if (this.state.savingRow) return;
         this.props.form.validateFields((errors, values) => {
@@ -359,7 +372,7 @@ class EditableTable extends React.Component {
         });
     }
 
-    cancelRow() {
+    cancelRow = () => {
         if (!this.state.rowEditing) return;
         let rowClassName = (record, index) => {
             let temp = this.originRowClassName ? `${this.originRowClassName(record, index)} ` : '';
@@ -375,16 +388,7 @@ class EditableTable extends React.Component {
         }
     }
 
-    findParent(ele, parentTag) {
-        let parentNode = ele.parentNode;
-        while (parentNode) {
-            if (parentNode.tagName.toLowerCase() === parentTag) break;
-            parentNode = parentNode.parentNode;
-        }
-        return parentNode;
-    }
-
-    render() {
+    render = () => {
         const {className} = this.props;
         const {tableEditing, rowEditing, saving, tables} = this.state;
 
