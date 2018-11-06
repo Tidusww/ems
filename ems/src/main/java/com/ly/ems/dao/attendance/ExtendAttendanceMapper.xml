@@ -58,8 +58,8 @@
             attendance_status_29, attendance_status_30, attendance_status_31, enable
         )
         values
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-            #{item.employeeId},#{item.attendanceStatus1},#{item.attendanceStatus2},#{item.attendanceStatus3}
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.employeeId},#{item.attendanceStatus1},#{item.attendanceStatus2},#{item.attendanceStatus3}
             ,#{item.attendanceStatus4},#{item.attendanceStatus5},#{item.attendanceStatus6},#{item.attendanceStatus7}
             ,#{item.attendanceStatus8},#{item.attendanceStatus9},#{item.attendanceStatus10},#{item.attendanceStatus11}
             ,#{item.attendanceStatus12},#{item.attendanceStatus13},#{item.attendanceStatus14},#{item.attendanceStatus15}
@@ -67,7 +67,7 @@
             ,#{item.attendanceStatus20},#{item.attendanceStatus21},#{item.attendanceStatus22},#{item.attendanceStatus23}
             ,#{item.attendanceStatus24},#{item.attendanceStatus25},#{item.attendanceStatus26},#{item.attendanceStatus27}
             ,#{item.attendanceStatus28},#{item.attendanceStatus29},#{item.attendanceStatus30},#{item.attendanceStatus31}
-            ,#{item.enable}
+            ,#{item.enable} )
         </foreach>
     </insert>
 

@@ -73,12 +73,12 @@
         company_house_fund
         )
         values
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-            #{item.employeeId}, #{item.enable}, #{item.attendanceDays},
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.employeeId}, #{item.enable}, #{item.attendanceDays},
             #{item.dailySalary}, #{item.hotAllowance}, #{item.socialSecurityAllowance},
             #{item.houseFundAllowance}, #{item.otherIncome}, #{item.payableSalary}, #{item.personalSocialSecurity},
             #{item.personalHouseFund}, #{item.otherDeduction}, #{item.payTaxes}, #{item.realSalary},
-            #{item.companySocialSecurity},#{item.companyHouseFund}
+            #{item.companySocialSecurity},#{item.companyHouseFund} )
         </foreach>
     </insert>
 
