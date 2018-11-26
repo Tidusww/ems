@@ -311,7 +311,7 @@ class JobManage extends React.Component {
     };
 
     handleDisable = () => {
-        if(this.state.selectedRows.length <= 0){
+        if(this.state.selectedRowKeys.length <= 0){
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }

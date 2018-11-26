@@ -136,7 +136,6 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     @Override
     public void disableGroup(Integer id) {
-
         Group group = new Group();
         group.setId(id);
         group.setEnable(EnableEnum.DISABLED);
@@ -215,6 +214,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     @Override
     public void disableCompany(Integer id) {
         Company company = new Company();
+        company.setId(id);
         company.setEnable(EnableEnum.DISABLED);
         companyMapper.updateByPrimaryKeySelective(company);
     }

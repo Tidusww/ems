@@ -233,13 +233,13 @@ public class BaseInfoController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/project/disable", method = RequestMethod.POST, name = "作废项目")
     public AjaxResult disableProject(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableCompany(id);
+        baseInfoService.disableProject(id);
         return AjaxResult.success("作废项目成功");
     }
     @ResponseBody
     @RequestMapping(value = "/project/delete", method = RequestMethod.POST, name = "删除项目")
     public AjaxResult deleteProject(@RequestParam(name = "id") Integer id) {
-        baseInfoService.deleteCompany(id);
+        baseInfoService.disableProject(id);
         return AjaxResult.success("删除项目成功");
     }
 }

@@ -33,7 +33,7 @@ class GroupManage extends React.Component {
             employeeTable: {
                 title: '选择员工',
                 visible: false,
-                conditionCode: `EMPLOYEE_MANAGE`,
+                conditionCode: `EMPLOYEE_SELECT`,
                 searchUrl: `${_ctx_}/base/employee/getEmployees`,
                 keyId: "id",
                 multiSelect: false
@@ -41,7 +41,7 @@ class GroupManage extends React.Component {
             projectTable: {
                 title: '选择项目',
                 visible: false,
-                conditionCode: `PROJECT_MANAGE`,
+                conditionCode: `PROJECT_SELECT`,
                 searchUrl: `${_ctx_}/base/project/getProjects`,
                 keyId: "id",
                 multiSelect: false
@@ -271,7 +271,8 @@ class GroupManage extends React.Component {
      * 设置班组长
      */
     employeeSelect = () => {
-        if (this.state.selectedRows.length <= 0) {
+        console.log("%o", this.state.selectedRowKeys);
+        if(this.state.selectedRowKeys.length <= 0){
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
@@ -280,7 +281,11 @@ class GroupManage extends React.Component {
         });
     };
     handleEmployeeTableConfirm = (selectedRowKeys, selectedRows) => {
-        const selectedGroup = this.state.selectedRows[0];
+        const selectedGroup = this.state.dataSource.filter((row)=>{
+            if(row.id == this.state.selectedRowKeys[0]) {
+                return row;
+            }
+        })[0];
         selectedGroup.employeeId = selectedRowKeys[0];
 
         $.ajax({
@@ -340,7 +345,7 @@ class GroupManage extends React.Component {
      * 派遣项目
      */
     dispatchProject = () => {
-        if (this.state.selectedRows.length <= 0) {
+        if(this.state.selectedRowKeys.length <= 0){
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
@@ -349,7 +354,11 @@ class GroupManage extends React.Component {
         });
     };
     handleProjectTableConfirm = (selectedRowKeys, selectedRows) => {
-        const selectedGroup = this.state.selectedRows[0];
+        const selectedGroup = this.state.dataSource.filter((row)=>{
+            if(row.id == this.state.selectedRowKeys[0]) {
+                return row;
+            }
+        })[0];
         selectedGroup.projectId = selectedRowKeys[0];
 
         $.ajax({
@@ -468,7 +477,7 @@ class GroupManage extends React.Component {
     };
 
     handleDisable = () => {
-        if (this.state.selectedRows.length <= 0) {
+        if(this.state.selectedRowKeys.length <= 0){
             message.info(this.configuration.NOT_SELECT_MSG);
             return;
         }
