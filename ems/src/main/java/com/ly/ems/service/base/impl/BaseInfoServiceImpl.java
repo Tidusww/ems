@@ -1,6 +1,8 @@
 package com.ly.ems.service.base.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.ly.ems.core.exception.EMSBusinessException;
+import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.base.*;
 import com.ly.ems.dao.base.mapper.*;
 import com.ly.ems.model.base.company.Company;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +70,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     /**
      * 员工
+     *
      * @param conditions
      * @return
      */
@@ -78,15 +82,53 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
         return new PageableResult<EmployeeVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
     }
+
     @Override
     public void saveEmployee(Employee employee) {
+        // 先判断id是否重复
+        if (this.checkEmployeeIdCardExist(employee.getId(), employee.getIdCard())) {
+            throw new EMSRuntimeException("身份证已存在，请确认");
+        }
+
         if (employee.getId() == null) {
             employee.setEnable(EnableEnum.ENABLED);
+            employee.setCreateDate(new Date());
             employeeMapper.insertSelective(employee);
         } else {
             employeeMapper.updateByPrimaryKeySelective(employee);
         }
     }
+
+    /**
+     * 判断idCard是否已存在
+     *
+     * @param id
+     * @param idCard
+     */
+    private boolean checkEmployeeIdCardExist(Integer id, String idCard) {
+        Employee employee = new Employee();
+        employee.setIdCard(idCard);
+        List<Employee> employeeList = employeeMapper.select(employee);
+        // 不存在记录
+        if (employeeList == null || employeeList.size() <= 0) {
+            return false;
+        }
+
+        // 新增的情况
+        if (id == null || id == 0 || id == -1) {
+            return true;
+        }
+
+        // 修改的情况，除了自己以外存在才算重复
+        for (Employee emp : employeeList) {
+            if (!id.equals(emp.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void disableEmployee(Integer id) {
@@ -95,18 +137,43 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         employee.setEnable(EnableEnum.DISABLED);
         employeeMapper.updateByPrimaryKeySelective(employee);
     }
+
     @Override
     public void deleteEmployee(Integer id) {
         employeeMapper.deleteByPrimaryKey(id);
     }
+
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public int batchInsertEmployees(List<Employee> employeeList) {
+        // 与库中数据对比身份证号
+        for (Employee employee : employeeList) {
+            if (this.checkEmployeeIdCardExist(employee.getId(), employee.getIdCard())) {
+                throw new EMSRuntimeException(String.format("导入员工失败，身份证号【%s】已存在员工库中", employee.getIdCard()));
+            }
+        }
+
+        // 导入列表中查询
+        for (int i = 0; i < employeeList.size(); i++) {
+            for (int j = i + 1; j < employeeList.size(); j++) {
+                if (employeeList.get(i).getIdCard().equals(employeeList.get(j).getIdCard())) {
+
+                    throw new EMSRuntimeException(String.format("导入员工失败，导入列表中存在重复的身份证号【%s】", employeeList.get(i).getIdCard()));
+                }
+            }
+        }
+
+        for (Employee employee : employeeList) {
+            employee.setCreateDate(new Date());
+        }
+
         return extendEmployeeMapper.batchInsert(employeeList);
     }
 
 
     /**
      * 班组
+     *
      * @param conditions
      * @return
      */
@@ -129,7 +196,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
             groupMapper.updateByPrimaryKeySelective(group);
         }
 
-        if(projectId != null) {
+        if (projectId != null) {
             dispatchService.dispatchGroupToProjectByProjectId(group, projectId);
         }
     }
@@ -148,15 +215,15 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     }
 
 
-
     /**
      * 工种
+     *
      * @param conditions
      * @return
      */
     @Override
     public PageableResult<Job> getJobsByConditions(JobConditions conditions) {
-    this.currentUser();
+        this.currentUser();
         List<Job> resultList = extendJobMapper.selectByConditions(conditions);
         PageInfo<Job> pageInfo = new PageInfo(resultList);
 
@@ -190,6 +257,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     /**
      * **************** 单位 ****************
+     *
      * @param conditions
      * @return
      */
@@ -202,6 +270,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         return new PageableResult<Company>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
+
     @Override
     public void saveCompany(Company company) {
         if (company.getId() == null) {
@@ -211,6 +280,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
             companyMapper.updateByPrimaryKeySelective(company);
         }
     }
+
     @Override
     public void disableCompany(Integer id) {
         Company company = new Company();
@@ -218,6 +288,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         company.setEnable(EnableEnum.DISABLED);
         companyMapper.updateByPrimaryKeySelective(company);
     }
+
     @Override
     public void deleteCompany(Integer id) {
         companyMapper.deleteByPrimaryKey(id);
@@ -225,6 +296,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
 
     /**
      * **************** 项目 ****************
+     *
      * @param conditions
      * @return
      */
@@ -237,6 +309,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         return new PageableResult<ProjectVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
 
     }
+
     @Override
     public void saveProject(Project project) {
         if (project.getId() == null) {
@@ -246,6 +319,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
             projectMapper.updateByPrimaryKeySelective(project);
         }
     }
+
     @Override
     public void disableProject(Integer id) {
         Project project = new Project();
@@ -253,6 +327,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
         project.setEnable(EnableEnum.DISABLED);
         projectMapper.updateByPrimaryKeySelective(project);
     }
+
     @Override
     public void deleteProject(Integer id) {
         projectMapper.deleteByPrimaryKey(id);

@@ -14,6 +14,11 @@ import java.util.List;
  */
 public interface ExtendEmployeeMapper extends ConditionMapper<EmployeeVo, EmployeeConditions> {
 
+    /**
+     * 根据月份查询存在派遣关系的员工
+     * @param month
+     * @return
+     */
     List<EmployeeVo> getDispatchedEmployeeByMonth(@Param("month")Date month);
 
     /**
