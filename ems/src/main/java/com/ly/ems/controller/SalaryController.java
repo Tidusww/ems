@@ -42,8 +42,11 @@ import java.util.Map;
 public class SalaryController {
     private Logger LOGGER = LoggerFactory.getLogger(SalaryController.class);
 
-    private static final String SALARY_EXPORT_PREFIX = "salary";
-    private static final String SALARY_EXPORT_TEMPLATE_PATH = "/excel/template/工资模板表.xlsx";
+    private static final String SALARY_DETAIL_EXPORT_PREFIX = "salary_detail";
+    private static final String SALARY_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资明细模板表.xlsx";
+
+    private static final String SALARY_SUMMARY_EXPORT_PREFIX = "salary_summary";
+    private static final String SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资汇总模板表.xlsx";
 
     @Autowired
     SalaryService salaryService;
@@ -75,16 +78,23 @@ public class SalaryController {
         return AjaxResult.success("更新工资信息成功");
     }
 
+    /**
+     * 1、导出工资明细表
+     * @param request
+     * @param response
+     * @param condition
+     * @return
+     */
     @ResponseBody
-    @RequestMapping(value = "/exportSalaries", name = "导出工资信息")
-    public AjaxResult exportSalaries(HttpServletRequest request, HttpServletResponse response, SalaryCondition condition) {
+    @RequestMapping(value = "/exportSalaryDetail", name = "导出工资明细表")
+    public AjaxResult exportSalaryDetail(HttpServletRequest request, HttpServletResponse response, SalaryCondition condition) {
         // 不分页
         condition.setCurrent(0);
         condition.setPageSize(0);
         PageableResult<SalaryVo> pageableResult = salaryService.getSalaries(condition);
         List<SalaryVo> salaryVoList = pageableResult.getDataSource();
 
-        String excelName = String.format("工资表%s%s",
+        String excelName = String.format("工资明细表%s%s",
                 DateFormatUtils.format(condition.getMonth(), DateUtil.YYYYMM),
                 FileUtil.FILE_SUFFIX_XLSX);
 
@@ -97,12 +107,52 @@ public class SalaryController {
         // jxls 导出
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+//        param.put("companyName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+//        param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        param.put("itemList", salaryVoList);
+
+        String downloadName = String.format("%s%s", SALARY_DETAIL_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
+        String path = FileUtil.generateJxlsFile(SALARY_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
+
+        // 返回结果
+        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        Map<String, String> fileData = new HashMap<String, String>();
+        fileData.put("fileName", excelName);
+        fileData.put("filePath", path);
+        result.setData(fileData);
+        return result;
+    }
+
+    /**
+     * 2、导出工资汇总表
+     * @param request
+     * @param response
+     * @param condition
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/exportSalarySummary", name = "导出工资汇总表")
+    public AjaxResult exportSalarySummary(HttpServletRequest request, HttpServletResponse response, SalaryCondition condition) {
+        // 不分页
+        condition.setCurrent(0);
+        condition.setPageSize(0);
+        PageableResult<SalaryVo> pageableResult = salaryService.getSalaries(condition);
+        List<SalaryVo> salaryVoList = pageableResult.getDataSource();
+
+        String excelName = String.format("工资汇总表%s%s",
+                DateFormatUtils.format(condition.getMonth(), DateUtil.YYYYMM),
+                FileUtil.FILE_SUFFIX_XLSX);
+
+
+        // jxls 导出
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("companyName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("itemList", salaryVoList);
 
-        String downloadName = String.format("%s%s", SALARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
-        String path = FileUtil.generateJxlsFile(SALARY_EXPORT_TEMPLATE_PATH, param, downloadName);
+        String downloadName = String.format("%s%s", SALARY_SUMMARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
+        String path = FileUtil.generateJxlsFile(SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");

@@ -37,7 +37,7 @@ class SalaryManage extends React.Component {
             getUrl: `${_ctx_}/salary/get`,
             updateUrl: `${_ctx_}/salary/update`,
             generateUrl: `${_ctx_}/salary/generate`,
-            exportSalariesUrl: `${_ctx_}/salary/exportSalaries`,
+            exportSalaryDetailUrl: `${_ctx_}/salary/exportSalaryDetail`,
 
         };
         /**
@@ -239,10 +239,10 @@ class SalaryManage extends React.Component {
      * 导出
      */
     doExport = () => {
-        // const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaries`, this.state.dataParam);
+        // const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaryDetail`, this.state.dataParam);
         // this.refs.ifile.src = newUrl;
         $.ajax({
-            url: this.configuration.exportSalariesUrl,
+            url: this.configuration.exportSalaryDetailUrl,
             type: 'POST',
             data: this.state.dataParam,
             async: true,
