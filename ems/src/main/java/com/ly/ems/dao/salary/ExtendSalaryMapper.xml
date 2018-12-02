@@ -3,6 +3,8 @@
 <mapper namespace="com.ly.ems.dao.salary.ExtendSalaryMapper">
     <resultMap id="SalaryVoMap" type="com.ly.ems.model.salary.SalaryVo"
                extends="com.ly.ems.dao.salary.SalaryMapper.BaseResultMap">
+
+        <result column="group_num" property="groupNum" jdbcType="VARCHAR"/>
         <result column="num_in_group" property="numInGroup" jdbcType="VARCHAR"/>
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR"/>
         <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
@@ -47,6 +49,37 @@
         <if test="conditions.jobId != null and conditions.jobId != ''">
             AND job_id = #{conditions.jobId, jdbcType=VARCHAR}
         </if>
+    </select>
+
+    <select id="getSalarySummaryByConditions" resultMap="">
+        SELECT  @groupNum:=@groupNum+1 group_num,
+                sum(s.daily_salary) daily_salary,
+                sum(s.social_security_allowance) social_security_allowance,
+                sum(s.house_fund_allowance) house_fund_allowance,
+                sum(s.hot_allowance) hot_allowance,
+                sum(s.other_income) other_income,
+                sum(s.payable_salary) payable_salary,
+                sum(s.personal_social_security) personal_social_security,
+                sum(s.personal_house_fund) personal_house_fund,
+                sum(s.pay_taxes) pay_taxes,
+                sum(s.other_deduction) other_deduction,
+                sum(s.real_salary) real_salary,
+
+                g.id group_id,
+                (select inner_g.group_name from ly_group inner_g where inner_g.id = g.id) group_name
+        FROM ly_salary_201811 s
+        LEFT JOIN ly_employee e ON s.employee_id = e.id
+        LEFT JOIN ly_group g ON e.group_id = g.id
+        LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id
+        LEFT JOIN ly_project p ON p.id = dr.project_id
+        LEFT JOIN ly_company c ON c.id = p.company_id,
+        (SELECT  @groupNum := 0) AS numVar
+
+        WHERE s.enable = 1
+
+        GROUP BY g.id
+
+
     </select>
 
     <select id="isExistSalaryTable" parameterType="String" resultType="Integer">

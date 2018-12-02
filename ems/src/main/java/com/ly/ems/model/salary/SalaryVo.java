@@ -7,6 +7,8 @@ import com.ly.ems.model.base.employee.constant.GenderEnum;
  */
 public class SalaryVo extends Salary {
 
+
+    private String groupNum;
     private String numInGroup;
     private String employeeName;
     private String idCard;
@@ -19,6 +21,14 @@ public class SalaryVo extends Salary {
     private String projectName;
     private Integer companyId;
     private String companyName;
+
+    public String getGroupNum() {
+        return groupNum;
+    }
+
+    public void setGroupNum(String groupNum) {
+        this.groupNum = groupNum;
+    }
 
     public String getNumInGroup() {
         return numInGroup;
