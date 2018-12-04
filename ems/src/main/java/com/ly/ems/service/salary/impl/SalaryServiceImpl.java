@@ -79,6 +79,38 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     /**
+     * 按班组查询工资汇总信息
+     * @param conditions
+     * @return
+     */
+    @Override
+    public PageableResult<SalaryVo> getSalarySummary(SalaryCondition conditions) {
+        // 必须选定月份
+        Date attendanceMonth = conditions.getMonth();
+        if (attendanceMonth == null) {
+            throw new EMSRuntimeException("请先选定月份!");
+        }
+
+        // 考勤数据必须存在
+        String monthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
+        if (!this.checkSalaryExist(monthString)) {
+            throw new EMSRuntimeException(String.format("月份%s的工资数据不存在，请先生成数据!", monthString));
+        }
+
+        // 查询数据
+        String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+        List<SalaryVo> resultList = extendSalaryMapper.getSalarySummaryByConditions(conditions, salaryTableName);
+        PageInfo<SalaryVo> pageInfo = new PageInfo(resultList);
+
+        return new PageableResult<SalaryVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+
+    }
+
+
+
+
+
+    /**
      * 根据指定月份的考勤数据，生成工资数据
      *
      * @param conditions

@@ -13,8 +13,20 @@ import java.util.List;
  */
 public interface SalaryService {
 
-
+    /**
+     * 查询工资明细信息
+     * @param conditions
+     * @return
+     */
     PageableResult<SalaryVo> getSalaries(SalaryCondition conditions);
+
+    /**
+     * 按班组查询工资汇总信息
+     * @param conditions
+     * @return
+     */
+    PageableResult<SalaryVo> getSalarySummary(SalaryCondition conditions);
+
 
     /**
      * 生成工资信息

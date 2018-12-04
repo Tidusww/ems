@@ -22,6 +22,15 @@ public interface ExtendSalaryMapper {
                                               @Param("salaryTableName")String salaryTableName);
 
     /**
+     * 按班组统计工资汇总
+     * @param conditions
+     * @param salaryTableName
+     * @return
+     */
+    List<SalaryVo> getSalarySummaryByConditions(@Param("conditions")SalaryCondition conditions,
+                                                @Param("salaryTableName")String salaryTableName);
+
+    /**
      * 是否存在指定月份的考勤表
      * @param salaryTableName
      * @return

@@ -38,6 +38,7 @@ class SalaryManage extends React.Component {
             updateUrl: `${_ctx_}/salary/update`,
             generateUrl: `${_ctx_}/salary/generate`,
             exportSalaryDetailUrl: `${_ctx_}/salary/exportSalaryDetail`,
+            exportSalarySummaryUrl: `${_ctx_}/salary/exportSalarySummary`,
 
         };
         /**
@@ -156,9 +157,14 @@ class SalaryManage extends React.Component {
                 this.generateSalaryInfo();
                 break;
             }
-            case "export":
+            case "exportSalaryDetail":
             {
-                this.doExport();
+                this.doExportSalaryDetail();
+                break;
+            }
+            case "exportSalarySummary":
+            {
+                this.doExportSalarySummary();
                 break;
             }
         }
@@ -238,11 +244,17 @@ class SalaryManage extends React.Component {
     /**
      * 导出
      */
-    doExport = () => {
+    doExportSalaryDetail = () => {
+        this.doExport(this.configuration.exportSalaryDetailUrl);
+    };
+    doExportSalarySummary = () => {
+        this.doExport(this.configuration.exportSalarySummaryUrl);
+    };
+    doExport = (targetUrl) => {
         // const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaryDetail`, this.state.dataParam);
         // this.refs.ifile.src = newUrl;
         $.ajax({
-            url: this.configuration.exportSalaryDetailUrl,
+            url: targetUrl,
             type: 'POST',
             data: this.state.dataParam,
             async: true,
@@ -267,10 +279,10 @@ class SalaryManage extends React.Component {
     showDownloadDialog = (fileData)=> {
         const downloadUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/export`, fileData);
         this.setState({downloadVisible: true, downloadUrl: downloadUrl});
-    }
+    };
     download = ()=> {
         this.refs.ifile.src = this.state.downloadUrl;
-    }
+    };
 
     /**
      * 编辑

@@ -136,7 +136,7 @@ public class SalaryController {
         // 不分页
         condition.setCurrent(0);
         condition.setPageSize(0);
-        PageableResult<SalaryVo> pageableResult = salaryService.getSalaries(condition);
+        PageableResult<SalaryVo> pageableResult = salaryService.getSalarySummary(condition);
         List<SalaryVo> salaryVoList = pageableResult.getDataSource();
 
         String excelName = String.format("工资汇总表%s%s",
@@ -147,8 +147,6 @@ public class SalaryController {
         // jxls 导出
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
-        param.put("companyName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
-        param.put("projectName", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
         param.put("itemList", salaryVoList);
 
         String downloadName = String.format("%s%s", SALARY_SUMMARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);

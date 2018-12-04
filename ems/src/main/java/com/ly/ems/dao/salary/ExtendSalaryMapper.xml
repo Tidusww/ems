@@ -51,7 +51,7 @@
         </if>
     </select>
 
-    <select id="getSalarySummaryByConditions" resultMap="">
+    <select id="getSalarySummaryByConditions" resultMap="SalaryVoMap">
         SELECT  @groupNum:=@groupNum+1 group_num,
                 sum(s.daily_salary) daily_salary,
                 sum(s.social_security_allowance) social_security_allowance,

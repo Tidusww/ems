@@ -137,4 +137,16 @@ public class SalaryVo extends Salary {
         }
         return this.getGender().getValue();
     }
+
+    /**
+     * 解决导出时精度导致的小数位过多问题
+     * @return
+     */
+    public String getPayTaxesString() {
+        if(this.getPayTaxes() == null) {
+            return "";
+        }
+        return this.getPayTaxes().toString();
+    }
+
 }
