@@ -22,6 +22,7 @@
 
     <select id="getSalariesByConditions" resultMap="SalaryVoMap">
         SELECT (@numInGroup := case when @gid=g.id then @numInGroup + 1 else 1 end )  num_in_group,
+                @gid:=g.id gid,
                 s.*,
                 e.employee_name, e.id_card, e.gender,
                 j.id job_id, j.job_name,
@@ -46,7 +47,7 @@
         <if test="conditions.jobId != null and conditions.jobId != ''">
             AND job_id = #{conditions.jobId, jdbcType=VARCHAR}
         </if>
-        order by g.id, s.id
+        order by gid, num_in_group
     </select>
 
     <select id="getSalarySummaryByConditions" resultMap="SalaryVoMap">
