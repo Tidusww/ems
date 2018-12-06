@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tidus on 2017/9/13.
@@ -101,7 +102,8 @@ public class ConditionConfigController {
                 MultipleRoutingDataSource.setDataSourceKey(MultipleRoutingDataSource.DATA_SOURCE_EMS);
             }
             //查找键值
-            conditionConfigService.getConditionDTOKeyValueBySql(conditionItemDTO);
+            List<Map> keyValues = conditionConfigService.getConditionDTOKeyValueBySql(conditionItemDTO.getConditionCode(), conditionItemDTO.getConditionSql());
+            conditionConfigService.setConditionItemKeyValues(conditionItemDTO, keyValues);
         }
 
         //根据Enum找
@@ -111,8 +113,8 @@ public class ConditionConfigController {
         }
 
         //无论找不找到都清空相关信息
-        conditionItemDTO.setConditionSql("");
-        conditionItemDTO.setConditionEnum("");
+//        conditionItemDTO.setConditionSql("");
+//        conditionItemDTO.setConditionEnum("");
     }
 
 }

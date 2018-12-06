@@ -25,6 +25,8 @@ const Constants = {
     CONST_RENDER_NULL_VALUE: "--",
     CONST_ANTD_EMPTY_DATA: "empty-placeholder-data",
 
+    //不需要进行缓存的conditionCode
+    NO_CACHE_CONDITION_CODE: ['PROJECT_SELECT', 'JOB_SELECT', 'GROUP_SELECT', 'COMPANY_SELECT'],
 }
 
 exports.Constants = Constants;

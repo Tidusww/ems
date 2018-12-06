@@ -1,10 +1,9 @@
 package com.ly.ems.model.condition;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ly.ems.model.common.constant.StatusEnum;
 import com.ly.ems.model.condition.constants.ConditionDatasource;
 import com.ly.ems.model.condition.constants.ConditionType;
-import com.ly.ems.model.common.constant.StatusEnum;
-import com.ly.ems.model.condition.constants.ConditionDatasource;
 
 /**
  * Created by tidus on 2017/9/13.
@@ -17,7 +16,9 @@ public class ConditionItem {
     private String conditionPlaceholder;
     private ConditionType conditionType;
     private ConditionDatasource conditionDatasource;
+    @JsonIgnore
     private String conditionSql;
+    @JsonIgnore
     private String conditionEnum;
     private String conditionParentKey;
     private String conditionExt;

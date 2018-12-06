@@ -47,18 +47,25 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
         return conditionItemDTO;
     }
 
-    @Cacheable
+    /**
+     * TODO 这里配置不需要缓存的code，暂时有【PROJECT_SELECT, JOB_SELECT, GROUP_SELECT, COMPANY_SELECT】
+     *
+     * @param conditionSql
+     */
+//    @Cacheable(condition = "#conditionCode != 'PROJECT_SELECT'")
+//    @Cacheable(condition = "!{'PROJECT_SELECT', 'JOB_SELECT', 'GROUP_SELECT', 'COMPANY_SELECT'}.contains(#conditionCode)")
+    @Cacheable(condition = "!(#conditionCode matches 'PROJECT_SELECT|JOB_SELECT|GROUP_SELECT|COMPANY_SELECT')")
     @Override
-    public void getConditionDTOKeyValueBySql(ConditionItemDTO conditionItemDTO) {
-        String conditionSql = conditionItemDTO.getConditionSql();
+    public List<Map> getConditionDTOKeyValueBySql(String conditionCode, String conditionSql) {
+        List<Map> keyValues = null;
         try {
             //通过Sql查询下拉项并转换为keyValues
-            List<Map> keyValues = conditionConfigMapper.getConditionKeyValue(conditionSql);
-            this.setConditionItemKeyValues(conditionItemDTO, keyValues);
+            keyValues = conditionConfigMapper.getConditionKeyValue(conditionSql);
         }catch (Exception ex){
             //执行Sql出错
-            LOGGER.error(String.format("查询条件Sql出错, conditionCode:[%s]", conditionItemDTO.getConditionCode()), ex);
+            LOGGER.error(String.format("查询条件Sql出错, conditionCode:[%s], sql:[%s]", conditionCode, conditionSql), ex);
         }
+        return keyValues;
     }
 
 
@@ -94,7 +101,7 @@ public class ConditionConfigServiceImpl implements ConditionConfigService {
      * @param keyValues
      */
     @Transactional(readOnly = true)
-    private void setConditionItemKeyValues(ConditionItemDTO conditionItemDTO, List<Map> keyValues){
+    public void setConditionItemKeyValues(ConditionItemDTO conditionItemDTO, List<Map> keyValues){
         if(keyValues != null && keyValues.size() > 0){
             List<Map> valueMaps = new ArrayList<Map>();
             for (int j = 0; j < keyValues.size(); j++) {

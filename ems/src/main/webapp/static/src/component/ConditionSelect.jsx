@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import { Select, Spin, message } from 'antd';
 import { CommonHelper } from 'core/Common.jsx';
 import { Cache } from 'core/Cache.jsx';
+import { Constants } from 'core/Const.jsx';
 
 const { Option } = Select;
 
@@ -107,7 +108,7 @@ class ConditionSelect extends React.Component {
     getConditionItem = () => {
         this.setState({isLoading: true});
 
-        if(Cache[this.props.conditionCode]) {
+        if(!Constants.NO_CACHE_CONDITION_CODE.indexOf(this.props.conditionCode) && Cache[this.props.conditionCode]) {
             this.setState({isLoading: false});
             this.handleConditionItemResult(Cache[this.props.conditionCode]);
             return;
