@@ -39,6 +39,7 @@ class SalaryManage extends React.Component {
             generateUrl: `${_ctx_}/salary/generate`,
             exportSalaryDetailUrl: `${_ctx_}/salary/exportSalaryDetail`,
             exportSalarySummaryUrl: `${_ctx_}/salary/exportSalarySummary`,
+            exportSalaryDispatchUrl: `${_ctx_}/salary/exportSalaryDispatch`,
 
         };
         /**
@@ -167,6 +168,11 @@ class SalaryManage extends React.Component {
                 this.doExportSalarySummary();
                 break;
             }
+            case "exportSalaryDispatch":
+            {
+                this.doExportSalaryDispatch();
+                break;
+            }
         }
     };
 
@@ -250,9 +256,15 @@ class SalaryManage extends React.Component {
     doExportSalarySummary = () => {
         this.doExport(this.configuration.exportSalarySummaryUrl);
     };
+    doExportSalaryDispatch = () => {
+        this.doExport(this.configuration.exportSalaryDispatchUrl);
+    };
     doExport = (targetUrl) => {
         // const newUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/salary/exportSalaryDetail`, this.state.dataParam);
         // this.refs.ifile.src = newUrl;
+
+        const hide = message.loading('导出中，请稍后...', 0);
+        this.setState({isLoading: true});
         $.ajax({
             url: targetUrl,
             type: 'POST',
@@ -261,8 +273,10 @@ class SalaryManage extends React.Component {
             dataType: "json",
             success: (result) => {
                 this.setState({isLoading: false});
+                hide();
                 if (result.success) {
                     const data = result.data;
+                    message.success('导出成功，请点击下载', 3);
                     this.showDownloadDialog(data);
                 } else {
                     console.log("请求出错");

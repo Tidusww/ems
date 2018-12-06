@@ -6,11 +6,13 @@ import com.ly.ems.common.utils.file.DownloadUtil;
 import com.ly.ems.common.utils.file.ExcelUtil;
 import com.ly.ems.common.utils.file.FileUtil;
 import com.ly.ems.model.base.employee.Employee;
+import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.salary.Salary;
 import com.ly.ems.model.salary.SalaryCondition;
 import com.ly.ems.model.salary.SalaryVo;
 import com.ly.ems.model.salary.export.SalaryExport;
+import com.ly.ems.service.base.BaseInfoService;
 import com.ly.ems.service.salary.SalaryService;
 import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -48,6 +50,11 @@ public class SalaryController {
     private static final String SALARY_SUMMARY_EXPORT_PREFIX = "salary_summary";
     private static final String SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资汇总模板表.xlsx";
 
+    private static final String SALARY_DISPATCH_EXPORT_PREFIX = "salary_dispatch";
+    private static final String SALARY_DISPATCH_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资发放模板表.xlsx";
+
+    @Autowired
+    BaseInfoService baseInfoService;
     @Autowired
     SalaryService salaryService;
 
@@ -151,6 +158,51 @@ public class SalaryController {
 
         String downloadName = String.format("%s%s", SALARY_SUMMARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
         String path = FileUtil.generateJxlsFile(SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
+
+        // 返回结果
+        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        Map<String, String> fileData = new HashMap<String, String>();
+        fileData.put("fileName", excelName);
+        fileData.put("filePath", path);
+        result.setData(fileData);
+        return result;
+    }
+
+    /**
+     * 3、导出工资发放表
+     * @param request
+     * @param response
+     * @param condition
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/exportSalaryDispatch", name = "导出工资发放表")
+    public AjaxResult exportSalaryDispatch(HttpServletRequest request, HttpServletResponse response, SalaryCondition condition) {
+        // 不分页
+        condition.setCurrent(0);
+        condition.setPageSize(0);
+        PageableResult<SalaryVo> pageableResult = salaryService.getSalaryDispatch(condition);
+        List<SalaryVo> salaryVoList = pageableResult.getDataSource();
+
+        String excelName = String.format("工资发放表%s%s",
+                DateFormatUtils.format(condition.getMonth(), DateUtil.YYYYMM),
+                FileUtil.FILE_SUFFIX_XLSX);
+
+        Group group = new Group();
+        if(condition.getGroupId() != null) {
+            group.setId(condition.getGroupId());
+            group = baseInfoService.selectOneGroup(group);
+        }
+
+
+        // jxls 导出
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("month", DateFormatUtils.format(condition.getMonth(), "yyyy年MM月"));
+        param.put("groupName", group.getGroupName());
+        param.put("itemList", salaryVoList);
+
+        String downloadName = String.format("%s%s", SALARY_DISPATCH_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
+        String path = FileUtil.generateJxlsFile(SALARY_DISPATCH_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");

@@ -14,19 +14,25 @@ import java.util.List;
 public interface SalaryService {
 
     /**
-     * 查询工资明细信息
+     * 查询工资明细信息，用于导出工资明细表、工资管理页
      * @param conditions
      * @return
      */
     PageableResult<SalaryVo> getSalaries(SalaryCondition conditions);
 
     /**
-     * 按班组查询工资汇总信息
+     * 按班组查询工资汇总信息，用于导出工资汇总表
      * @param conditions
      * @return
      */
     PageableResult<SalaryVo> getSalarySummary(SalaryCondition conditions);
 
+    /**
+     * 查询工资简要信息，用于导出工资发放表
+     * @param conditions
+     * @return
+     */
+    PageableResult<SalaryVo> getSalaryDispatch(SalaryCondition conditions);
 
     /**
      * 生成工资信息

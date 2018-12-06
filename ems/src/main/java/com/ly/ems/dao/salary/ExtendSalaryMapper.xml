@@ -39,13 +39,13 @@
         (SELECT  @numInGroup := 0, @gid := 0) AS numVar
         WHERE 1=1 AND s.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">
-            AND employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
+            AND e.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
         </if>
         <if test="conditions.groupId != null and conditions.groupId != ''">
-            AND group_id = #{conditions.groupId, jdbcType=VARCHAR}
+            AND e.group_id = #{conditions.groupId, jdbcType=VARCHAR}
         </if>
         <if test="conditions.jobId != null and conditions.jobId != ''">
-            AND job_id = #{conditions.jobId, jdbcType=VARCHAR}
+            AND e.job_id = #{conditions.jobId, jdbcType=VARCHAR}
         </if>
         order by gid, num_in_group
     </select>
@@ -75,7 +75,15 @@
         (SELECT  @groupNum := 0) AS numVar
 
         WHERE s.enable = 1
-
+        <if test="conditions.employeeName != null and conditions.employeeName != ''">
+            AND e.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="conditions.groupId != null and conditions.groupId != ''">
+            AND e.group_id = #{conditions.groupId, jdbcType=VARCHAR}
+        </if>
+        <if test="conditions.jobId != null and conditions.jobId != ''">
+            AND e.job_id = #{conditions.jobId, jdbcType=VARCHAR}
+        </if>
         GROUP BY g.id
 
 

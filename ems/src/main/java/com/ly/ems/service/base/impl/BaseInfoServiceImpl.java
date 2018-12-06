@@ -188,6 +188,11 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     }
 
     @Override
+    public Group selectOneGroup(Group group) {
+        return groupMapper.selectOne(group);
+    }
+
+    @Override
     public void saveGroup(Group group, Integer projectId) {
         if (group.getId() == null) {
             group.setEnable(EnableEnum.ENABLED);

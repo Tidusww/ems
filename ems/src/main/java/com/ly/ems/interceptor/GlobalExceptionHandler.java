@@ -3,6 +3,7 @@ package com.ly.ems.interceptor;
 import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.core.exception.EMSBusinessException;
 import com.ly.ems.core.exception.EMSRuntimeException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public AjaxResult processException(Exception exception) {
         LOGGER.error("系统异常", exception);
-        return AjaxResult.fail("系统异常");
+        return AjaxResult.fail(StringUtils.isEmpty(exception.getMessage()) ? "系统异常" : exception.getMessage());
     }
 
     @ExceptionHandler(EMSRuntimeException.class)

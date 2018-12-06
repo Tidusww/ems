@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ValidationUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -106,6 +107,39 @@ public class SalaryServiceImpl implements SalaryService {
 
     }
 
+    /**
+     * 查询工资简要信息，用于导出工资发放表
+     * @param conditions
+     * @return
+     */
+    public PageableResult<SalaryVo> getSalaryDispatch(SalaryCondition conditions) {
+        // 必须选定月份
+        Date attendanceMonth = conditions.getMonth();
+        if (attendanceMonth == null) {
+            throw new EMSRuntimeException("导出工资发放表时请先选定月份");
+        }
+
+        if(conditions.getGroupId() == null) {
+            throw new EMSRuntimeException("导出工资发放表时请指定班组");
+        }
+
+
+        // 考勤数据必须存在
+        String monthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
+        if (!this.checkSalaryExist(monthString)) {
+            throw new EMSRuntimeException(String.format("月份%s的工资数据不存在，请先生成数据!", monthString));
+        }
+
+        // 查询数据
+        String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
+        List<SalaryVo> resultList = extendSalaryMapper.getSalariesByConditions(conditions, salaryTableName);
+        PageInfo<SalaryVo> pageInfo = new PageInfo(resultList);
+
+        return new PageableResult<SalaryVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
+
+
+
+    }
 
 
 
