@@ -79,8 +79,8 @@ public class AttendanceController extends AbstractBaseController {
     @RequestMapping(value = "/exportAttendanceDetail", name = "导出考勤明细表")
     public AjaxResult exportAttendanceDetail(HttpServletRequest request, HttpServletResponse response, AttendanceConditions conditions) {
         // 不分页
-        conditions.setCurrent(0);
-        conditions.setPageSize(0);
+//        conditions.setCurrent(0);
+//        conditions.setPageSize(0);
         PageableResult<AttendanceVo> pageableResult = attendanceService.getAttendances(conditions);
         List<AttendanceVo> salaryVoList = pageableResult.getDataSource();
 
