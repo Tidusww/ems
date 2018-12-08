@@ -353,31 +353,29 @@ class SalaryManage extends React.Component {
 
         return (
             <div>
-                <Spin spinning={this.state.isDownloading} delay={500} tip="正在生成excel，由于数据量大，可能需要数分钟，请耐心等待">
-                    <ConditionContainer
-                        configCode={this.configuration.conditionConfigCode}
-                        conditionDidLoad={this.conditionDidLoad}
-                        onItemChange={this.handleItemChange}
-                        onItemPressEnter={this.handleItemPressEnter}
-                        onButtonClick={this.handleButtonClick}
-                    />
-                    <EditableTable
-                        bordered
-                        title={()=>`工资列表`}
-                        rowKey={this.configuration.keyId}
-                        loading={this.state.isLoading}
-                        dataSource={this.state.dataSource}
-                        columns={this.columns}
-                        pagination={pagination}
-                        scroll={{x: 2120}}//列的总宽度+62(有选择框)
-                        empty
-                        rowEdit
-                        onSaveRow={(changedData, index) => {
+                <ConditionContainer
+                    configCode={this.configuration.conditionConfigCode}
+                    conditionDidLoad={this.conditionDidLoad}
+                    onItemChange={this.handleItemChange}
+                    onItemPressEnter={this.handleItemPressEnter}
+                    onButtonClick={this.handleButtonClick}
+                />
+                <EditableTable
+                    bordered
+                    title={()=>`工资列表`}
+                    rowKey={this.configuration.keyId}
+                    loading={this.state.isLoading}
+                    dataSource={this.state.dataSource}
+                    columns={this.columns}
+                    pagination={pagination}
+                    scroll={{x: 2120}}//列的总宽度+62(有选择框)
+                    empty
+                    rowEdit
+                    onSaveRow={(changedData, index) => {
                             console.log('EditableTable 单行编辑，第', index, '行 内容：', changedData);
                             this.doUpdate(changedData, index);
                         }}
-                    />
-                </Spin>
+                />
                 <Modal
                     title='生成文件成功'
                     visible={this.state.downloadVisible}
