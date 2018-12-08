@@ -108,7 +108,9 @@ class ConditionSelect extends React.Component {
     getConditionItem = () => {
         this.setState({isLoading: true});
 
-        if(!Constants.NO_CACHE_CONDITION_CODE.indexOf(this.props.conditionCode) && Cache[this.props.conditionCode]) {
+        if(CommonHelper.needCache(this.props.conditionCode)
+            && Cache[this.props.conditionCode]) {
+            // 需要使用缓存 且 缓存中有数据
             this.setState({isLoading: false});
             this.handleConditionItemResult(Cache[this.props.conditionCode]);
             return;
@@ -122,7 +124,9 @@ class ConditionSelect extends React.Component {
             dataType: "json",
             success: (result) => {
                 if (result.success) {
-                    Cache[this.props.conditionCode] = result.data;
+                    if(CommonHelper.needCache(this.props.conditionCode)) {
+                        Cache[this.props.conditionCode] = result.data;
+                    }
                     this.handleConditionItemResult(result.data)
                 } else {
                     message.error(`加载ConditionSelect失败:${result.msg}`, 3);

@@ -14,11 +14,30 @@ public class AttendanceConditions extends AttendanceVo {
     @ParamName("monthSelect")
     private Date attendanceMonth;
 
+    public Integer current;
+    public Integer pageSize;
+
     public Date getAttendanceMonth() {
         return attendanceMonth;
     }
 
     public void setAttendanceMonth(Date attendanceMonth) {
         this.attendanceMonth = attendanceMonth;
+    }
+
+    public Integer getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Integer current) {
+        this.current = current;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }
