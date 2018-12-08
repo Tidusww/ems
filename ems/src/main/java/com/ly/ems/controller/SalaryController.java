@@ -2,23 +2,15 @@ package com.ly.ems.controller;
 
 import com.ly.ems.common.utils.AjaxResult;
 import com.ly.ems.common.utils.DateUtil;
-import com.ly.ems.common.utils.file.DownloadUtil;
-import com.ly.ems.common.utils.file.ExcelUtil;
 import com.ly.ems.common.utils.file.FileUtil;
-import com.ly.ems.model.base.employee.Employee;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.salary.Salary;
 import com.ly.ems.model.salary.SalaryCondition;
 import com.ly.ems.model.salary.SalaryVo;
-import com.ly.ems.model.salary.export.SalaryExport;
 import com.ly.ems.service.base.BaseInfoService;
 import com.ly.ems.service.salary.SalaryService;
-import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,10 +38,10 @@ public class SalaryController {
     private static final String SALARY_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资明细模板表.xlsx";
 
     private static final String SALARY_SUMMARY_EXPORT_PREFIX = "salary_summary";
-    private static final String SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资汇总模板表.xlsx";
+    private static final String SALARY_SUMMARY_EXPORT_TEMPLATE_PATH = "/excel/template/工资汇总模板表.xlsx";
 
     private static final String SALARY_DISPATCH_EXPORT_PREFIX = "salary_dispatch";
-    private static final String SALARY_DISPATCH_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/工资发放模板表.xlsx";
+    private static final String SALARY_DISPATCH_EXPORT_TEMPLATE_PATH = "/excel/template/工资发放模板表.xlsx";
 
     @Autowired
     BaseInfoService baseInfoService;
@@ -157,7 +147,7 @@ public class SalaryController {
         param.put("itemList", salaryVoList);
 
         String downloadName = String.format("%s%s", SALARY_SUMMARY_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
-        String path = FileUtil.generateJxlsFile(SALARY_SUMMARY_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
+        String path = FileUtil.generateJxlsFile(SALARY_SUMMARY_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");
@@ -202,7 +192,7 @@ public class SalaryController {
         param.put("itemList", salaryVoList);
 
         String downloadName = String.format("%s%s", SALARY_DISPATCH_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
-        String path = FileUtil.generateJxlsFile(SALARY_DISPATCH_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
+        String path = FileUtil.generateJxlsFile(SALARY_DISPATCH_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
         AjaxResult result = AjaxResult.success("生成工资信息excel成功");
