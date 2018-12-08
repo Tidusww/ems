@@ -139,6 +139,9 @@ const CommonHelper = {
             }
         }
         context.setState({selectedRowKeys});
+    },
+    needCache: (conditionCode) => {
+        return Constants.NO_CACHE_CONDITION_CODE.indexOf(this.props.conditionCode) == -1;
     }
 };
 
