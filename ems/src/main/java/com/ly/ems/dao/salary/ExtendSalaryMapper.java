@@ -18,50 +18,60 @@ public interface ExtendSalaryMapper {
      * @param salaryTableName
      * @return
      */
-    List<SalaryVo> getSalariesByConditions(@Param("conditions")SalaryCondition conditions,
-                                              @Param("salaryTableName")String salaryTableName);
+    List<SalaryVo> getSalariesByConditions(@Param("conditions") SalaryCondition conditions,
+                                           @Param("salaryTableName") String salaryTableName,
+                                           @Param("current") Integer current,
+                                           @Param("pageSize") Integer pageSize);
 
     /**
      * 按班组统计工资汇总
+     *
      * @param conditions
      * @param salaryTableName
      * @return
      */
-    List<SalaryVo> getSalarySummaryByConditions(@Param("conditions")SalaryCondition conditions,
-                                                @Param("salaryTableName")String salaryTableName);
+    List<SalaryVo> getSalarySummaryByConditions(@Param("conditions") SalaryCondition conditions,
+                                                @Param("salaryTableName") String salaryTableName,
+                                                @Param("current") Integer current,
+                                                @Param("pageSize") Integer pageSize);
 
     /**
      * 是否存在指定月份的考勤表
+     *
      * @param salaryTableName
      * @return
      */
-    int isExistSalaryTable(@Param("salaryTableName")String salaryTableName);
+    int isExistSalaryTable(@Param("salaryTableName") String salaryTableName);
 
     /**
      * 创建指定月份的考勤表
+     *
      * @param salaryTableName
      */
-    void createSalaryTable(@Param("salaryTableName")String salaryTableName);
+    void createSalaryTable(@Param("salaryTableName") String salaryTableName);
 
 
     /**
      * 删除指定月份的考勤表
+     *
      * @param salaryTableName
      */
-    void dropSalaryTable(@Param("salaryTableName")String salaryTableName);
+    void dropSalaryTable(@Param("salaryTableName") String salaryTableName);
 
     /**
      * 批量插入考勤信息
+     *
      * @param list
      */
-    void batchInsert(@Param("salaryTableName")String salaryTableName, @Param("list") List<Salary> list);
+    void batchInsert(@Param("salaryTableName") String salaryTableName, @Param("list") List<Salary> list);
 
     /**
      * 更新单条工资信息，被更新的字段为：
-     *【2】~【13】
+     * 【2】~【13】
+     *
      * @param salaryTableName
      * @param salary
      * @return
      */
-    int updateSalaryById(@Param("salaryTableName")String salaryTableName, @Param("salary")Salary salary);
+    int updateSalaryById(@Param("salaryTableName") String salaryTableName, @Param("salary") Salary salary);
 }

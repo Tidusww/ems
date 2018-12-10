@@ -71,7 +71,7 @@ public class SalaryServiceImpl implements SalaryService {
 
         // 查询数据
         String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
-        List<SalaryVo> resultList = extendSalaryMapper.getSalariesByConditions(conditions, salaryTableName);
+        List<SalaryVo> resultList = extendSalaryMapper.getSalariesByConditions(conditions, salaryTableName, conditions.getCurrent(), conditions.getPageSize());
         PageInfo<SalaryVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<SalaryVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -99,7 +99,7 @@ public class SalaryServiceImpl implements SalaryService {
 
         // 查询数据
         String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
-        List<SalaryVo> resultList = extendSalaryMapper.getSalarySummaryByConditions(conditions, salaryTableName);
+        List<SalaryVo> resultList = extendSalaryMapper.getSalarySummaryByConditions(conditions, salaryTableName, conditions.getCurrent(), conditions.getPageSize());
         PageInfo<SalaryVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<SalaryVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -131,7 +131,7 @@ public class SalaryServiceImpl implements SalaryService {
 
         // 查询数据
         String salaryTableName = SalaryConstant.SALARY_TABLE_NAME_PRE + monthString;
-        List<SalaryVo> resultList = extendSalaryMapper.getSalariesByConditions(conditions, salaryTableName);
+        List<SalaryVo> resultList = extendSalaryMapper.getSalariesByConditions(conditions, salaryTableName, conditions.getCurrent(), conditions.getPageSize());
         PageInfo<SalaryVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<SalaryVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);

@@ -14,8 +14,8 @@ public class SalaryCondition extends SalaryVo{
     @ParamName("monthSelect")
     private Date month;
 
-    public Integer current;
-    public Integer pageSize;
+    private Integer current;
+    private Integer pageSize;
 
     public Date getMonth() {
         return month;

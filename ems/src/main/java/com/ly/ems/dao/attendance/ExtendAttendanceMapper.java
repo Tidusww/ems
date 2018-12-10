@@ -20,7 +20,9 @@ public interface ExtendAttendanceMapper {
      */
     List<AttendanceVo> getAttendancesByConditions(@Param("conditions")AttendanceConditions conditions,
                                                   @Param("attendanceTableName")String attendanceTableName,
-                                                  @Param("month")String monthString);
+                                                  @Param("month")String monthString,
+                                                  @Param("current")Integer current,
+                                                  @Param("pageSize")Integer pageSize);
 
     /**
      * 是否存在指定月份的考勤表
