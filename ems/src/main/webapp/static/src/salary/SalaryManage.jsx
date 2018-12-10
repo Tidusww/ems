@@ -343,7 +343,10 @@ class SalaryManage extends React.Component {
             current: this.state.dataParam.current,
             total: this.state.total,
             onChange: (page, pageSize) => this.onPageChange(page, pageSize),
-            showTotal: total => `共 ${this.state.total} 条记录`
+            showTotal: total => `共 ${this.state.total} 条记录`,
+            showSizeChanger: true,
+            pageSizeOptions: ['5','10'],
+            onShowSizeChange: (current, pageSize) => this.onPageChange(current, pageSize)
         };
         const rowSelection = {
             type: this.configuration.selectionType,

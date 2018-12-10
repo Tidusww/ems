@@ -14,8 +14,8 @@ public class AttendanceConditions extends AttendanceVo {
     @ParamName("monthSelect")
     private Date attendanceMonth;
 
-    public Integer current;
-    public Integer pageSize;
+    private Integer current;
+    private Integer pageSize;
 
     public Date getAttendanceMonth() {
         return attendanceMonth;

@@ -62,7 +62,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         // 查询数据
         String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString);
+        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
         PageInfo<AttendanceVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<AttendanceVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
