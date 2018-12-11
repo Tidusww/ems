@@ -13,7 +13,6 @@ class SalaryManage extends React.Component {
         this.state = {
             //Table状态
             isLoading: false,
-            isDownloading: false,
             selectedRowKeys: [],
             selectedRows: [],
             dataSource: [],
@@ -22,7 +21,8 @@ class SalaryManage extends React.Component {
                 current: 1,
                 pageSize: 10
             },
-            editingKey: ''
+            editingKey: '',
+            downloadVisible: false,
         };
         this.configuration = {
             //提示

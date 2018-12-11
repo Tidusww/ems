@@ -66,8 +66,8 @@
 
                 g.id group_id,
                 (select inner_g.group_name from ly_group inner_g where inner_g.id = g.id) group_name
-        FROM ly_salary_201811 s
-        LEFT JOIN ly_employee e ON s.employee_id = e.id
+        FROM ${salaryTableName} s
+        INNER JOIN ly_employee e ON s.employee_id = e.id and e.enable = 1
         LEFT JOIN ly_group g ON e.group_id = g.id
         LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id
         LEFT JOIN ly_project p ON p.id = dr.project_id

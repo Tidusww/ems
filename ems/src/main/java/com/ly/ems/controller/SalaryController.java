@@ -112,7 +112,7 @@ public class SalaryController {
         String path = FileUtil.generateJxlsFile(SALARY_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
-        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        AjaxResult result = AjaxResult.success("生成工资明细excel成功");
         Map<String, String> fileData = new HashMap<String, String>();
         fileData.put("fileName", excelName);
         fileData.put("filePath", path);
@@ -150,7 +150,7 @@ public class SalaryController {
         String path = FileUtil.generateJxlsFile(SALARY_SUMMARY_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
-        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        AjaxResult result = AjaxResult.success("生成工资汇总excel成功");
         Map<String, String> fileData = new HashMap<String, String>();
         fileData.put("fileName", excelName);
         fileData.put("filePath", path);
@@ -195,7 +195,7 @@ public class SalaryController {
         String path = FileUtil.generateJxlsFile(SALARY_DISPATCH_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
-        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        AjaxResult result = AjaxResult.success("生成工资发放excel成功");
         Map<String, String> fileData = new HashMap<String, String>();
         fileData.put("fileName", excelName);
         fileData.put("filePath", path);

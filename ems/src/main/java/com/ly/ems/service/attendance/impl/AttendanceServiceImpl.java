@@ -70,6 +70,43 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     /**
+     * 导出考勤明细
+     * @param conditions
+     * @return
+     */
+    @Override
+    public List<AttendanceVo> exportAttendanceDetail(AttendanceConditions conditions) {
+        // 必须选定月份
+        Date attendanceMonth = conditions.getAttendanceMonth();
+        if (attendanceMonth == null) {
+            throw new EMSRuntimeException("导出考勤明细数据前请先选定月份");
+        }
+
+        // 按班组导出
+        if(conditions.getGroupId() == null) {
+            throw new EMSRuntimeException("导出考勤明细数据时请指定班组");
+        }
+
+        // 考勤数据必须存在
+        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
+        if (!this.checkAttendanceExist(attendanceMonthString)) {
+            throw new EMSRuntimeException(String.format("月份%s的考勤数据不存在，请先生成数据!", attendanceMonthString));
+        }
+
+
+        // 不分页
+        conditions.setCurrent(0);
+        conditions.setPageSize(0);
+
+
+        // 查询数据
+        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
+        return extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
+
+    }
+
+
+    /**
      * 自动随机生成指定月份的考勤数据
      *
      * @param conditions

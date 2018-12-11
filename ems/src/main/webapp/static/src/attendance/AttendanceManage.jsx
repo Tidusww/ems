@@ -1,7 +1,7 @@
 import 'css/common.css'
 import React from 'react';
 import moment from 'moment';
-import { Table, message, Modal, Input, InputNumber, DatePicker, Checkbox } from 'antd';
+import { Table, message, Modal, Input, InputNumber, DatePicker, Checkbox, Button } from 'antd';
 import { ConditionContainer } from 'component/ConditionContainer.jsx';
 import {ConditionSelect} from 'component/ConditionSelect.jsx'
 import {EditableTable} from 'component/EditableTable.jsx';
@@ -25,7 +25,8 @@ class AttendanceManage extends React.Component {
             dataParam: {
                 current: 1,
                 pageSize: 5
-            }
+            },
+            downloadVisible: false,
         };
         this.configuration = {
             //提示
@@ -40,7 +41,7 @@ class AttendanceManage extends React.Component {
             getUrl: `${_ctx_}/attendance/get`,
             updateUrl: `${_ctx_}/attendance/update`,
             generateUrl: `${_ctx_}/attendance/generate`,
-
+            exportAttendanceDetailUrl: `${_ctx_}/attendance/exportAttendanceDetail`,
 
         };
         /**
@@ -556,8 +557,56 @@ class AttendanceManage extends React.Component {
             case 'generateAttendance':
             {
                 this.generateAttendanceInfo();
+                break;
+            }
+            case 'exportAttendanceDetail':
+            {
+                this.doExportAttendanceDetail();
+                break;
             }
         }
+    };
+
+    /**
+     * 导出
+     */
+    doExportAttendanceDetail = () => {
+        this.doExport(this.configuration.exportAttendanceDetailUrl);
+    };
+    doExport = (targetUrl) => {
+        const hide = message.loading('导出中，请稍后...', 0);
+        this.setState({isLoading: true});
+        $.ajax({
+            url: targetUrl,
+            type: 'POST',
+            data: this.state.dataParam,
+            async: true,
+            dataType: "json",
+            success: (result) => {
+                this.setState({isLoading: false});
+                hide();
+                if (result.success) {
+                    const data = result.data;
+                    message.success('导出成功，请点击下载', 3);
+                    this.showDownloadDialog(data);
+                } else {
+                    console.log("请求出错");
+                    message.error(result.msg, 3);
+                }
+            },
+            error: (result) => {
+                this.setState({isLoading: false});
+                console.log("请求出错" + result);
+                message.error(this.configuration.OPERATION_FAILED_MSG, 3);
+            }
+        });
+    };
+    showDownloadDialog = (fileData)=> {
+        const downloadUrl = CommonHelper.getNewUrlWithParam(`${_ctx_}/export`, fileData);
+        this.setState({downloadVisible: true, downloadUrl: downloadUrl});
+    };
+    download = ()=> {
+        this.refs.ifile.src = this.state.downloadUrl;
     };
 
     /**
@@ -751,6 +800,17 @@ class AttendanceManage extends React.Component {
                         this.doUpdate(changedData, index);
                     }}
                 />
+                <Modal
+                    title='生成文件成功'
+                    visible={this.state.downloadVisible}
+                    onCancel={()=>{
+                        this.setState({downloadVisible:false, downloadUrl: ''})
+                    }}
+                    footer={null}
+                >
+                    <Button onClick={this.download}>点击下载</Button>
+                </Modal>
+                <iframe ref="ifile" style={{display:'none'}}></iframe>
             </div>
         );
     }

@@ -4,6 +4,7 @@
 
     <resultMap id="AttendanceVoMap" type="com.ly.ems.model.attendance.AttendanceVo"
                extends="com.ly.ems.dao.attendance.AttendanceMapper.BaseResultMap">
+        <result column="num_in_group" property="numInGroup" jdbcType="VARCHAR"/>
         <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
         <result column="group_name" property="groupName" jdbcType="VARCHAR" />
         <result column="project_name" property="projectName" jdbcType="VARCHAR" />
@@ -12,11 +13,13 @@
 
     <select id="getAttendancesByConditions" resultMap="AttendanceVoMap">
         SELECT * FROM (
+            @groupNum:=@groupNum+1 num_in_group,
             SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name, '${month}' `month`
             FROM ${attendanceTableName} a
-            LEFT JOIN ly_employee e ON a.employee_id = e.id
+            INNER JOIN ly_employee e ON a.employee_id = e.id and e.enable = 1
             LEFT JOIN ly_group g ON e.group_id = g.id
             LEFT JOIN ly_job j ON e.job_id = j.id
+            (SELECT  @groupNum := 0) AS numVar
         ) a
         WHERE 1=1 AND a.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">

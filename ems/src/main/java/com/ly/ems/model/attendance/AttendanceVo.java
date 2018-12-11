@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by tidus on 2018/9/29.
  */
 public class AttendanceVo extends Attendance {
+    private String numInGroup;
     private String month;
     private String employeeName;
     private Integer jobId;
@@ -281,6 +282,14 @@ public class AttendanceVo extends Attendance {
             return "";
         }
         return super.getAttendanceStatus31().getValue();
+    }
+
+    public String getNumInGroup() {
+        return numInGroup;
+    }
+
+    public void setNumInGroup(String numInGroup) {
+        this.numInGroup = numInGroup;
     }
 
     public String getMonth() {

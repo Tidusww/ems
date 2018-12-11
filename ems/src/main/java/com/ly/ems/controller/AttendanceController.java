@@ -7,8 +7,10 @@ import com.ly.ems.core.springmvc.controller.AbstractBaseController;
 import com.ly.ems.model.attendance.Attendance;
 import com.ly.ems.model.attendance.AttendanceConditions;
 import com.ly.ems.model.attendance.AttendanceVo;
+import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.attendance.AttendanceService;
+import com.ly.ems.service.base.BaseInfoService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,9 @@ public class AttendanceController extends AbstractBaseController {
 
     private static final String ATTENDANCE_DETAIL_EXPORT_PREFIX = "attendance_detail";
     private static final String ATTENDANCE_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/考勤明细模板表.xlsx";
+
+    @Autowired
+    BaseInfoService baseInfoService;
 
     @Autowired
     AttendanceService attendanceService;
@@ -78,28 +83,31 @@ public class AttendanceController extends AbstractBaseController {
     @ResponseBody
     @RequestMapping(value = "/exportAttendanceDetail", name = "导出考勤明细表")
     public AjaxResult exportAttendanceDetail(HttpServletRequest request, HttpServletResponse response, AttendanceConditions conditions) {
-        // 不分页
-//        conditions.setCurrent(0);
-//        conditions.setPageSize(0);
-        PageableResult<AttendanceVo> pageableResult = attendanceService.getAttendances(conditions);
-        List<AttendanceVo> salaryVoList = pageableResult.getDataSource();
 
+        List<AttendanceVo> salaryVoList = attendanceService.exportAttendanceDetail(conditions);
         String excelName = String.format("考勤明细表%s%s",
-                conditions.getMonth(),
+                DateFormatUtils.format(conditions.getAttendanceMonth(), DateUtil.YYYYMM),
                 FileUtil.FILE_SUFFIX_XLSX);
 
+
+        Group group = new Group();
+        if(conditions.getGroupId() != null) {
+            group.setId(conditions.getGroupId());
+            group = baseInfoService.selectOneGroup(group);
+        }
 
 
         // jxls 导出
         Map<String, Object> param = new HashMap<String, Object>();
-//        param.put("month", DateFormatUtils.format(DateFormatUtils., "yyyy年MM月"));
+        param.put("month", DateFormatUtils.format(conditions.getAttendanceMonth(), "yyyy年MM月"));
+        param.put("groupName", group.getGroupName());
         param.put("itemList", salaryVoList);
 
         String downloadName = String.format("%s%s", ATTENDANCE_DETAIL_EXPORT_PREFIX, FileUtil.FILE_SUFFIX_XLSX);
         String path = FileUtil.generateJxlsFile(ATTENDANCE_DETAIL_EXPORT_TEMPLATE_PATH, param, downloadName);
 
         // 返回结果
-        AjaxResult result = AjaxResult.success("生成工资信息excel成功");
+        AjaxResult result = AjaxResult.success("生成考勤明细excel成功");
         Map<String, String> fileData = new HashMap<String, String>();
         fileData.put("fileName", excelName);
         fileData.put("filePath", path);
