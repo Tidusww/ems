@@ -12,15 +12,20 @@
     </resultMap>
 
     <select id="getAttendancesByConditions" resultMap="AttendanceVoMap">
-        SELECT * FROM (
+
+        SELECT
             @groupNum:=@groupNum+1 num_in_group,
-            SELECT a.*, e.employee_name, g.id group_id, g.group_name, j.id job_id, j.job_name, '${month}' `month`
-            FROM ${attendanceTableName} a
-            INNER JOIN ly_employee e ON a.employee_id = e.id and e.enable = 1
-            LEFT JOIN ly_group g ON e.group_id = g.id
-            LEFT JOIN ly_job j ON e.job_id = j.id
-            (SELECT  @groupNum := 0) AS numVar
-        ) a
+            a.*,
+            e.employee_name, e.gender, e.id_card,
+            g.id group_id, g.group_name,
+            j.id job_id, j.job_name,
+            '${month}' `month`
+        FROM ${attendanceTableName} a
+        INNER JOIN ly_employee e ON a.employee_id = e.id and e.enable = 1
+        LEFT JOIN ly_group g ON e.group_id = g.id
+        LEFT JOIN ly_job j ON e.job_id = j.id,
+        (SELECT  @groupNum := 0) AS numVar
+
         WHERE 1=1 AND a.enable = 1
         <if test="conditions.employeeName != null and conditions.employeeName != ''">
             AND a.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
@@ -31,6 +36,8 @@
         <if test="conditions.jobId != null and conditions.jobId != ''">
             AND job_id = #{conditions.jobId, jdbcType=VARCHAR}
         </if>
+
+        order by num_in_group
     </select>
 
     <select id="isExistAttendanceTable" parameterType="String" resultType="Integer">

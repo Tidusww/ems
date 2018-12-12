@@ -3,6 +3,7 @@ package com.ly.ems.model.attendance;
 import com.ly.ems.common.utils.ReflectUtil;
 import com.ly.ems.model.attendance.constant.AttendanceConstant;
 import com.ly.ems.model.attendance.constant.AttendanceStatusEnum;
+import com.ly.ems.model.base.employee.constant.GenderEnum;
 
 import java.util.Map;
 
@@ -12,7 +13,11 @@ import java.util.Map;
 public class AttendanceVo extends Attendance {
     private String numInGroup;
     private String month;
+
     private String employeeName;
+    private GenderEnum gender;
+    private String idCard;
+
     private Integer jobId;
     private String jobName;
     private Integer groupId;
@@ -284,6 +289,13 @@ public class AttendanceVo extends Attendance {
         return super.getAttendanceStatus31().getValue();
     }
 
+    public String getGenderValue() {
+        if (this.getGender() == null) {
+            return "";
+        }
+        return this.getGender().getValue();
+    }
+
     public String getNumInGroup() {
         return numInGroup;
     }
@@ -306,6 +318,22 @@ public class AttendanceVo extends Attendance {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
     }
 
     public Integer getJobId() {
