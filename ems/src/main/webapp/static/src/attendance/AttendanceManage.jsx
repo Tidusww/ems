@@ -65,7 +65,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                     return (getFieldDecorator(itemKey, {
-                        initialValue: text.toString(),
+                        initialValue: text ? text.toString() : '',
                         rules: [{required: true, message: '请选择出勤情况'}]
                     })(
                         <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -79,7 +79,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -93,7 +93,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -107,7 +107,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -121,7 +121,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -135,7 +135,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -149,7 +149,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -163,7 +163,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -177,7 +177,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -191,7 +191,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -205,7 +205,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -219,7 +219,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -233,7 +233,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -247,7 +247,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -261,7 +261,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -275,7 +275,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -289,7 +289,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -303,7 +303,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -317,7 +317,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -331,7 +331,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -345,7 +345,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -359,7 +359,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -373,7 +373,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -387,7 +387,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -401,7 +401,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -415,7 +415,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -429,7 +429,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -443,7 +443,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -457,7 +457,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: this.canColumnEdit(29), formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -471,7 +471,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: this.canColumnEdit(30), formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
@@ -485,7 +485,7 @@ class AttendanceManage extends React.Component {
                     },
                     editable: this.canColumnEdit(31), formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                         return (getFieldDecorator(itemKey, {
-                            initialValue: text.toString(),
+                            initialValue: text ? text.toString() : '',
                             rules: [{required: true, message: '请选择出勤情况'}]
                         })(
                             <ConditionSelect conditionCode="ATTENDANCE_STATUS"/>
