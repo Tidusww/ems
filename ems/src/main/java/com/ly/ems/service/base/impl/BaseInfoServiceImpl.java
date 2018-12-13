@@ -108,6 +108,7 @@ public class BaseInfoServiceImpl implements BaseInfoService {
     private boolean checkEmployeeIdCardExist(Integer id, String idCard) {
         Employee employee = new Employee();
         employee.setIdCard(idCard);
+        employee.setEnable(EnableEnum.ENABLED);
         List<Employee> employeeList = employeeMapper.select(employee);
         // 不存在记录
         if (employeeList == null || employeeList.size() <= 0) {

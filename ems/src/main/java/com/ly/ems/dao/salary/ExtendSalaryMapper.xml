@@ -33,7 +33,7 @@
         INNER JOIN ly_employee e ON s.employee_id = e.id and e.enable = 1
         LEFT JOIN ly_job j ON e.job_id = j.id
         LEFT JOIN ly_group g ON e.group_id = g.id
-        LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id
+        LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id and dr.enable = 1
         LEFT JOIN ly_project p ON p.id = dr.project_id
         LEFT JOIN ly_company c ON c.id = p.company_id,
         (SELECT  @numInGroup := 0, @gid := 0) AS numVar
@@ -69,7 +69,7 @@
         FROM ${salaryTableName} s
         INNER JOIN ly_employee e ON s.employee_id = e.id and e.enable = 1
         LEFT JOIN ly_group g ON e.group_id = g.id
-        LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id
+        LEFT JOIN ly_dispatch_rel dr ON g.id = dr.group_id and dr.enable = 1
         LEFT JOIN ly_project p ON p.id = dr.project_id
         LEFT JOIN ly_company c ON c.id = p.company_id,
         (SELECT  @groupNum := 0) AS numVar
