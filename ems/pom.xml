@@ -485,16 +485,31 @@
         <!--</dependency>-->
 
         <!-- jxls -->
+        <!--<dependency>-->
+            <!--<groupId>org.jxls</groupId>-->
+            <!--<artifactId>jxls-reader</artifactId>-->
+            <!--<version>2.0.3</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>org.jxls</groupId>
+            <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-reader</artifactId>
-            <version>2.0.3</version>
+            <version>0.9.6</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jxls</groupId>
             <artifactId>jxls-core</artifactId>
-            <version>1.0.6</version>
+            <version>0.9.6</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jxls</groupId>-->
+            <!--<artifactId>jxls-jdk1.6</artifactId>-->
+            <!--<version>2.2.9</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.jxls</groupId>-->
+            <!--<artifactId>jxls-poi-jdk1.6</artifactId>-->
+            <!--<version>1.0.8</version>-->
+        <!--</dependency>-->
 
         <!-- hibernate-validator -->
         <dependency>
