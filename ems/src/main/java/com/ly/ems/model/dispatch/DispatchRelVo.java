@@ -38,13 +38,22 @@ public class DispatchRelVo extends DispatchRel {
 
 
     @Override
-    @JsonFormat(pattern = "yyyy-MM", locale = "zh" , timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM", locale = "zh", timezone = "GMT+8")
     public Date getStartDate() {
         return super.getStartDate();
     }
+
     @Override
-    @JsonFormat(pattern = "yyyy-MM", locale = "zh" , timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM", locale = "zh", timezone = "GMT+8")
     public Date getEndDate() {
         return super.getEndDate();
     }
+
+    public String getEnableValue() {
+        if(super.getEnable() == null) {
+            return "";
+        }
+        return super.getEnable().getValue();
+    }
+
 }

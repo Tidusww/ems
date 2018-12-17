@@ -52,10 +52,11 @@
 
     <select id="getSalarySummaryByConditions" resultMap="SalaryVoMap">
         SELECT  @groupNum:=@groupNum+1 group_num,
-                sum(s.daily_salary) daily_salary,
-                sum(s.social_security_allowance) social_security_allowance,
-                sum(s.house_fund_allowance) house_fund_allowance,
-                sum(s.hot_allowance) hot_allowance,
+                ROUND(avg(s.attendance_days), 2) attendance_days,
+                sum(s.total_daily_salary) total_daily_salary,
+                sum(s.total_social_security_allowance) total_social_security_allowance,
+                sum(s.total_house_fund_allowance) total_house_fund_allowance,
+                sum(s.total_hot_allowance) total_hot_allowance,
                 sum(s.other_income) other_income,
                 sum(s.payable_salary) payable_salary,
                 sum(s.personal_social_security) personal_social_security,
@@ -75,14 +76,8 @@
         (SELECT  @groupNum := 0) AS numVar
 
         WHERE s.enable = 1
-        <if test="conditions.employeeName != null and conditions.employeeName != ''">
-            AND e.employee_name like CONCAT('%', #{conditions.employeeName, jdbcType=VARCHAR}, '%')
-        </if>
         <if test="conditions.groupId != null and conditions.groupId != ''">
             AND e.group_id = #{conditions.groupId, jdbcType=VARCHAR}
-        </if>
-        <if test="conditions.jobId != null and conditions.jobId != ''">
-            AND e.job_id = #{conditions.jobId, jdbcType=VARCHAR}
         </if>
         GROUP BY g.id
 
@@ -100,7 +95,7 @@
     </update>
 
     <update id="dropSalaryTable" parameterType="String">
-        create table
+        drop table
         -- if not exists
         ${salaryTableName}
     </update>
@@ -108,7 +103,8 @@
     <insert id="batchInsert">
         INSERT INTO ${salaryTableName} (
         employee_id, enable, attendance_days, daily_salary, hot_allowance, social_security_allowance,
-        house_fund_allowance, other_income, payable_salary, personal_social_security,
+        house_fund_allowance, total_daily_salary, total_hot_allowance, total_social_security_allowance,
+        total_house_fund_allowance, other_income, payable_salary, personal_social_security,
         personal_house_fund, other_deduction, pay_taxes, real_salary, company_social_security,
         company_house_fund
         )
@@ -116,7 +112,8 @@
         <foreach collection="list" item="item" index="index" separator=",">
             ( #{item.employeeId}, #{item.enable}, #{item.attendanceDays},
             #{item.dailySalary}, #{item.hotAllowance}, #{item.socialSecurityAllowance},
-            #{item.houseFundAllowance}, #{item.otherIncome}, #{item.payableSalary}, #{item.personalSocialSecurity},
+            #{item.houseFundAllowance}, #{item.totalDailySalary}, #{item.totalHotAllowance}, #{item.totalSocialSecurityAllowance},
+            #{item.totalHouseFundAllowance}, #{item.otherIncome}, #{item.payableSalary}, #{item.personalSocialSecurity},
             #{item.personalHouseFund}, #{item.otherDeduction}, #{item.payTaxes}, #{item.realSalary},
             #{item.companySocialSecurity},#{item.companyHouseFund} )
         </foreach>

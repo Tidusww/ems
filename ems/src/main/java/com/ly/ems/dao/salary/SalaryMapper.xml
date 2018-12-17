@@ -12,6 +12,10 @@
     <result column="social_security_allowance" jdbcType="DECIMAL" property="socialSecurityAllowance" />
     <result column="house_fund_allowance" jdbcType="DECIMAL" property="houseFundAllowance" />
     <result column="hot_allowance" jdbcType="DECIMAL" property="hotAllowance" />
+    <result column="total_daily_salary" jdbcType="DECIMAL" property="totalDailySalary" />
+    <result column="total_social_security_allowance" jdbcType="DECIMAL" property="totalSocialSecurityAllowance" />
+    <result column="total_house_fund_allowance" jdbcType="DECIMAL" property="totalHouseFundAllowance" />
+    <result column="total_hot_allowance" jdbcType="DECIMAL" property="totalHotAllowance" />
     <result column="other_income" jdbcType="DECIMAL" property="otherIncome" />
     <result column="payable_salary" jdbcType="DECIMAL" property="payableSalary" />
     <result column="personal_social_security" jdbcType="DECIMAL" property="personalSocialSecurity" />
@@ -31,7 +35,8 @@
       WARNING - @mbg.generated
     -->
     id, employee_id, attendance_days, daily_salary, social_security_allowance, house_fund_allowance,
-    hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
+    hot_allowance, total_daily_salary, total_social_security_allowance, total_house_fund_allowance,
+    total_hot_allowance, other_income, payable_salary, personal_social_security, personal_house_fund,
     pay_taxes, other_deduction, real_salary, company_social_security, company_house_fund,
     enable, create_date, update_date, update_user_id
   </sql>

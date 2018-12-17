@@ -60,7 +60,7 @@ class DispatchManage extends React.Component {
             }, {
                 title: '结束时间', dataIndex: 'endDate', key: 'endDate', width: 140
             }, {
-                title: '状态', dataIndex: 'enable', key: 'enable', width: 140
+                title: '状态', dataIndex: 'enableValue', key: 'enableValue', width: 140
             },
         ];
 

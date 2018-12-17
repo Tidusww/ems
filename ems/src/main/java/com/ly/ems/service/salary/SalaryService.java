@@ -1,5 +1,6 @@
 package com.ly.ems.service.salary;
 
+import com.ly.ems.model.attendance.AttendanceVo;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.salary.Salary;
 import com.ly.ems.model.salary.SalaryCondition;
@@ -50,7 +51,16 @@ public interface SalaryService {
      */
     void updateSalary(Salary salary, Date month);
 
+
     void saveSalaries(List<Salary> salaryList, String monthString);
 
 
+    /**
+     * 根据考勤记录和工资记录重新计算
+     * @param attendanceVo
+     * @param salary
+     * @param month
+     * @return
+     */
+    Salary calculateSalary(AttendanceVo attendanceVo, Salary salary, Date month);
 }

@@ -49,6 +49,30 @@ public class Salary {
     private BigDecimal hotAllowance;
 
     /**
+     * 1.总日工资=工种的工资标准*出勤天数
+     */
+    @Column(name = "`total_daily_salary`")
+    private BigDecimal totalDailySalary;
+
+    /**
+     * 2.总社保补贴=日社保补贴*出勤天数
+     */
+    @Column(name = "`total_social_security_allowance`")
+    private BigDecimal totalSocialSecurityAllowance;
+
+    /**
+     * 3.总住房补贴=日住房补贴*出勤天数
+     */
+    @Column(name = "`total_house_fund_allowance`")
+    private BigDecimal totalHouseFundAllowance;
+
+    /**
+     * 4.总高温津贴=日高温津贴*出勤天数
+     */
+    @Column(name = "`total_hot_allowance`")
+    private BigDecimal totalHotAllowance;
+
+    /**
      * 5、其他收入（手动）
      */
     @Column(name = "`other_income`")
@@ -179,7 +203,7 @@ public class Salary {
     /**
      * 获取1.日工资=工种的工资标准
      *
-     * @return job_salary - 1.日工资=工种的工资标准
+     * @return daily_salary - 1.日工资=工种的工资标准
      */
     public BigDecimal getDailySalary() {
         return dailySalary;
@@ -246,6 +270,78 @@ public class Salary {
      */
     public void setHotAllowance(BigDecimal hotAllowance) {
         this.hotAllowance = hotAllowance;
+    }
+
+    /**
+     * 获取1.总日工资=工种的工资标准*出勤天数
+     *
+     * @return total_daily_salary - 1.总日工资=工种的工资标准*出勤天数
+     */
+    public BigDecimal getTotalDailySalary() {
+        return totalDailySalary;
+    }
+
+    /**
+     * 设置1.总日工资=工种的工资标准*出勤天数
+     *
+     * @param totalDailySalary 1.总日工资=工种的工资标准*出勤天数
+     */
+    public void setTotalDailySalary(BigDecimal totalDailySalary) {
+        this.totalDailySalary = totalDailySalary;
+    }
+
+    /**
+     * 获取2.总社保补贴=日社保补贴*出勤天数
+     *
+     * @return total_social_security_allowance - 2.总社保补贴=日社保补贴*出勤天数
+     */
+    public BigDecimal getTotalSocialSecurityAllowance() {
+        return totalSocialSecurityAllowance;
+    }
+
+    /**
+     * 设置2.总社保补贴=日社保补贴*出勤天数
+     *
+     * @param totalSocialSecurityAllowance 2.总社保补贴=日社保补贴*出勤天数
+     */
+    public void setTotalSocialSecurityAllowance(BigDecimal totalSocialSecurityAllowance) {
+        this.totalSocialSecurityAllowance = totalSocialSecurityAllowance;
+    }
+
+    /**
+     * 获取3.总住房补贴=日住房补贴*出勤天数
+     *
+     * @return total_house_fund_allowance - 3.总住房补贴=日住房补贴*出勤天数
+     */
+    public BigDecimal getTotalHouseFundAllowance() {
+        return totalHouseFundAllowance;
+    }
+
+    /**
+     * 设置3.总住房补贴=日住房补贴*出勤天数
+     *
+     * @param totalHouseFundAllowance 3.总住房补贴=日住房补贴*出勤天数
+     */
+    public void setTotalHouseFundAllowance(BigDecimal totalHouseFundAllowance) {
+        this.totalHouseFundAllowance = totalHouseFundAllowance;
+    }
+
+    /**
+     * 获取4.总高温津贴=日高温津贴*出勤天数
+     *
+     * @return total_hot_allowance - 4.总高温津贴=日高温津贴*出勤天数
+     */
+    public BigDecimal getTotalHotAllowance() {
+        return totalHotAllowance;
+    }
+
+    /**
+     * 设置4.总高温津贴=日高温津贴*出勤天数
+     *
+     * @param totalHotAllowance 4.总高温津贴=日高温津贴*出勤天数
+     */
+    public void setTotalHotAllowance(BigDecimal totalHotAllowance) {
+        this.totalHotAllowance = totalHotAllowance;
     }
 
     /**

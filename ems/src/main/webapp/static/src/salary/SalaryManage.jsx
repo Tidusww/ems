@@ -71,6 +71,18 @@ class SalaryManage extends React.Component {
                 title: '高温津贴（元/日）', dataIndex: 'hotAllowance', key: 'hotAllowance', width: 150
             },
             {
+                title: '日工资小计（元）', dataIndex: 'totalDailySalary', key: 'totalDailySalary', width: 150
+            },
+            {
+                title: '社保补贴小计（元）', dataIndex: 'totalSocialSecurityAllowance', key: 'totalSocialSecurityAllowance', width: 150
+            },
+            {
+                title: '住房补贴小计（元）', dataIndex: 'totalHouseFundAllowance', key: 'totalHouseFundAllowance', width: 150
+            },
+            {
+                title: '高温津贴小计（元）', dataIndex: 'totalHotAllowance', key: 'totalHotAllowance', width: 150
+            },
+            {
                 title: '其他收入（元）', dataIndex: 'otherIncome', key: 'otherIncome', width: 120,
                 editable: true, formItem: (getFieldDecorator, itemKey, text, record, index, dataIndex) => {
                     return (getFieldDecorator(itemKey, {
@@ -371,7 +383,7 @@ class SalaryManage extends React.Component {
                     dataSource={this.state.dataSource}
                     columns={this.columns}
                     pagination={pagination}
-                    scroll={{x: 2120}}//列的总宽度+62(有选择框)
+                    scroll={{x: 2720}}//列的总宽度+62(有选择框)
                     empty
                     rowEdit
                     onSaveRow={(changedData, index) => {

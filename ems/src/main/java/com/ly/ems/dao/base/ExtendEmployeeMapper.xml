@@ -15,7 +15,7 @@
         LEFT JOIN ly_group g ON e.group_id = g.id
         WHERE 1=1 AND e.enable = 1
         <if test="employeeName != null and employeeName != ''"> AND e.employee_name like CONCAT('%', #{employeeName, jdbcType=VARCHAR}, '%') </if>
-        ORDER BY e.update_date
+        ORDER BY e.update_date DESC
     </select>
 
 
