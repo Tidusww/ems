@@ -10,7 +10,8 @@ import com.ly.ems.model.attendance.AttendanceVo;
 import com.ly.ems.model.base.group.Group;
 import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.service.attendance.AttendanceService;
-import com.ly.ems.service.base.BaseInfoService;
+import com.ly.ems.service.group.GroupService;
+import com.ly.ems.service.project.ProjectService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,10 @@ public class AttendanceController extends AbstractBaseController {
     private static final String ATTENDANCE_DETAIL_EXPORT_TEMPLATE_PATH = "/excel/template/考勤明细模板表.xlsx";
 
     @Autowired
-    BaseInfoService baseInfoService;
+    GroupService groupService;
+
+    @Autowired
+    ProjectService projectService;
 
     @Autowired
     AttendanceService attendanceService;
@@ -93,7 +97,7 @@ public class AttendanceController extends AbstractBaseController {
         Group group = new Group();
         if(conditions.getGroupId() != null) {
             group.setId(conditions.getGroupId());
-            group = baseInfoService.selectOneGroup(group);
+            group = groupService.selectOneGroup(group);
         }
 
 

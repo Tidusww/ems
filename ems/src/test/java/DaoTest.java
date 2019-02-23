@@ -1,6 +1,4 @@
-import com.ly.ems.dao.base.mapper.EmployeeMapper;
-import com.ly.ems.service.base.BaseInfoService;
-import org.junit.Test;
+import com.ly.ems.service.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.BaseTest;
@@ -12,7 +10,7 @@ public class DaoTest extends BaseTest{
 //    @Autowired
 //    EmployeeMapper employeeMapper;
     @Autowired
-    BaseInfoService baseInfoService;
+ProjectService projectService;
 
 //    @Test
 //    public void testdao() {

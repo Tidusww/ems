@@ -8,7 +8,8 @@ import com.ly.ems.model.common.PageableResult;
 import com.ly.ems.model.salary.Salary;
 import com.ly.ems.model.salary.SalaryCondition;
 import com.ly.ems.model.salary.SalaryVo;
-import com.ly.ems.service.base.BaseInfoService;
+import com.ly.ems.service.group.GroupService;
+import com.ly.ems.service.project.ProjectService;
 import com.ly.ems.service.salary.SalaryService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -44,9 +45,15 @@ public class SalaryController {
     private static final String SALARY_DISPATCH_EXPORT_TEMPLATE_PATH = "/excel/template/工资发放模板表.xlsx";
 
     @Autowired
-    BaseInfoService baseInfoService;
+    ProjectService baseInfoService;
     @Autowired
     SalaryService salaryService;
+
+    @Autowired
+    GroupService groupService;
+
+    @Autowired
+    ProjectService projectService;
 
     @ResponseBody
     @RequestMapping(value = "/get", name = "分页查询工资信息")
@@ -181,7 +188,7 @@ public class SalaryController {
         Group group = new Group();
         if(condition.getGroupId() != null) {
             group.setId(condition.getGroupId());
-            group = baseInfoService.selectOneGroup(group);
+            group = groupService.selectOneGroup(group);
         }
 
 

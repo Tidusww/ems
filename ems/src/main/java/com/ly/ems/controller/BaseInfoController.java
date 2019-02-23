@@ -26,8 +26,11 @@ import com.ly.ems.model.base.project.Project;
 import com.ly.ems.model.base.project.ProjectConditions;
 import com.ly.ems.model.base.project.ProjectVo;
 import com.ly.ems.model.common.PageableResult;
-import com.ly.ems.service.base.BaseInfoService;
-import org.apache.commons.beanutils.ConvertUtils;
+import com.ly.ems.service.project.ProjectService;
+import com.ly.ems.service.company.CompanyService;
+import com.ly.ems.service.employee.EmployeeService;
+import com.ly.ems.service.group.GroupService;
+import com.ly.ems.service.job.JobService;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -59,31 +62,45 @@ public class BaseInfoController extends AbstractBaseController {
     private static final Integer EXCEL_LIMIT_SIZE = 10 * 1024 * 1024;
 
     @Autowired
-    BaseInfoService baseInfoService;
+    EmployeeService employeeService;
 
+    @Autowired
+    GroupService groupService;
+
+    @Autowired
+    JobService jobService;
+
+    @Autowired
+    CompanyService companyService;
+
+    @Autowired
+    ProjectService projectService;
+
+
+    //region 1.员工
     /**************************************** 1.员工 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/employee/getEmployees", name = "分页查询员工")
     public AjaxResult getEmployees(EmployeeConditions conditions) {
-        PageableResult<EmployeeVo> pageableResult = baseInfoService.getEmployeesByConditions(conditions);
+        PageableResult<EmployeeVo> pageableResult = employeeService.getEmployeesByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
     @RequestMapping(value = "/employee/save", method = RequestMethod.POST, name = "保存员工")
     public AjaxResult saveEmployee(Employee employee) {
-        baseInfoService.saveEmployee(employee);
+        employeeService.saveEmployee(employee);
         return AjaxResult.success("保存员工成功");
     }
     @ResponseBody
     @RequestMapping(value = "/employee/disable", method = RequestMethod.POST, name = "作废员工")
     public AjaxResult disableEmployee(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableEmployee(id);
+        employeeService.disableEmployee(id);
         return AjaxResult.success("作废员工成功");
     }
     @ResponseBody
     @RequestMapping(value = "/employee/delete", method = RequestMethod.POST, name = "删除员工")
     public AjaxResult deleteEmployee(@RequestParam(name = "id") Integer id) {
-        baseInfoService.deleteEmployee(id);
+        employeeService.deleteEmployee(id);
         return AjaxResult.success("删除员工成功");
     }
 
@@ -128,118 +145,124 @@ public class BaseInfoController extends AbstractBaseController {
         beans.put("itemList", employees);
 
         if(ExcelUtil.getDataFromExcelFile(inputXLS, inputXML, beans, converterClassMap)) {
-            int insertRow = baseInfoService.batchInsertEmployees(employees);
+            int insertRow = employeeService.batchInsertEmployees(employees);
             return AjaxResult.success(String.format("批量导入员工成功，共导入%d条数据", insertRow));
         }else {
             return AjaxResult.fail("批量导入员工失败：读取数据失败");
         }
 
     }
+    //endregion
 
+    //region 2.班组
     /**************************************** 2.班组 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/group/getGroups", name = "分页查询班组")
     public AjaxResult getGroups(GroupConditions conditions) {
-        PageableResult<GroupVo> pageableResult = baseInfoService.getGroupsByConditions(conditions);
+        PageableResult<GroupVo> pageableResult = groupService.getGroupsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
     @RequestMapping(value = "/group/save", method = RequestMethod.POST, name = "保存班组")
     public AjaxResult saveGroup(Group group, Integer projectId) {
-        baseInfoService.saveGroup(group, projectId);
+        groupService.saveGroup(group, projectId);
         return AjaxResult.success("保存班组成功");
     }
     @ResponseBody
     @RequestMapping(value = "/group/disable", method = RequestMethod.POST, name = "作废班组")
     public AjaxResult disableGroup(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableGroup(id);
+        groupService.disableGroup(id);
         return AjaxResult.success("作废班组成功");
     }
     @ResponseBody
     @RequestMapping(value = "/group/delete", method = RequestMethod.POST, name = "删除班组")
     public AjaxResult deleteGroup(@RequestParam(name = "id") Integer id) {
-        baseInfoService.deleteGroup(id);
+        groupService.deleteGroup(id);
         return AjaxResult.success("删除班组成功");
     }
+    //endregion
 
-
-
-
+    //region 3.工种
     /**************************************** 3.工种 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/job/getJobs", name = "分页查询工种")
     public AjaxResult getJobs(JobConditions conditions) {
-        PageableResult<Job> pageableResult = baseInfoService.getJobsByConditions(conditions);
+        PageableResult<Job> pageableResult = jobService.getJobsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
     @RequestMapping(value = "/job/save", method = RequestMethod.POST, name = "保存工种")
     public AjaxResult saveJob(Job job) {
-        baseInfoService.saveJob(job);
+        jobService.saveJob(job);
         return AjaxResult.success("保存工种成功");
     }
     @ResponseBody
     @RequestMapping(value = "/job/disable", method = RequestMethod.POST, name = "作废工种")
     public AjaxResult disableJob(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableJob(id);
+        jobService.disableJob(id);
         return AjaxResult.success("作废工种成功");
     }
     @ResponseBody
     @RequestMapping(value = "/job/delete", method = RequestMethod.POST, name = "删除工种")
     public AjaxResult deleteJob(@RequestParam(name = "id") Integer id) {
-        baseInfoService.deleteJob(id);
+        jobService.deleteJob(id);
         return AjaxResult.success("删除工种成功");
     }
+    //endregion
 
+    //region 4.单位
     /**************************************** 4.单位 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/company/getCompanies", name = "分页查询单位")
     public AjaxResult getCompanies(CompanyConditions conditions) {
-        PageableResult<Company> pageableResult = baseInfoService.getCompaniesByConditions(conditions);
+        PageableResult<Company> pageableResult = companyService.getCompaniesByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
     @RequestMapping(value = "/company/save", method = RequestMethod.POST, name = "保存单位")
     public AjaxResult saveCompany(Company company) {
-        baseInfoService.saveCompany(company);
+        companyService.saveCompany(company);
         return AjaxResult.success("保存单位成功");
     }
     @ResponseBody
     @RequestMapping(value = "/company/disable", method = RequestMethod.POST, name = "作废单位")
     public AjaxResult disableCompany(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableCompany(id);
+        companyService.disableCompany(id);
         return AjaxResult.success("作废单位成功");
     }
     @ResponseBody
     @RequestMapping(value = "/company/delete", method = RequestMethod.POST, name = "删除单位")
     public AjaxResult deleteCompany(@RequestParam(name = "id") Integer id) {
-        baseInfoService.deleteCompany(id);
+        companyService.deleteCompany(id);
         return AjaxResult.success("删除单位成功");
     }
+    //endregion
 
+    //region 5.项目
     /**************************************** 5.项目 ****************************************/
     @ResponseBody
     @RequestMapping(value = "/project/getProjects", name = "分页查询项目")
     public AjaxResult getProjects(ProjectConditions conditions) {
-        PageableResult<ProjectVo> pageableResult = baseInfoService.getProjectsByConditions(conditions);
+        PageableResult<ProjectVo> pageableResult = projectService.getProjectsByConditions(conditions);
         return AjaxResult.success(pageableResult);
     }
     @ResponseBody
     @RequestMapping(value = "/project/save", method = RequestMethod.POST, name = "保存项目")
     public AjaxResult saveProject(Project project) {
-        baseInfoService.saveProject(project);
+        projectService.saveProject(project);
         return AjaxResult.success("保存项目成功");
     }
     @ResponseBody
     @RequestMapping(value = "/project/disable", method = RequestMethod.POST, name = "作废项目")
     public AjaxResult disableProject(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableProject(id);
+        projectService.disableProject(id);
         return AjaxResult.success("作废项目成功");
     }
     @ResponseBody
     @RequestMapping(value = "/project/delete", method = RequestMethod.POST, name = "删除项目")
     public AjaxResult deleteProject(@RequestParam(name = "id") Integer id) {
-        baseInfoService.disableProject(id);
+        projectService.disableProject(id);
         return AjaxResult.success("删除项目成功");
     }
+    //endregion
 }
