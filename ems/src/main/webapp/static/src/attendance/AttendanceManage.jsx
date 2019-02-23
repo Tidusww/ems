@@ -642,7 +642,7 @@ class AttendanceManage extends React.Component {
                     this.setState({dataSource: data.dataSource, total: data.total, currentMonth: this.state.dataParam['monthSelect']});
                 } else {
                     console.log("请求出错");
-                    message.error(result.msg, 3);
+                    message.info(result.msg, 3);
                 }
             },
             error: (result) => {
@@ -670,7 +670,7 @@ class AttendanceManage extends React.Component {
                     this.doSearch();
                 } else {
                     console.log("请求出错");
-                    message.error(result.msg, 3);
+                    message.info(result.msg, 3);
                 }
             },
             error: (result) => {

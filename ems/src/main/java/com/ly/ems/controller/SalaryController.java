@@ -75,6 +75,12 @@ public class SalaryController {
         return AjaxResult.success("生成工资信息成功");
     }
 
+    /**
+     * 前端更新工资
+     * @param salary
+     * @param month
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST, name = "更新工资信息")
     public AjaxResult updateSalary(Salary salary, Date month) {

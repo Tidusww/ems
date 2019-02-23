@@ -19,7 +19,15 @@ public interface ExtendEmployeeMapper extends ConditionMapper<EmployeeVo, Employ
      * @param month
      * @return
      */
+    @Deprecated
     List<EmployeeVo> getDispatchedEmployeeByMonth(@Param("month")Date month);
+
+    /**
+     * 获取当月未有考勤信息的有效员工
+     * @param attendanceTableName
+     * @return
+     */
+    List<EmployeeVo> getEmployeeByNoAttendance(@Param("attendanceTableName") String attendanceTableName);
 
     /**
      * 批量插入员工信息

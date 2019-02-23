@@ -30,10 +30,17 @@ public interface AttendanceService {
     List<AttendanceVo> exportAttendanceDetail(AttendanceConditions conditions);
 
     /**
-     * 根据所选月份选择自动随机生成考勤信息
+     * 根据所选月份增量生成随机的考勤信息
      * @param conditions
      */
-    void generateAttendances(AttendanceConditions conditions);
+    int generateAttendances(AttendanceConditions conditions);
+
+    /**
+     * 根据所选月份选择自动随机生成考勤信息（仅限当月有派遣信息）
+     * @param conditions
+     */
+    @Deprecated
+    void generateAttendancesByDispatch(AttendanceConditions conditions);
 
     /**
      * 更新考勤信息

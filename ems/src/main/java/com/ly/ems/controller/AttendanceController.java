@@ -57,18 +57,23 @@ public class AttendanceController extends AbstractBaseController {
     }
 
     /**
-     * 根据所选月份选择自动随机生成考勤信息
+     * 根据所选月份增量生成随机的考勤信息
      * @param conditions
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/generate", method = RequestMethod.POST, name = "生成考勤信息")
     public AjaxResult generateAttendances(AttendanceConditions conditions) {
-        attendanceService.generateAttendances(conditions);
-        return AjaxResult.success("生成考勤信息成功");
+        int size = attendanceService.generateAttendances(conditions);
+        return AjaxResult.success("本次共生成"+size+"条考勤记录");
     }
 
-
+    /**
+     * 更新考勤信息
+     * @param attendance
+     * @param month
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST, name = "更新考勤信息")
     public AjaxResult updateAttendance(Attendance attendance, Date month) {

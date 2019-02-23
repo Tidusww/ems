@@ -91,7 +91,7 @@ public class ReflectUtil {
                     break;
                 }
             } catch (NoSuchFieldException e) {
-                LOGGER.warn("{}类中不存在{}属性", clazz.toString(), fieldName);
+                LOGGER.trace("{}类中不存在{}属性", clazz.toString(), fieldName);
             }
         }
 

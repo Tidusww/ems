@@ -2,6 +2,7 @@ package com.ly.ems.service.attendance.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.ly.ems.common.utils.DateUtil;
+import com.ly.ems.common.utils.ListUtil;
 import com.ly.ems.common.utils.RandomUtil;
 import com.ly.ems.core.exception.EMSRuntimeException;
 import com.ly.ems.dao.attendance.ExtendAttendanceMapper;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -54,15 +56,14 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new EMSRuntimeException("查看考勤数据前必须先选定月份!");
         }
 
-        // 考勤数据必须存在
         String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        if (!this.checkAttendanceExist(attendanceMonthString)) {
+        // 考勤数据必须存在
+        if (!this.checkAttendanceExist(attendanceMonth)) {
             throw new EMSRuntimeException(String.format("月份%s的考勤数据不存在，请先生成数据!", attendanceMonthString));
         }
 
         // 查询数据
-        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
+        List<AttendanceVo> resultList = extendAttendanceMapper.getAttendancesByConditions(conditions, this.getAttendanceTableNameByDate(attendanceMonth), attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
         PageInfo<AttendanceVo> pageInfo = new PageInfo(resultList);
 
         return new PageableResult<AttendanceVo>((int) pageInfo.getTotal(), pageInfo.getPageNum(), pageInfo.getPageSize(), resultList);
@@ -87,9 +88,9 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new EMSRuntimeException("导出考勤明细数据时请指定班组");
         }
 
-        // 考勤数据必须存在
         String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        if (!this.checkAttendanceExist(attendanceMonthString)) {
+        // 考勤数据必须存在
+        if (!this.checkAttendanceExist(attendanceMonth)) {
             throw new EMSRuntimeException(String.format("月份%s的考勤数据不存在，请先生成数据!", attendanceMonthString));
         }
 
@@ -100,85 +101,17 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 
         // 查询数据
-        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        return extendAttendanceMapper.getAttendancesByConditions(conditions, attendanceTableName, attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
+        return extendAttendanceMapper.getAttendancesByConditions(conditions, this.getAttendanceTableNameByDate(attendanceMonth), attendanceMonthString, conditions.getCurrent(), conditions.getPageSize());
 
     }
-
-
-    /**
-     * 自动随机生成指定月份的考勤数据
-     *
-     * @param conditions
-     */
-    @Override
-    public void generateAttendances(AttendanceConditions conditions) {
-        Date attendanceMonth = conditions.getAttendanceMonth();
-        if (attendanceMonth == null) {
-            throw new EMSRuntimeException("生成考勤数据前必须先选定月份!");
-        }
-
-        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        if (this.checkAttendanceExist(attendanceMonthString)) {
-            throw new EMSRuntimeException(String.format("月份%s的考勤数据已存在!", attendanceMonthString));
-        }
-
-        try {
-            this.createAttendanceTable(attendanceMonth);
-        } catch (Exception e) {
-            LOGGER.error("创建考勤表失败", e);
-            throw new EMSRuntimeException("创建考勤表失败");
-        }
-
-        try {
-            // 获取当月有派遣关系的员工
-            List<EmployeeVo> employeeVoList = extendEmployeeMapper.getDispatchedEmployeeByMonth(attendanceMonth);
-
-            boolean isContinue = true;
-            int pageIndex = 1;
-            int pageSize = 500;
-            while (isContinue) {
-                // 分页获取员工信息
-                int formIndex = (pageIndex - 1) * pageSize;
-                int toIndex = pageIndex * pageSize;
-                if (toIndex > employeeVoList.size()) {
-                    toIndex = employeeVoList.size();
-                    isContinue = false;
-                }
-                List<EmployeeVo> employeeVoPage = employeeVoList.subList(formIndex, toIndex);
-
-                // 为每个员工生成当月的考勤信息
-                List<Attendance> attendanceList = new ArrayList<Attendance>();
-                for (EmployeeVo employeeVo : employeeVoPage) {
-                    Attendance attendance = this.generateAttendanceForEmployeeRamdonly(employeeVo, attendanceMonth);
-                    attendanceList.add(attendance);
-                }
-
-                if(attendanceList.size() > 0) {
-                    String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-                    extendAttendanceMapper.batchInsert(attendanceTableName, attendanceList);
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("生成考勤记录失败", e);
-            this.dropAttendanceTable(attendanceMonth);
-            throw new EMSRuntimeException("生成考勤记录失败");
-        }
-
-
-    }
-
 
     /**
      * 更新出勤信息
      * @param attendance
      */
-    public void updateAttendance(Attendance attendance, Date month) {
+    public void updateAttendance(Attendance attendance, Date attendanceMonth) {
         try {
-            String monthString = DateFormatUtils.format(month, DateUtil.YYYYMM);
-            String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + monthString;
-//            Attendance updateSalary = this.calculateSalary(attendance, month);
-            int row = extendAttendanceMapper.updateAttendanceById(attendanceTableName, attendance);
+            int row = extendAttendanceMapper.updateAttendanceById(this.getAttendanceTableNameByDate(attendanceMonth), attendance);
             if (row != 1) {
                 LOGGER.error(String.format("expected update row should be 1 but found %d", row));
                 throw new EMSRuntimeException("更新考勤信息失败");
@@ -189,6 +122,116 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
     }
 
+
+    /**
+     * 根据所选月份增量生成随机的考勤信息
+     *
+     * @param conditions
+     */
+    @Override
+    public int generateAttendances(AttendanceConditions conditions) {
+        Date attendanceMonth = conditions.getAttendanceMonth();
+        if (attendanceMonth == null) {
+            throw new EMSRuntimeException("生成考勤数据前请先选定月份!");
+        }
+        // 确保考勤表存在
+        this.createAttendanceTable(attendanceMonth);
+
+        List<Attendance> attendanceList = new ArrayList<Attendance>();
+        try {
+            long now = System.currentTimeMillis();
+            // 获取当月未有考勤信息的有效员工
+            String attendanceTableName = this.getAttendanceTableNameByDate(attendanceMonth);
+            List<EmployeeVo> employeeVoList = extendEmployeeMapper.getEmployeeByNoAttendance(attendanceTableName);
+
+            // 为每个员工生成当月的考勤信息
+            for (EmployeeVo employeeVo : employeeVoList) {
+                Attendance attendance = this.generateAttendanceForEmployeeRamdonly(employeeVo, attendanceMonth);
+                attendanceList.add(attendance);
+            }
+
+            // 分页插入考勤信息
+            if(attendanceList.size() > 0) {
+                int pageSize = 0;
+                while (true) {
+                    List<Attendance> attendancePage = ListUtil.subList(attendanceList, pageSize, AttendanceConstant.BATCH_INSERT_PAGE_SIZE);
+                    if (attendancePage == null || attendancePage.isEmpty()) {
+                        break;
+                    }
+                    extendAttendanceMapper.batchInsert(attendanceTableName, attendancePage);
+                    pageSize++;
+                }
+            }
+
+            LOGGER.info("生成考勤记录成功，共{}条，耗时：{}", attendanceList.size(), System.currentTimeMillis()-now);
+            return attendanceList.size();
+        } catch (Exception e) {
+            LOGGER.error("生成考勤记录失败", e);
+            throw new EMSRuntimeException("生成考勤记录失败");
+        }
+    }
+
+
+    /**
+     * 自动随机生成指定月份的考勤数据（仅限当月有派遣信息）
+     *
+     * @param conditions
+     */
+    @Deprecated
+    @Override
+    public void generateAttendancesByDispatch(AttendanceConditions conditions) {
+//        Date attendanceMonth = conditions.getAttendanceMonth();
+//        if (attendanceMonth == null) {
+//            throw new EMSRuntimeException("生成考勤数据前必须先选定月份!");
+//        }
+//
+//        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
+//        if (this.checkAttendanceExist(attendanceMonth)) {
+//            throw new EMSRuntimeException(String.format("月份%s的考勤数据已存在!", attendanceMonthString));
+//        }
+//
+//        try {
+//            this.createAttendanceTable(attendanceMonth);
+//        } catch (Exception e) {
+//            LOGGER.error("创建考勤表失败", e);
+//            throw new EMSRuntimeException("创建考勤表失败");
+//        }
+//
+//        try {
+//            // 获取当月有派遣关系的员工
+//            List<EmployeeVo> employeeVoList = extendEmployeeMapper.getDispatchedEmployeeByMonth(attendanceMonth);
+//
+//            boolean isContinue = true;
+//            int pageIndex = 1;
+//            int pageSize = 500;
+//            while (isContinue) {
+//                // 分页获取员工信息
+//                int formIndex = (pageIndex - 1) * pageSize;
+//                int toIndex = pageIndex * pageSize;
+//                if (toIndex > employeeVoList.size()) {
+//                    toIndex = employeeVoList.size();
+//                    isContinue = false;
+//                }
+//                List<EmployeeVo> employeeVoPage = employeeVoList.subList(formIndex, toIndex);
+//
+//                // 为每个员工生成当月的考勤信息
+//                List<Attendance> attendanceList = new ArrayList<Attendance>();
+//                for (EmployeeVo employeeVo : employeeVoPage) {
+//                    Attendance attendance = this.generateAttendanceForEmployeeRamdonly(employeeVo, attendanceMonth);
+//                    attendanceList.add(attendance);
+//                }
+//
+//                if(attendanceList.size() > 0) {
+//                    String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
+//                    extendAttendanceMapper.batchInsert(attendanceTableName, attendanceList);
+//                }
+//            }
+//        } catch (Exception e) {
+//            LOGGER.error("生成考勤记录失败", e);
+//            this.dropAttendanceTable(attendanceMonth);
+//            throw new EMSRuntimeException("生成考勤记录失败");
+//        }
+    }
 
     /**
      * 为单个员工随机生成考勤记录
@@ -275,17 +318,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     /**
      * 查询指定月份的考勤数据是否存在
      *
-     * @param attendanceMonthString
+     * @param attendanceMonth
      */
-    private boolean checkAttendanceExist(String attendanceMonthString) {
-        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        int exists = extendAttendanceMapper.isExistAttendanceTable(attendanceTableName);
-        return exists > 0;
-    }
-
     private boolean checkAttendanceExist(Date attendanceMonth) {
-        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        return this.checkAttendanceExist(attendanceMonthString);
+        int exists = extendAttendanceMapper.isExistAttendanceTable(this.getAttendanceTableNameByDate(attendanceMonth));
+        return exists > 0;
     }
 
     /**
@@ -295,9 +332,11 @@ public class AttendanceServiceImpl implements AttendanceService {
      * @return
      */
     private void createAttendanceTable(Date attendanceMonth) {
-        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        extendAttendanceMapper.createAttendanceTable(attendanceTableName);
+        try {
+            extendAttendanceMapper.createAttendanceTable(this.getAttendanceTableNameByDate(attendanceMonth));
+        } catch (Exception e) {
+            LOGGER.error("考勤表已存在，不需要创建", e);
+        }
     }
 
     /**
@@ -307,8 +346,19 @@ public class AttendanceServiceImpl implements AttendanceService {
      * @return
      */
     private void dropAttendanceTable(Date attendanceMonth) {
-        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
-        String attendanceTableName = AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE + attendanceMonthString;
-        extendAttendanceMapper.dropAttendanceTable(attendanceTableName);
+        extendAttendanceMapper.dropAttendanceTable(this.getAttendanceTableNameByDate(attendanceMonth));
     }
+
+    //region 内部工具
+    /**
+     * 根据Date获取考勤表名
+     * @param attendanceMonth
+     * @return
+     */
+    private String getAttendanceTableNameByDate(Date attendanceMonth) {
+        String attendanceMonthString = DateFormatUtils.format(attendanceMonth, DateUtil.YYYYMM);
+        String attendanceTableName = MessageFormat.format(AttendanceConstant.ATTENDANCE_TABLE_NAME_PRE, attendanceMonthString);
+        return attendanceTableName;
+    }
+    //endregion
 }

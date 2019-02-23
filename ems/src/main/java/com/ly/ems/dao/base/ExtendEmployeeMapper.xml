@@ -33,6 +33,18 @@
 
     </select>
 
+    <select id="getEmployeeByNoAttendance" resultMap="EmployeeVoMap">
+
+        SELECT e.*, j.job_name, g.group_name
+        FROM ly_employee e
+                 LEFT JOIN ly_job j ON e.job_id = j.id
+                 LEFT JOIN ly_group g ON e.group_id = g.id
+        WHERE NOT EXISTS (
+            SELECT 1 FROM ${attendanceTableName} a WHERE a.employee_id = e.id
+        )
+
+    </select>
+
     <insert id="batchInsert">
         INSERT INTO ly_employee (
         employee_name, gender, id_card, address, phone, location, salary_bank,
